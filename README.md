@@ -1,6 +1,6 @@
 # Aperture Messenger
 
-<img src="./docs/img/logo.png" align="right" alt="ALMS logo" width="150" height="150">
+<img src="./docs/img/logo.png" align="right" alt="Aperture Messenger logo" width="150" height="150">
 
 > *Hello and, again, welcome to the Aperture Science computer-aided messaging platform.*
 
