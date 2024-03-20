@@ -13,7 +13,7 @@ public sealed class Session
     {
     }
 
-    public static Session getInstance()
+    public static Session get()
     {
         return Instance;
     }
