@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace ApertureMessenger.AlmsConnection.Objects;
 
 public class Employee
@@ -7,8 +9,10 @@ public class Employee
     public string Name;
     public string Surname;
     
-    public Employee(string username, string name, string surname)
+    [JsonConstructor]
+    public Employee(int id, string username, string name, string surname)
     {
+        Id = id;
         Username = username;
         Name = name;
         Surname = surname;

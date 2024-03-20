@@ -13,12 +13,12 @@ public sealed class Session
     {
     }
 
-    public static Session get()
+    public static Session GetInstance()
     {
         return Instance;
     }
     
-    public void setParameters(string token, Employee employee)
+    public void SetParameters(string token, Employee employee)
     {
         Token = token;
         Employee = employee;

@@ -1,9 +1,13 @@
-﻿namespace ApertureMessenger;
+﻿using System.Text.Json;
+using ApertureMessenger.AlmsConnection;
+using ApertureMessenger.AlmsConnection.Authentication;
+
+namespace ApertureMessenger;
 
 internal static class Program
 {
-    private static void Main(string[] args)
+    private static void Main()
     {
-        Console.WriteLine("Hello, World!");
+        Console.WriteLine(Authenticator.Login("erik", "dasdas"));
     }
 }
