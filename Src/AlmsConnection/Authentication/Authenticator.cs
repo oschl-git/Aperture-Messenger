@@ -1,6 +1,7 @@
 using System.Net;
 using ApertureMessenger.AlmsConnection.Exceptions;
 using ApertureMessenger.AlmsConnection.Helpers;
+using ApertureMessenger.AlmsConnection.Requests;
 using ApertureMessenger.AlmsConnection.Responses;
 using Newtonsoft.Json;
 
@@ -17,15 +18,11 @@ public static class Authenticator
 
     public static LoginResult Login(string username, string password)
     {
-        var authenticationDetails = new Dictionary<string, string>
-        {
-            { "username", username },
-            { "password", password }
-        };
+        var loginRequest = new LoginRequest(username, password);
 
         var response = Connector.Post(
             "login",
-            JsonConvert.SerializeObject(authenticationDetails),
+            JsonConvert.SerializeObject(loginRequest),
             true
         );
 

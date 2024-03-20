@@ -12,10 +12,6 @@ public sealed class Connector
     private Connector()
     {
         var url = ConfigurationManager.AppSettings.Get("AlmsUrl") ?? "http://127.0.0.1:5678/";
-        if (url == null)
-        {
-            throw new ConfigurationErrorsException("ALMS URL is not configured.");
-        }
         
         AlmsClient = new HttpClient
         {

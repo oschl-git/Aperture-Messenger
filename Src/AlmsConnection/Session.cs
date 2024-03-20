@@ -23,4 +23,9 @@ public sealed class Session
         Token = token;
         Employee = employee;
     }
+
+    public bool IsAuthenticated()
+    {
+        return Token != null;
+    }
 }
