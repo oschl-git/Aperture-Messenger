@@ -3,8 +3,6 @@ using ApertureMessenger.AlmsConnection.Exceptions;
 using ApertureMessenger.AlmsConnection.Helpers;
 using ApertureMessenger.AlmsConnection.Responses;
 using Newtonsoft.Json;
-using JsonException = System.Text.Json.JsonException;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace ApertureMessenger.AlmsConnection.Authentication;
 
@@ -14,9 +12,9 @@ public static class Authenticator
     {
         Success,
         UserDoesNotExist,
-        IncorrectPassword,
+        IncorrectPassword
     }
-    
+
     public static LoginResult Login(string username, string password)
     {
         var authenticationDetails = new Dictionary<string, string>
@@ -32,50 +30,54 @@ public static class Authenticator
         );
 
         var contentString = ResponseParser.GetResponseContent(response);
-        
-        Console.WriteLine(contentString);
-        
+
         switch (response.StatusCode)
         {
-            case HttpStatusCode.BadRequest: 
+            case HttpStatusCode.BadRequest:
                 throw new BadRequestSent();
-            
+
             case HttpStatusCode.InternalServerError:
                 throw new InternalAlmsError();
 
             case HttpStatusCode.Unauthorized:
-                var errorContent = JsonConvert.DeserializeObject<ErrorResponse>(contentString);
-                
+                ErrorResponse? errorContent;
+                try
+                {
+                    errorContent = JsonConvert.DeserializeObject<ErrorResponse>(contentString);
+                }
+                catch (Exception)
+                {
+                    throw new JsonException("Failed parsing JSON error response");
+                }
+
                 if (errorContent == null)
                 {
-                    throw new JsonException("Failed parsing ALMS error response");
+                    throw new JsonException("JSON response was empty");
                 }
-                
-                Console.WriteLine(errorContent.Error);
-                
+
                 switch (errorContent.Message)
                 {
                     case "USER DOES NOT EXIST":
                         return LoginResult.UserDoesNotExist;
-                    
+
                     case "INCORRECT PASSWORD":
                         return LoginResult.IncorrectPassword;
                 }
-                
+
                 break;
-            
+
             case HttpStatusCode.OK:
-                var content = JsonSerializer.Deserialize<LoginResponse>(contentString);
-                
+                var content = JsonConvert.DeserializeObject<LoginResponse>(contentString);
+
                 if (content == null)
                 {
                     throw new JsonException("Failed parsing ALMS login response");
                 }
-                
+
                 Session.GetInstance().SetParameters(content.Token, content.Employee);
                 return LoginResult.Success;
         }
-        
+
         throw new UnhandledLoginError();
     }
 }

@@ -5,7 +5,7 @@ namespace ApertureMessenger.AlmsConnection;
 
 public sealed class Connector
 {
-    private static HttpClient AlmsClient;
+    private HttpClient AlmsClient;
     
     private static readonly Connector Instance = new();
 
@@ -37,7 +37,7 @@ public sealed class Connector
             AddAuthorizationHeaders(request);
         }
         
-        return AlmsClient.Send(request);
+        return GetInstance().AlmsClient.Send(request);
     }
     
     public static HttpResponseMessage Post(string endpoint, string content, bool disableAuthorizationHeaders = false)
@@ -52,7 +52,7 @@ public sealed class Connector
             AddAuthorizationHeaders(request);
         }
         
-        return AlmsClient.Send(request);
+        return GetInstance().AlmsClient.Send(request);
     }
 
     private static void AddAuthorizationHeaders(HttpRequestMessage request)

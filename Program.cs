@@ -8,6 +8,6 @@ internal static class Program
 {
     private static void Main()
     {
-        Console.WriteLine(Authenticator.Login("erik", "dasdas"));
+        Console.WriteLine(Authenticator.Login("erik", "erikerikerik"));
     }
 }
