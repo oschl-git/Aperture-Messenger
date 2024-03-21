@@ -15,7 +15,7 @@ public static class EmployeeCreator
     {
         Success,
         UsernameTaken,
-        RequirementsNotSatisfied,
+        RequirementsNotSatisfied
     }
 
     public static RegisterResult Register(string username, string name, string surname, string password)
