@@ -11,10 +11,14 @@ public class ErrorResponse
     [JsonProperty("message")]
     public string Message;
 
+    [JsonProperty("errors")]
+    public List<string>? Errors;
+
     [JsonConstructor]
-    public ErrorResponse(int error, string message)
+    public ErrorResponse(int error, string message, List<string>? errors = null)
     {
         Error = error;
         Message = message;
+        Errors = errors;
     }
 }

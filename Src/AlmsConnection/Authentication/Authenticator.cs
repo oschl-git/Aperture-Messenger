@@ -22,7 +22,7 @@ public static class Authenticator
 
         var response = Connector.Post(
             "login",
-            JsonConvert.SerializeObject(loginRequest),
+            loginRequest.getRequestJson(),
             true
         );
 
@@ -44,12 +44,12 @@ public static class Authenticator
                 }
                 catch (Exception)
                 {
-                    throw new JsonException("Failed parsing JSON error response");
+                    throw new JsonException("Failed parsing JSON login error response");
                 }
 
                 if (errorContent == null)
                 {
-                    throw new JsonException("JSON response was empty");
+                    throw new JsonException("JSON login error response was empty");
                 }
 
                 switch (errorContent.Message)
@@ -64,17 +64,25 @@ public static class Authenticator
                 break;
 
             case HttpStatusCode.OK:
-                var content = JsonConvert.DeserializeObject<LoginResponse>(contentString);
-
+                LoginResponse? content;
+                try
+                {
+                    content = JsonConvert.DeserializeObject<LoginResponse>(contentString);
+                }
+                catch (Exception)
+                {
+                    throw new JsonException("Failed parsing JSON login response");
+                }
+                
                 if (content == null)
                 {
-                    throw new JsonException("Failed parsing ALMS login response");
+                    throw new JsonException("JSON login response was empty");
                 }
 
                 Session.GetInstance().SetParameters(content.Token, content.Employee);
                 return LoginResult.Success;
         }
 
-        throw new UnhandledLoginError();
+        throw new UnhandledAuthenticationError();
     }
 }
