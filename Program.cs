@@ -6,5 +6,6 @@ internal static class Program
 {
     private static void Main()
     {
+        Authenticator.Login("erik", "erikerikerik");
     }
 }
