@@ -1,4 +1,5 @@
 ﻿using ApertureMessenger.AlmsConnection.Authentication;
+using ApertureMessenger.AlmsConnection.Repositories;
 
 namespace ApertureMessenger;
 
