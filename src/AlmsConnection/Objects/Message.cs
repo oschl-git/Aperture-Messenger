@@ -30,4 +30,12 @@ public class Message
         Content = content;
         DateTimeSent = dateTimeSent;
     }
+    
+    public override string ToString()
+    {
+        return $"Message ID: {Id}\n" +
+               $"Employee: {Employee.Username}\n" +
+               $"Content: {Content}\n" +
+               $"Date Time Sent: {DateTimeSent}";
+    }
 }

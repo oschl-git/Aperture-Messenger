@@ -86,4 +86,45 @@ public static class MessageRepository
 
         throw new UnhandledResponseError();
     }
+    
+    public static Message[] GetUnreadMessages(int conversationId)
+    {
+        var response = Connector.Get(
+            "get-unread-messages/" + conversationId
+        );
+
+        var contentString = ResponseParser.GetResponseContent(response);
+
+        switch (response.StatusCode)
+        {
+            case HttpStatusCode.OK:
+                Message[]? messages;
+                try
+                {
+                    messages = JsonConvert.DeserializeObject<Message[]>(contentString);
+                }
+                catch (Exception)
+                {
+                    throw new JsonException("Failed parsing unread message JSON");
+                }
+
+                if (messages == null)
+                {
+                    throw new JsonException("Unread message JSON was empty");
+                }
+
+                return messages;
+
+            case HttpStatusCode.NotFound:
+                switch (ResponseParser.GetErrorResponse(response).Message)
+                {
+                    case "CONVERSATION NOT FOUND":
+                        throw new ConversationNotFound();
+                }
+
+                break;
+        }
+
+        throw new UnhandledResponseError();
+    }
 }

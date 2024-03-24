@@ -40,4 +40,16 @@ public class Conversation
         DateTimeUpdated = dateTimeUpdated;
         Participants = participants;
     }
+    
+    public override string ToString()
+    {
+        var participantList = Participants != null ? string.Join(", ", Participants.ConvertAll(p => p.Username)) : "No participants";
+
+        return $"Conversation ID: {Id}\n" +
+               $"Name: {Name ?? "No name provided"}\n" +
+               $"Is Group: {IsGroup}\n" +
+               $"Date Time Created: {DateTimeCreated}\n" +
+               $"Date Time Updated: {DateTimeUpdated}\n" +
+               $"Participants: {participantList}";
+    }
 }

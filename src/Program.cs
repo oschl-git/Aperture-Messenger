@@ -9,5 +9,6 @@ internal static class Program
 {
     private static void Main()
     {
+        Authenticator.Login(new LoginRequest("erik", "erikerikerik"));
     }
 }

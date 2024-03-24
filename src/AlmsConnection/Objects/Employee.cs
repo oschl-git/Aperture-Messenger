@@ -25,4 +25,12 @@ public class Employee
         Name = name;
         Surname = surname;
     }
+    
+    public override string ToString()
+    {
+        return $"Employee ID: {Id}\n" +
+               $"Username: {Username}\n" +
+               $"Name: {Name}\n" +
+               $"Surname: {Surname}";
+    }
 }
