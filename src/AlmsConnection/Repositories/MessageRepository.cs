@@ -9,10 +9,8 @@ namespace ApertureMessenger.AlmsConnection.Repositories;
 
 public static class MessageRepository
 {
-    public static void SendMessage(int conversationId, string content)
+    public static void SendMessage(SendMessageRequest request)
     {
-        var request = new SendMessageRequest(conversationId, content);
-
         var response = Connector.Post(
             "send-message",
             request.getRequestJson()
@@ -22,23 +20,25 @@ public static class MessageRepository
         {
             case HttpStatusCode.OK:
                 return;
-            
+
             case HttpStatusCode.NotFound:
                 switch (ResponseParser.GetErrorResponse(response).Message)
                 {
                     case "CONVERSATION NOT FOUND":
                         throw new ConversationNotFound();
                 }
+
                 break;
-            
+
             case HttpStatusCode.BadRequest:
                 switch (ResponseParser.GetErrorResponse(response).Message)
                 {
                     case "CONTENT TOO LONG":
                         throw new MessageContentWasTooLong();
                 }
+
                 break;
-            
+
             case HttpStatusCode.InternalServerError:
                 throw new InternalAlmsError();
         }
@@ -57,20 +57,30 @@ public static class MessageRepository
         switch (response.StatusCode)
         {
             case HttpStatusCode.OK:
-                var messages = JsonConvert.DeserializeObject<Message[]>(contentString);
+                Message[]? messages;
+                try
+                {
+                    messages = JsonConvert.DeserializeObject<Message[]>(contentString);
+                }
+                catch (Exception)
+                {
+                    throw new JsonException("Failed parsing message JSON");
+                }
+
                 if (messages == null)
                 {
                     throw new JsonException("Message JSON was empty");
                 }
 
                 return messages;
-            
+
             case HttpStatusCode.NotFound:
                 switch (ResponseParser.GetErrorResponse(response).Message)
                 {
                     case "CONVERSATION NOT FOUND":
                         throw new ConversationNotFound();
                 }
+
                 break;
         }
 

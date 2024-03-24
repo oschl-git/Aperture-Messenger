@@ -16,20 +16,37 @@ public static class Authenticator
         IncorrectPassword
     }
 
-    public static LoginResult Login(string username, string password)
+    public static LoginResult Login(LoginRequest request)
     {
-        var loginRequest = new LoginRequest(username, password);
-
         var response = Connector.Post(
             "login",
-            loginRequest.getRequestJson(),
+            request.getRequestJson(),
             true
         );
-
-        var contentString = ResponseParser.GetResponseContent(response);
-
+        
         switch (response.StatusCode)
         {
+            case HttpStatusCode.OK:
+                var contentString = ResponseParser.GetResponseContent(response);
+                
+                LoginResponse? content;
+                try
+                {
+                    content = JsonConvert.DeserializeObject<LoginResponse>(contentString);
+                }
+                catch (Exception)
+                {
+                    throw new JsonException("Failed parsing JSON login response");
+                }
+
+                if (content == null)
+                {
+                    throw new JsonException("JSON login response was empty");
+                }
+
+                Session.GetInstance().SetParameters(content.Token, content.Employee);
+                return LoginResult.Success;
+
             case HttpStatusCode.BadRequest:
                 throw new BadRequestSent();
 
@@ -37,21 +54,7 @@ public static class Authenticator
                 throw new InternalAlmsError();
 
             case HttpStatusCode.Unauthorized:
-                ErrorResponse? errorContent;
-                try
-                {
-                    errorContent = JsonConvert.DeserializeObject<ErrorResponse>(contentString);
-                }
-                catch (Exception)
-                {
-                    throw new JsonException("Failed parsing JSON login error response");
-                }
-
-                if (errorContent == null)
-                {
-                    throw new JsonException("JSON login error response was empty");
-                }
-
+                var errorContent = ResponseParser.GetErrorResponse(response);
                 switch (errorContent.Message)
                 {
                     case "USER DOES NOT EXIST":
@@ -62,25 +65,6 @@ public static class Authenticator
                 }
 
                 break;
-
-            case HttpStatusCode.OK:
-                LoginResponse? content;
-                try
-                {
-                    content = JsonConvert.DeserializeObject<LoginResponse>(contentString);
-                }
-                catch (Exception)
-                {
-                    throw new JsonException("Failed parsing JSON login response");
-                }
-                
-                if (content == null)
-                {
-                    throw new JsonException("JSON login response was empty");
-                }
-
-                Session.GetInstance().SetParameters(content.Token, content.Employee);
-                return LoginResult.Success;
         }
 
         throw new UnhandledAuthenticationError();

@@ -18,17 +18,15 @@ public static class EmployeeCreator
         RequirementsNotSatisfied
     }
 
-    public static RegisterResult Register(string username, string name, string surname, string password)
+    public static RegisterResult Register(RegisterRequest request)
     {
-        var registerRequest = new RegisterRequest(username, name, surname, password);
-
+        LastRegisterAttemptIssues = null;
+        
         var response = Connector.Post(
             "register",
-            registerRequest.getRequestJson(),
+            request.getRequestJson(),
             true
         );
-
-        var contentString = ResponseParser.GetResponseContent(response);
         
         switch (response.StatusCode)
         {
@@ -36,21 +34,7 @@ public static class EmployeeCreator
                 throw new InternalAlmsError();
 
             case HttpStatusCode.BadRequest:
-                ErrorResponse? errorContent;
-                try
-                {
-                    errorContent = JsonConvert.DeserializeObject<ErrorResponse>(contentString);
-                }
-                catch (Exception)
-                {
-                    throw new JsonException("Failed parsing JSON register error response");
-                }
-
-                if (errorContent == null)
-                {
-                    throw new JsonException("JSON register error response was empty");
-                }
-
+                var errorContent = ResponseParser.GetErrorResponse(response);
                 switch (errorContent.Message)
                 {
                     case "REQUIREMENTS NOT SATISFIED":
