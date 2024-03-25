@@ -16,8 +16,10 @@ public class ConsoleWriter
         Write(content + "\n", color);
     }
 
-    public static void PrintWithWordWrap(string content = "", ConsoleColor color = DefaultColor)
+    public static void WriteWithWordWrap(string content = "", ConsoleColor color = DefaultColor)
     {
+        Console.ForegroundColor = color;
+        
         var words = content.Split(' ');
         
         var currentLength = 0;
@@ -59,6 +61,8 @@ public class ConsoleWriter
 
             Console.Write(currentLength + word.Length + 1 <= maxLength ? word + " " : word);
             currentLength += word.Length + 1;
+            
+            Console.ForegroundColor = DefaultColor;
         }
     }
 }

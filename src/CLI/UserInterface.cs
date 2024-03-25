@@ -16,6 +16,8 @@ public static class UserInterface
     {
         while (true)
         {
+            _commandResponse = "Type :help to get a list of available commands.";
+            DrawUserInterface();
             ReadCommandFromUser();
         }
     }
@@ -25,13 +27,13 @@ public static class UserInterface
         Console.Clear();
         
         Console.SetCursorPosition(0, Console.WindowHeight - 3);
-        Console.Write(GetScreenFillWithCharacter('―'));        
+        ConsoleWriter.Write(GetScreenFillWithCharacter('―'), ConsoleColor.Yellow);        
         
         Console.SetCursorPosition(0, Console.WindowHeight - 2);
         Console.Write(_commandResponse ?? GetScreenFillWithCharacter('―'));
         
         Console.SetCursorPosition(0, Console.WindowHeight - 1);
-        Console.Write($"> {_command}");
+        ConsoleWriter.Write($"> {_command}", ConsoleColor.Magenta);
     }
 
     private static void ReadCommandFromUser()
