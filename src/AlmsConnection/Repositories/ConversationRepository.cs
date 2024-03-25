@@ -45,7 +45,6 @@ public static class ConversationRepository
         );
 
         var contentString = ResponseParser.GetResponseContent(response);
-        Console.WriteLine(contentString);
 
         switch (response.StatusCode)
         {
