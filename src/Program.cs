@@ -1,4 +1,5 @@
-﻿using ApertureMessenger.CLI;
+﻿using ApertureMessenger.UserInterface;
+using ApertureMessenger.UserInterface.AuthenticationInterface;
 
 namespace ApertureMessenger;
 
@@ -6,6 +7,7 @@ internal static class Program
 {
     private static void Main()
     {
-        UserInterface.Process();
+        ConsoleHandler.Setup();
+        SharedData.InterfaceHandler.Process();
     }
 }
