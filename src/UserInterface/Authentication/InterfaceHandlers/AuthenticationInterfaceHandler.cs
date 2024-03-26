@@ -34,7 +34,6 @@ public class AuthenticationInterfaceHandler : IInterfaceHandler
             DrawUserInterface();
 
             var userInput = ConsoleReader.ReadCommandFromUser();
-
             if (!userInput.StartsWith(':'))
             {
                 SharedData.CommandResponse = new CommandResponse(

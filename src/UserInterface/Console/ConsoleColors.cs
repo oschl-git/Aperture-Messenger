@@ -15,7 +15,9 @@ public static class ConsoleColors
     {
         ConsoleColor[] darkBackgrounds =
         [
-            ConsoleColor.Black
+            ConsoleColor.Black,
+            ConsoleColor.Blue,
+            ConsoleColor.DarkBlue
         ];
 
         return Array.Exists(darkBackgrounds, color => color == backgroundColor)
