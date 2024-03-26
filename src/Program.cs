@@ -1,5 +1,5 @@
 ﻿using ApertureMessenger.UserInterface;
-using ApertureMessenger.UserInterface.AuthenticationInterface;
+using ApertureMessenger.UserInterface.Console;
 
 namespace ApertureMessenger;
 
@@ -7,7 +7,7 @@ internal static class Program
 {
     private static void Main()
     {
-        ConsoleHandler.Setup();
+        ConsoleColors.Setup();
         SharedData.InterfaceHandler.Process();
     }
 }
