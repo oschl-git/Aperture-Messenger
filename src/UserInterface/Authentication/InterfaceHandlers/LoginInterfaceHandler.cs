@@ -101,11 +101,14 @@ public class LoginInterfaceHandler : IInterfaceHandler
         DrawUserInterface();
 
         var usernameExists = _submittedUsername != null && EmployeeRepository.IsUsernameTaken(_submittedUsername);
-
+        
+        var usernameIsGlados = _submittedUsername?.ToLower() == "glados";
+        const string gladosEasterEggQuote = "Come to mommy. I made cake for you!";
+        
         if (usernameExists)
         {
             SharedData.CommandResponse = new CommandResponse(
-                "Username is valid.",
+                usernameIsGlados ? gladosEasterEggQuote : "Username is valid.",
                 CommandResponse.ResponseType.Success
             );
             _currentStage = Stage.PasswordInput;
@@ -113,7 +116,7 @@ public class LoginInterfaceHandler : IInterfaceHandler
         else
         {
             SharedData.CommandResponse = new CommandResponse(
-                "Employee with the submitted username doesn't exist.",
+                usernameIsGlados ? gladosEasterEggQuote : "Employee with the submitted username doesn't exist.",
                 CommandResponse.ResponseType.Error
             );
             _currentStage = Stage.UsernameInput;

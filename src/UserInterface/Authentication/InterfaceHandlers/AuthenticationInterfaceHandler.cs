@@ -32,10 +32,8 @@ public class AuthenticationInterfaceHandler : IInterfaceHandler
         SharedData.CommandResponse = new CommandResponse("Use the :login or :register commands to authenticate.",
             CommandResponse.ResponseType.Info);
 
-        while (true)
+        while (!Session.GetInstance().IsAuthenticated())
         {
-            if (Session.GetInstance().IsAuthenticated()) return;
-
             DrawUserInterface();
 
             var userInput = ConsoleReader.ReadCommandFromUser();
