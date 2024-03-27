@@ -1,4 +1,6 @@
-﻿using ApertureMessenger.AlmsConnection.Repositories;
+﻿using ApertureMessenger.AlmsConnection.Authentication;
+using ApertureMessenger.AlmsConnection.Repositories;
+using ApertureMessenger.AlmsConnection.Requests;
 using ApertureMessenger.UserInterface;
 using ApertureMessenger.UserInterface.Console;
 

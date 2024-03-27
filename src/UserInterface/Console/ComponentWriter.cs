@@ -8,7 +8,7 @@ public static class ComponentWriter
         Started,
         Completed,
     }
-    
+
     public static void WriteHeader(string title, ConsoleColor backgroundColor = ConsoleColor.White)
     {
         System.Console.BackgroundColor = backgroundColor;
@@ -42,22 +42,42 @@ public static class ComponentWriter
         ConsoleWriter.Write($" {SharedData.UserInput}");
     }
 
-    public static void WriteStep(string description, StepStates state = StepStates.Scheduled)
+    public static void WriteStep(
+        string description,
+        int currentStage,
+        int stepStage,
+        int stepCompletedStage 
+    )
     {
+        StepStates state;
+        
+        if (currentStage == stepStage)
+        {
+            state = StepStates.Started;
+        }
+        else if (currentStage >= stepCompletedStage)
+        {
+            state = StepStates.Completed;
+        }
+        else
+        {
+            state = StepStates.Scheduled;
+        }
+        
         var color = state switch
         {
             StepStates.Started => ConsoleColor.Cyan,
             StepStates.Completed => ConsoleColor.Green,
             _ => ConsoleColor.White
         };
-        
+
         var prefix = state switch
         {
             StepStates.Started => "[\u2192]",
             StepStates.Completed => "[\u2713]",
             _ => "[ ]"
         };
-        
+
         ConsoleWriter.WriteLine($"{prefix} {description}", color);
     }
 }

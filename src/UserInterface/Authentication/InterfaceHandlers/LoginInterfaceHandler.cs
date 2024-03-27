@@ -1,3 +1,5 @@
+using ApertureMessenger.AlmsConnection;
+using ApertureMessenger.AlmsConnection.Authentication;
 using ApertureMessenger.AlmsConnection.Repositories;
 using ApertureMessenger.AlmsConnection.Requests;
 using ApertureMessenger.UserInterface.Console;
@@ -17,10 +19,10 @@ public class LoginInterfaceHandler : IInterfaceHandler
         LoginSuccess,
     }
 
-    private Stage currentStage = Stage.UsernameInput;
+    private Stage _currentStage = Stage.UsernameInput;
 
-    private string? submittedUsername = null;
-    private string? submittedPassword = null;
+    private string? _submittedUsername;
+    private string? _submittedPassword;
 
     public void Process()
     {
@@ -31,11 +33,11 @@ public class LoginInterfaceHandler : IInterfaceHandler
             CommandResponse.ResponseType.Info
         );
 
-        while (currentStage != Stage.LoginSuccess)
+        while (_currentStage != Stage.LoginSuccess)
         {
             DrawUserInterface();
 
-            switch (currentStage)
+            switch (_currentStage)
             {
                 case Stage.UsernameInput:
                     HandleUsernameInput();
@@ -49,6 +51,8 @@ public class LoginInterfaceHandler : IInterfaceHandler
                 case Stage.LoginAttempt:
                     HandleLoginAttempt();
                     break;
+                case Stage.LoginSuccess:
+                    return;
             }
         }
     }
@@ -67,25 +71,35 @@ public class LoginInterfaceHandler : IInterfaceHandler
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();
 
-        ComponentWriter.WriteStep("Input a username.", GetUsernameStepState());
-        ComponentWriter.WriteStep("Input a password.", GetPasswordStepState());
+        ComponentWriter.WriteStep(
+            "Input a username.",
+            (int)_currentStage,
+            (int)Stage.UsernameInput,
+            (int)Stage.PasswordInput
+        );
+        ComponentWriter.WriteStep(
+            "Input a password.",
+            (int)_currentStage,
+            (int)Stage.PasswordInput,
+            (int)Stage.LoginSuccess
+        );
 
         ComponentWriter.WriteUserInput(GetPrompt());
     }
 
     private void HandleUsernameInput()
     {
-        submittedUsername = ConsoleReader.ReadCommandFromUser();
-        currentStage = Stage.UsernameVerification;
+        _submittedUsername = ConsoleReader.ReadCommandFromUser();
+        _currentStage = Stage.UsernameVerification;
     }
 
     private void HandleUsernameVerification()
     {
         SharedData.CommandResponse =
-            new CommandResponse("Checking username validity...", CommandResponse.ResponseType.Warning);
+            new CommandResponse("Checking username validity...", CommandResponse.ResponseType.Loading);
         DrawUserInterface();
 
-        var usernameExists = submittedUsername != null && EmployeeRepository.IsUsernameTaken(submittedUsername);
+        var usernameExists = _submittedUsername != null && EmployeeRepository.IsUsernameTaken(_submittedUsername);
 
         if (usernameExists)
         {
@@ -93,7 +107,7 @@ public class LoginInterfaceHandler : IInterfaceHandler
                 "Username is valid.",
                 CommandResponse.ResponseType.Success
             );
-            currentStage = Stage.PasswordInput;
+            _currentStage = Stage.PasswordInput;
         }
         else
         {
@@ -101,59 +115,56 @@ public class LoginInterfaceHandler : IInterfaceHandler
                 "Employee with the submitted username doesn't exist.",
                 CommandResponse.ResponseType.Error
             );
-            currentStage = Stage.UsernameInput;
+            _currentStage = Stage.UsernameInput;
         }
     }
 
     private void HandlePasswordInput()
     {
-        submittedPassword = ConsoleReader.ReadCommandFromUser();
-        currentStage = Stage.LoginAttempt;
+        _submittedPassword = ConsoleReader.ReadCommandFromUser();
+        _currentStage = Stage.LoginAttempt;
     }
 
     private void HandleLoginAttempt()
     {
-        
+        SharedData.CommandResponse =
+            new CommandResponse("Authenticating...", CommandResponse.ResponseType.Loading);
+        DrawUserInterface();
+
+        var result = Authenticator.Login(new LoginRequest(_submittedUsername ?? "", _submittedPassword ?? ""));
+
+        switch (result)
+        {
+            case Authenticator.LoginResult.Success:
+                _currentStage = Stage.LoginSuccess;
+                SharedData.CommandResponse = new CommandResponse(
+                    $"Employee {Session.GetInstance().Employee?.Name} {Session.GetInstance().Employee?.Surname} successfully logged in!", CommandResponse.ResponseType.Success
+                );
+                break;
+            
+            case Authenticator.LoginResult.UserDoesNotExist:
+                SharedData.CommandResponse = new CommandResponse(
+                    "Somehow, you don't exist anymore.", CommandResponse.ResponseType.Error
+                );
+                _currentStage = Stage.UsernameInput;
+                break;
+            
+            case Authenticator.LoginResult.IncorrectPassword:
+                SharedData.CommandResponse = new CommandResponse(
+                    "Incorrect password.", CommandResponse.ResponseType.Error
+                );
+                _currentStage = Stage.PasswordInput;
+                break;
+        }
     }
 
     private string GetPrompt()
     {
-        return currentStage switch
+        return _currentStage switch
         {
             Stage.UsernameInput => "Username:",
             Stage.PasswordInput => "Password:",
             _ => ""
         };
     }
-
-    private ComponentWriter.StepStates GetUsernameStepState()
-    {
-        if (currentStage == Stage.UsernameInput)
-        {
-            return ComponentWriter.StepStates.Started;
-        }
-        
-        if ((int)currentStage >= 2)
-        {
-            return ComponentWriter.StepStates.Completed;
-        }
-
-        return ComponentWriter.StepStates.Scheduled;
-    }
-    
-    private ComponentWriter.StepStates GetPasswordStepState()
-    {
-        if (currentStage == Stage.PasswordInput)
-        {
-            return ComponentWriter.StepStates.Started;
-        }
-        
-        if ((int)currentStage >= 4)
-        {
-            return ComponentWriter.StepStates.Completed;
-        }
-
-        return ComponentWriter.StepStates.Scheduled;
-    }
-
 }

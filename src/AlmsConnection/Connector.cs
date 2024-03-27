@@ -11,7 +11,7 @@ namespace ApertureMessenger.AlmsConnection;
 public sealed class Connector
 {
     private readonly HttpClient _almsClient;
-    
+
     private static readonly Connector Instance = new();
 
     private Connector()
@@ -22,7 +22,7 @@ public sealed class Connector
         {
             throw new ConfigurationErrorsException("ALMS URL is not properly configured");
         }
-        
+
         _almsClient = new HttpClient
         {
             BaseAddress = new Uri(url)
@@ -34,37 +34,52 @@ public sealed class Connector
         return Instance;
     }
 
-    public static HttpResponseMessage Get(string endpoint, bool disableAuthorizationHeaders = false)
+    public static HttpResponseMessage Get(
+        string endpoint,
+        bool disableAuthorizationHeaders = false,
+        bool disableAuthorizationErrors = false
+    )
     {
         var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
-        
+
         if (!disableAuthorizationHeaders)
         {
             AddAuthorizationHeaders(request);
         }
-        
+
         var response = SendRequest(request);
-        
-        ThrowAuthorizationErrors(response);
+
+        if (!disableAuthorizationErrors)
+        {
+            ThrowAuthorizationErrors(response);
+        }
 
         return response;
     }
-    
-    public static HttpResponseMessage Post(string endpoint, string content, bool disableAuthorizationHeaders = false)
+
+    public static HttpResponseMessage Post(
+        string endpoint,
+        string content,
+        bool disableAuthorizationHeaders = false,
+        bool disableAuthorizationErrors = false
+    )
     {
         var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
         {
             Content = new StringContent(content, Encoding.UTF8, "application/json")
         };
-        
+
         if (!disableAuthorizationHeaders)
         {
             AddAuthorizationHeaders(request);
         }
 
         var response = SendRequest(request);
-        
-        ThrowAuthorizationErrors(response);
+
+        if (!disableAuthorizationErrors)
+        {
+            ThrowAuthorizationErrors(response);
+        }
 
         return response;
     }
@@ -93,31 +108,15 @@ public sealed class Connector
     {
         if (response.StatusCode != HttpStatusCode.Unauthorized) return;
 
-        var contentString = ResponseParser.GetResponseContent(response);
-        
-        ErrorResponse? errorContent;
-        try
-        {
-            errorContent = JsonConvert.DeserializeObject<ErrorResponse>(contentString);
-        }
-        catch (Exception)
-        {
-            throw new JsonException("Failed parsing JSON auth error response");
-        }
-
-        if (errorContent == null)
-        {
-            throw new JsonException("JSON login auth error response was empty");
-        }
-
-        switch (errorContent.Message)
+        var errorResponse = ResponseParser.GetErrorResponse(response);
+        switch (errorResponse.Message)
         {
             case "UNAUTHORIZED":
                 throw new TokenMissing();
-            
+
             case "AUTH TOKEN BAD":
                 throw new TokenInvalid();
-            
+
             case "AUTH TOKEN EXPIRED":
                 throw new TokenExpired();
         }

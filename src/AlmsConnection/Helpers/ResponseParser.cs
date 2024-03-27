@@ -14,6 +14,7 @@ public static class ResponseParser
     public static ErrorResponse GetErrorResponse(HttpResponseMessage response)
     {
         var contentString = GetResponseContent(response);
+
         ErrorResponse? errorContent;
         try
         {

@@ -25,6 +25,7 @@ public static class EmployeeCreator
         var response = Connector.Post(
             "register",
             request.getRequestJson(),
+            true,
             true
         );
         

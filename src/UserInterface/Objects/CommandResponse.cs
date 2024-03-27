@@ -7,7 +7,8 @@ public class CommandResponse
         Success,
         Error,
         Warning,
-        Info
+        Info,
+        Loading
     }
     
     public string Response;
@@ -27,6 +28,7 @@ public class CommandResponse
             ResponseType.Error => "\ud83d\uddd9",
             ResponseType.Warning => "\u26a0",
             ResponseType.Info => "\ud83d\udec8",
+            ResponseType.Loading => "\u27f3",
             _ => "?"
         };
     }
@@ -39,6 +41,7 @@ public class CommandResponse
             ResponseType.Error => ConsoleColor.Red,
             ResponseType.Warning => ConsoleColor.Yellow,
             ResponseType.Info => ConsoleColor.DarkCyan,
+            ResponseType.Loading => ConsoleColor.DarkGray,
             _ => ConsoleColor.Black
         }; 
     }
