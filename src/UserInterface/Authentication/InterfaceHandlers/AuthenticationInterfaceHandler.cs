@@ -1,3 +1,4 @@
+using ApertureMessenger.AlmsConnection;
 using ApertureMessenger.UserInterface.Authentication.Commands;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
@@ -12,7 +13,8 @@ public class AuthenticationInterfaceHandler : IInterfaceHandler
     private static readonly ICommand[] Commands =
     [
         new Login(),
-        new Register()
+        new Register(),
+        new Exit()
     ];
 
     private AuthenticationInterfaceHandler()
@@ -32,6 +34,8 @@ public class AuthenticationInterfaceHandler : IInterfaceHandler
 
         while (true)
         {
+            if (Session.GetInstance().IsAuthenticated()) return;
+
             DrawUserInterface();
 
             var userInput = ConsoleReader.ReadCommandFromUser();

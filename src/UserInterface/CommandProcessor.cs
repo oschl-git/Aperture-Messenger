@@ -11,7 +11,7 @@ public static class CommandProcessor
         var submittedCommand = userInput[1..];
         foreach (var command in commands)
         {
-            if (Array.Exists(command.Aliases, alias => alias == submittedCommand))
+            if (Array.Exists(command.Aliases, alias => alias == submittedCommand.ToLower()))
             {
                 return command;
             }
