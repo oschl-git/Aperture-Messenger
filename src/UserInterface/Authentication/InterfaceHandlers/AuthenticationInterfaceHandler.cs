@@ -11,7 +11,8 @@ public class AuthenticationInterfaceHandler : IInterfaceHandler
 
     private static readonly ICommand[] Commands =
     [
-        new Login()
+        new Login(),
+        new Register()
     ];
 
     private AuthenticationInterfaceHandler()

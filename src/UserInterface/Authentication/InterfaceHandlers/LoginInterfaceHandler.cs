@@ -52,6 +52,7 @@ public class LoginInterfaceHandler : IInterfaceHandler
                     HandleLoginAttempt();
                     break;
                 case Stage.LoginSuccess:
+                default:
                     return;
             }
         }
