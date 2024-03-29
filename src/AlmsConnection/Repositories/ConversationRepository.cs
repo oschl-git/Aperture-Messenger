@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace ApertureMessenger.AlmsConnection.Repositories;
 
 public static class ConversationRepository
-{   
+{
     public static void CreateGroupConversation(CreateGroupConversationRequest request)
     {
         var response = Connector.Post(
@@ -20,7 +20,7 @@ public static class ConversationRepository
         {
             case HttpStatusCode.OK:
                 return;
-            
+
             case HttpStatusCode.BadRequest:
                 var errorResponse = ResponseParser.GetErrorResponse(response);
                 switch (errorResponse.Message)
@@ -37,7 +37,7 @@ public static class ConversationRepository
 
         throw new UnhandledResponseError();
     }
-    
+
     public static Conversation GetDirectConversation(string username)
     {
         var response = Connector.Get(
@@ -74,14 +74,14 @@ public static class ConversationRepository
                 }
 
                 break;
-            
+
             case HttpStatusCode.InternalServerError:
                 throw new InternalAlmsError();
         }
 
         throw new UnhandledResponseError();
     }
-    
+
     public static Conversation[] GetAllConversations()
     {
         var response = Connector.Get(
@@ -113,7 +113,7 @@ public static class ConversationRepository
 
         throw new UnhandledResponseError();
     }
-    
+
     public static Conversation[] GetDirectConversations()
     {
         var response = Connector.Get(
@@ -145,7 +145,7 @@ public static class ConversationRepository
 
         throw new UnhandledResponseError();
     }
-    
+
     public static Conversation[] GetGroupConversations()
     {
         var response = Connector.Get(
@@ -173,6 +173,50 @@ public static class ConversationRepository
                 }
 
                 return conversations;
+        }
+
+        throw new UnhandledResponseError();
+    }
+
+    public static Conversation GetConversationById(int id)
+    {
+        var response = Connector.Get(
+            "get-conversation-by-id/" + id
+        );
+
+        var contentString = ResponseParser.GetResponseContent(response);
+
+        switch (response.StatusCode)
+        {
+            case HttpStatusCode.OK:
+                Conversation? conversation;
+                try
+                {
+                    conversation = JsonConvert.DeserializeObject<Conversation>(contentString);
+                }
+                catch (Exception)
+                {
+                    throw new JsonException("Failed parsing conversation JSON");
+                }
+
+                if (conversation == null)
+                {
+                    throw new JsonException("Conversation JSON was empty");
+                }
+
+                return conversation;
+
+            case HttpStatusCode.NotFound:
+                switch (ResponseParser.GetErrorResponse(response).Message)
+                {
+                    case "CONVERSATION NOT FOUND":
+                        throw new ConversationNotFound();
+                }
+
+                break;
+
+            case HttpStatusCode.InternalServerError:
+                throw new InternalAlmsError();
         }
 
         throw new UnhandledResponseError();

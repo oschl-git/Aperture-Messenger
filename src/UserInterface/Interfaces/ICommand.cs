@@ -6,5 +6,5 @@ public interface ICommand
     {
         get;
     }
-    public void Invoke();
+    public void Invoke(string[] args);
 }

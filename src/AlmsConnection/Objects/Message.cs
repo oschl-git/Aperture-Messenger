@@ -8,7 +8,6 @@ public class Message
     [JsonProperty("id")]
     public int Id;
     
-    [JsonProperty("employee")]
     public Employee Employee;
     
     [JsonProperty("content")]
@@ -20,16 +19,20 @@ public class Message
     [JsonConstructor]
     public Message(
         int id, 
-        Employee employee,
+        int employeeId,
+        string username,
+        string name,
+        string surname,
         string content,
         DateTime dateTimeSent
         )
     {
         Id = id;
-        Employee = employee;
+        Employee = new Employee(employeeId, username, name, surname);
         Content = content;
         DateTimeSent = dateTimeSent;
     }
+    
     
     public override string ToString()
     {

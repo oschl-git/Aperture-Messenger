@@ -96,15 +96,17 @@ public class LoginInterfaceHandler : IInterfaceHandler
 
     private void HandleUsernameVerification()
     {
-        SharedData.CommandResponse =
-            new CommandResponse("Checking username validity...", CommandResponse.ResponseType.Loading);
+        SharedData.CommandResponse = new CommandResponse(
+            "Checking username validity...",
+            CommandResponse.ResponseType.Loading
+        );
         DrawUserInterface();
 
         var usernameExists = _submittedUsername != null && EmployeeRepository.IsUsernameTaken(_submittedUsername);
-        
+
         var usernameIsGlados = _submittedUsername?.ToLower() == "glados";
         const string gladosEasterEggQuote = "Come to mommy. I made cake for you!";
-        
+
         if (usernameExists)
         {
             SharedData.CommandResponse = new CommandResponse(
@@ -131,8 +133,7 @@ public class LoginInterfaceHandler : IInterfaceHandler
 
     private void HandleLoginAttempt()
     {
-        SharedData.CommandResponse =
-            new CommandResponse("Authenticating...", CommandResponse.ResponseType.Loading);
+        SharedData.CommandResponse = new CommandResponse("Authenticating...", CommandResponse.ResponseType.Loading);
         DrawUserInterface();
 
         var result = Authenticator.Login(new LoginRequest(_submittedUsername ?? "", _submittedPassword ?? ""));
@@ -142,17 +143,18 @@ public class LoginInterfaceHandler : IInterfaceHandler
             case Authenticator.LoginResult.Success:
                 _currentStage = Stage.LoginSuccess;
                 SharedData.CommandResponse = new CommandResponse(
-                    $"Employee {Session.GetInstance().Employee?.Name} {Session.GetInstance().Employee?.Surname} successfully logged in!", CommandResponse.ResponseType.Success
+                    $"Employee {Session.GetInstance().Employee?.Name} {Session.GetInstance().Employee?.Surname} successfully logged in!",
+                    CommandResponse.ResponseType.Success
                 );
                 break;
-            
+
             case Authenticator.LoginResult.UserDoesNotExist:
                 SharedData.CommandResponse = new CommandResponse(
                     "Somehow, you don't exist anymore.", CommandResponse.ResponseType.Error
                 );
                 _currentStage = Stage.UsernameInput;
                 break;
-            
+
             case Authenticator.LoginResult.IncorrectPassword:
                 SharedData.CommandResponse = new CommandResponse(
                     "Incorrect password.", CommandResponse.ResponseType.Error

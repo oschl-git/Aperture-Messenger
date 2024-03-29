@@ -7,7 +7,7 @@ public class Login : ICommand
 {
     public string[] Aliases { get; } = ["login", "l"];
 
-    public void Invoke()
+    public void Invoke(string[] args)
     {
         SharedData.InterfaceHandler = new LoginInterfaceHandler();
         SharedData.InterfaceHandler.Process();

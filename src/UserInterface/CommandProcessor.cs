@@ -4,11 +4,28 @@ namespace ApertureMessenger.UserInterface;
 
 public static class CommandProcessor
 {
-    public static ICommand? GetCommand(string userInput, ICommand[] commands)
+    public enum Result
     {
-        if (!userInput.StartsWith(':')) return null;
+        Success,
+        NotACommand,
+        InvalidCommand
+    }
+    
+    public static Result InvokeCommand(string userInput, ICommand[] commands)
+    {
+        if (!userInput.StartsWith(':')) return Result.NotACommand;
 
-        var submittedCommand = userInput[1..];
+        var processedInput = userInput[1..].Split(' ');
+        
+        var command = GetCommand(processedInput[0], commands);
+        if (command == null) return Result.InvalidCommand;
+
+        command.Invoke(processedInput.Skip(1).ToArray());
+        return Result.Success;
+    }
+    
+    private static ICommand? GetCommand(string submittedCommand, ICommand[] commands)
+    {
         foreach (var command in commands)
         {
             if (Array.Exists(command.Aliases, alias => alias == submittedCommand.ToLower()))

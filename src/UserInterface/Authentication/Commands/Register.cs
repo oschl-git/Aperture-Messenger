@@ -7,7 +7,7 @@ public class Register : ICommand
 {
     public string[] Aliases { get; } = ["register", "r"];
 
-    public void Invoke()
+    public void Invoke(string[] args)
     {
         SharedData.InterfaceHandler = new RegisterInterfaceHandler();
         SharedData.InterfaceHandler.Process();

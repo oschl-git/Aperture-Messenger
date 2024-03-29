@@ -79,7 +79,7 @@ public class RegisterInterfaceHandler : IInterfaceHandler
                     break;
                 case Stage.RegisterSuccess:
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    return;
             }
         }
     }
@@ -189,6 +189,11 @@ public class RegisterInterfaceHandler : IInterfaceHandler
 
     private void HandleSecondPasswordInput()
     {
+        SharedData.CommandResponse = new CommandResponse(
+            "Type the same password again for verification.", CommandResponse.ResponseType.Info
+        );
+        DrawUserInterface();
+        
         _submittedSecondPassword = ConsoleReader.ReadCommandFromUser();
         _currentStage = Stage.PasswordVerification;
     }

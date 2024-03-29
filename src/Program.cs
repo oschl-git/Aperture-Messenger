@@ -8,6 +8,7 @@ internal static class Program
     private static void Main()
     {
         ConsoleColors.Setup();
+        
         while (true)
         {
             SharedData.InterfaceHandler.Process();

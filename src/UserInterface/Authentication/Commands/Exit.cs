@@ -7,7 +7,7 @@ public class Exit : ICommand
 {
     public string[] Aliases { get; } = ["exit", "quit", "e", "q"];
 
-    public void Invoke()
+    public void Invoke(string[] args)
     {
         ConsoleWriter.Clear();
         Environment.Exit(0);

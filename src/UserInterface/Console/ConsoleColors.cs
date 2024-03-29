@@ -3,7 +3,7 @@ namespace ApertureMessenger.UserInterface.Console;
 public static class ConsoleColors
 {
     public const ConsoleColor DefaultForegroundColor = ConsoleColor.White;
-    public const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;
+    public const ConsoleColor DefaultBackgroundColor = ConsoleColor.DarkGray;
 
     public static void Setup()
     {

@@ -14,11 +14,15 @@ public static class ConsoleWriter
         Write(content + "\n", color);
     }
 
-    public static void WriteWithWordWrap(string content = "", ConsoleColor color = ConsoleColors.DefaultForegroundColor)
+    public static void WriteWithWordWrap(
+        string content = "",
+        ConsoleColor color = ConsoleColors.DefaultForegroundColor,
+        int firstLineOffset = 0
+    )
     {
         var words = content.Split(' ');
 
-        var currentLength = 0;
+        var currentLength = firstLineOffset;
         var maxLength = System.Console.WindowWidth;
 
         foreach (var word in words)
@@ -60,7 +64,7 @@ public static class ConsoleWriter
             currentLength += word.Length + 1;
         }
     }
-    
+
     public static void Clear()
     {
         System.Console.Clear();

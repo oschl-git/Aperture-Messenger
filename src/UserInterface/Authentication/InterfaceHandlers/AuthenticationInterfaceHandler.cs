@@ -2,6 +2,7 @@ using ApertureMessenger.AlmsConnection;
 using ApertureMessenger.UserInterface.Authentication.Commands;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
+using ApertureMessenger.UserInterface.Messaging.InterfaceHandlers;
 using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Authentication.InterfaceHandlers;
@@ -37,27 +38,28 @@ public class AuthenticationInterfaceHandler : IInterfaceHandler
             DrawUserInterface();
 
             var userInput = ConsoleReader.ReadCommandFromUser();
-            if (!userInput.StartsWith(':'))
+            var commandResult = CommandProcessor.InvokeCommand(userInput, Commands);
+            switch (commandResult)
             {
-                SharedData.CommandResponse = new CommandResponse(
-                    "Commands must start with a colon (:).",
-                    CommandResponse.ResponseType.Error
-                );
-                continue;
+                case CommandProcessor.Result.NotACommand:
+                    SharedData.CommandResponse = new CommandResponse(
+                        "Commands must start with a colon (:).",
+                        CommandResponse.ResponseType.Error
+                    );
+                    break;
+                case CommandProcessor.Result.InvalidCommand:
+                    SharedData.CommandResponse = new CommandResponse(
+                        $"{userInput} is not a valid authentication command.",
+                        CommandResponse.ResponseType.Error
+                    );
+                    break;
+                case CommandProcessor.Result.Success:
+                default:
+                    break;
             }
-
-            var command = CommandProcessor.GetCommand(userInput, Commands);
-
-            if (command == null)
-            {
-                SharedData.CommandResponse = new CommandResponse(
-                    $"{userInput} is not a valid authentication command.", CommandResponse.ResponseType.Error
-                );
-                continue;
-            }
-
-            command.Invoke();
         }
+
+        SharedData.InterfaceHandler = MessagingInterfaceHandler.GetInstance();
     }
 
     public void DrawUserInterface()
