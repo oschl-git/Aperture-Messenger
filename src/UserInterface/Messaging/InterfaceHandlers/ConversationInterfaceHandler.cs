@@ -20,7 +20,10 @@ public class ConversationInterfaceHandler : IInterfaceHandler
     public ConversationInterfaceHandler(Conversation conversation)
     {
         _conversation = conversation;
-        _messages = MessageRepository.GetMessages(_conversation.Id).ToList();
+        
+        var messages = MessageRepository.GetMessages(_conversation.Id).ToList();
+        messages.Reverse();
+        _messages = messages;
     }
 
     public void Process()
@@ -72,27 +75,28 @@ public class ConversationInterfaceHandler : IInterfaceHandler
 
     private string GetHeaderContent()
     {
-        if (_conversation.Participants == null) return $"A MYSTERIOUS CONVERSATION (ID: {_conversation.Id}";
+        if (_conversation.Participants == null) return $"A MYSTERIOUS CONVERSATION (ID: {_conversation.Id})";
 
         if (_conversation.IsGroup)
         {
             return $"GROUP CONVERSATION \"{_conversation.Name}\" ({_conversation.Participants.Count} members)";
         }
 
-        string? otherEmployee = null;
+        Employee? otherEmployee = null;
         foreach (var employee in _conversation.Participants)
         {
-            if (employee.Name == Session.GetInstance().Employee?.Name) continue;
-            otherEmployee = employee.Name;
+            if (employee.Username == Session.GetInstance().Employee?.Username) continue;
+            otherEmployee = employee;
             break;
         }
 
-        return $"DIRECT CONVERSATION WITH \"{otherEmployee}\"";
+        return $"DIRECT CONVERSATION WITH {otherEmployee?.Username} ({otherEmployee?.Name} {otherEmployee?.Surname})";
     }
 
     public void GetNewMessages()
     {
-        var unreadMessages = MessageRepository.GetUnreadMessages(_conversation.Id);
+        var unreadMessages = MessageRepository.GetUnreadMessages(_conversation.Id).ToList();
+        unreadMessages.Reverse();
         foreach (var message in unreadMessages)
         {
             _messages.Add(message);
