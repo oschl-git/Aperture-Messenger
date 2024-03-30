@@ -2,6 +2,11 @@ namespace ApertureMessenger.UserInterface.Console;
 
 public static class ConsoleWriter
 {
+    public static void Setup()
+    {
+        System.Console.TreatControlCAsInput = true;
+    }
+    
     public static void Write(string content = "", ConsoleColor color = ConsoleColors.DefaultForegroundColor)
     {
         System.Console.ForegroundColor = color;

@@ -2,6 +2,7 @@ using ApertureMessenger.AlmsConnection;
 using ApertureMessenger.AlmsConnection.Authentication;
 using ApertureMessenger.AlmsConnection.Repositories;
 using ApertureMessenger.AlmsConnection.Requests;
+using ApertureMessenger.UserInterface.Authentication.Commands;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Objects;
@@ -10,6 +11,11 @@ namespace ApertureMessenger.UserInterface.Authentication.InterfaceHandlers;
 
 public class LoginInterfaceHandler : IInterfaceHandler
 {
+    private static readonly ICommand[] Commands =
+    [
+        new Exit()
+    ];
+
     private enum Stage
     {
         UsernameInput,
@@ -17,6 +23,7 @@ public class LoginInterfaceHandler : IInterfaceHandler
         PasswordInput,
         LoginAttempt,
         LoginSuccess,
+        LoginAborted,
     }
 
     private Stage _currentStage = Stage.UsernameInput;
@@ -52,6 +59,7 @@ public class LoginInterfaceHandler : IInterfaceHandler
                     HandleLoginAttempt();
                     break;
                 case Stage.LoginSuccess:
+                case Stage.LoginAborted:
                 default:
                     return;
             }
@@ -91,6 +99,7 @@ public class LoginInterfaceHandler : IInterfaceHandler
     private void HandleUsernameInput()
     {
         _submittedUsername = ConsoleReader.ReadCommandFromUser();
+        if (CheckForExitCommand(_submittedUsername)) return;
         _currentStage = Stage.UsernameVerification;
     }
 
@@ -128,6 +137,7 @@ public class LoginInterfaceHandler : IInterfaceHandler
     private void HandlePasswordInput()
     {
         _submittedPassword = ConsoleReader.ReadCommandFromUser();
+        if (CheckForExitCommand(_submittedPassword)) return;
         _currentStage = Stage.LoginAttempt;
     }
 
@@ -172,5 +182,14 @@ public class LoginInterfaceHandler : IInterfaceHandler
             Stage.PasswordInput => "Password:",
             _ => ""
         };
+    }
+
+    private bool CheckForExitCommand(string userInput)
+    {
+        var result = CommandProcessor.InvokeCommand(userInput, Commands);
+        if (result != CommandProcessor.Result.Success) return false;
+        
+        _currentStage = Stage.LoginAborted;
+        return true;
     }
 }

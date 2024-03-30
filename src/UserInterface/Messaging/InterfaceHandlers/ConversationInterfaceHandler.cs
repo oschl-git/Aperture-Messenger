@@ -39,13 +39,30 @@ public class ConversationInterfaceHandler : IInterfaceHandler
             DrawUserInterface();
 
             var userInput = ConsoleReader.ReadCommandFromUser();
-            var commandResult = CommandProcessor.InvokeCommand(userInput, Commands);
+            var commandResult = CommandProcessor.InvokeCommand(userInput, GlobalCommands.Commands);
 
             if (commandResult == CommandProcessor.Result.NotACommand)
             {
                 MessageRepository.SendMessage(new SendMessageRequest(_conversation.Id, userInput));
                 GetNewMessages();
+                SharedData.CommandResponse = new CommandResponse(
+                    "Message sent.",
+                    CommandResponse.ResponseType.Success
+                );
                 continue;
+            }
+            
+            switch (commandResult)
+            {
+                case CommandProcessor.Result.InvalidCommand:
+                    SharedData.CommandResponse = new CommandResponse(
+                        $"{userInput} is not a valid command.",
+                        CommandResponse.ResponseType.Error
+                    );
+                    break;
+                case CommandProcessor.Result.Success:
+                default:
+                    return;
             }
         }
     }

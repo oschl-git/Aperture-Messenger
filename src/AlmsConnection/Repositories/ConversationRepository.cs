@@ -43,12 +43,12 @@ public static class ConversationRepository
         var response = Connector.Get(
             "get-direct-conversation/" + username
         );
-
-        var contentString = ResponseParser.GetResponseContent(response);
-
+        
         switch (response.StatusCode)
         {
             case HttpStatusCode.OK:
+                var contentString = ResponseParser.GetResponseContent(response);
+                
                 Conversation? conversation;
                 try
                 {

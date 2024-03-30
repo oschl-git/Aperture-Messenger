@@ -1,6 +1,7 @@
 using ApertureMessenger.AlmsConnection.Authentication;
 using ApertureMessenger.AlmsConnection.Requests;
 using ApertureMessenger.Logic.ValidityCheckers;
+using ApertureMessenger.UserInterface.Authentication.Commands;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Objects;
@@ -9,6 +10,11 @@ namespace ApertureMessenger.UserInterface.Authentication.InterfaceHandlers;
 
 public class RegisterInterfaceHandler : IInterfaceHandler
 {
+    private static readonly ICommand[] Commands =
+    [
+        new Exit()
+    ];
+    
     private enum Stage
     {
         UsernameInput,
@@ -22,6 +28,7 @@ public class RegisterInterfaceHandler : IInterfaceHandler
         PasswordVerification,
         RegisterAttempt,
         RegisterSuccess,
+        RegisterAborted,
     }
 
     private Stage _currentStage = Stage.UsernameInput;
@@ -36,10 +43,8 @@ public class RegisterInterfaceHandler : IInterfaceHandler
     {
         SharedData.InterfaceHandler = this;
 
-        SharedData.CommandResponse = new CommandResponse(
-            "Follow the required steps to register a new account.",
-            CommandResponse.ResponseType.Info
-        );
+        SharedData.CommandResponse = new CommandResponse("Follow the required steps to register a new account.",
+            CommandResponse.ResponseType.Info);
 
         while (_currentStage != Stage.RegisterSuccess)
         {
@@ -78,6 +83,7 @@ public class RegisterInterfaceHandler : IInterfaceHandler
                     HandleRegisterAttempt();
                     break;
                 case Stage.RegisterSuccess:
+                case Stage.RegisterAborted:
                 default:
                     return;
             }
@@ -87,6 +93,7 @@ public class RegisterInterfaceHandler : IInterfaceHandler
     private void HandleUsernameInput()
     {
         _submittedUsername = ConsoleReader.ReadCommandFromUser();
+        if (CheckForExitCommand(_submittedUsername)) return;
         _currentStage = Stage.UsernameVerification;
     }
 
@@ -112,16 +119,14 @@ public class RegisterInterfaceHandler : IInterfaceHandler
             return;
         }
 
-        SharedData.CommandResponse = new CommandResponse(
-            "Username OK.",
-            CommandResponse.ResponseType.Success
-        );
+        SharedData.CommandResponse = new CommandResponse("Username OK.", CommandResponse.ResponseType.Success);
         _currentStage = Stage.NameInput;
     }
 
     private void HandleNameInput()
     {
         _submittedName = ConsoleReader.ReadCommandFromUser();
+        if (CheckForExitCommand(_submittedName)) return;
         _currentStage = Stage.NameVerification;
     }
 
@@ -143,16 +148,14 @@ public class RegisterInterfaceHandler : IInterfaceHandler
             return;
         }
 
-        SharedData.CommandResponse = new CommandResponse(
-            "Name OK.",
-            CommandResponse.ResponseType.Success
-        );
+        SharedData.CommandResponse = new CommandResponse("Name OK.", CommandResponse.ResponseType.Success);
         _currentStage = Stage.SurnameInput;
     }
 
     private void HandleSurnameInput()
     {
         _submittedSurname = ConsoleReader.ReadCommandFromUser();
+        if (CheckForExitCommand(_submittedSurname)) return;
         _currentStage = Stage.SurnameVerification;
     }
 
@@ -184,17 +187,18 @@ public class RegisterInterfaceHandler : IInterfaceHandler
     private void HandlePasswordInput()
     {
         _submittedPassword = ConsoleReader.ReadCommandFromUser();
+        if (CheckForExitCommand(_submittedPassword)) return;
         _currentStage = Stage.SecondPasswordInput;
     }
 
     private void HandleSecondPasswordInput()
     {
         SharedData.CommandResponse = new CommandResponse(
-            "Type the same password again for verification.", CommandResponse.ResponseType.Info
-        );
+            "Type the same password again for verification.", CommandResponse.ResponseType.Info);
         DrawUserInterface();
         
         _submittedSecondPassword = ConsoleReader.ReadCommandFromUser();
+        if (CheckForExitCommand(_submittedSecondPassword)) return;
         _currentStage = Stage.PasswordVerification;
     }
 
@@ -203,8 +207,7 @@ public class RegisterInterfaceHandler : IInterfaceHandler
         if (_submittedPassword != _submittedSecondPassword)
         {
             SharedData.CommandResponse = new CommandResponse(
-                "Passwords do not match.", CommandResponse.ResponseType.Error
-            );
+                "Passwords do not match.", CommandResponse.ResponseType.Error);
             _currentStage = Stage.PasswordInput;
             return;
         }
@@ -322,5 +325,14 @@ public class RegisterInterfaceHandler : IInterfaceHandler
             Stage.SecondPasswordInput => "Password again:",
             _ => ""
         };
+    }
+    
+    private bool CheckForExitCommand(string userInput)
+    {
+        var result = CommandProcessor.InvokeCommand(userInput, Commands);
+        if (result != CommandProcessor.Result.Success) return false;
+        
+        _currentStage = Stage.RegisterAborted;
+        return true;
     }
 }

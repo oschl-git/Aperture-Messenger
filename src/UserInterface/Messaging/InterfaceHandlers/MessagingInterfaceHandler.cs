@@ -1,18 +1,12 @@
 using ApertureMessenger.AlmsConnection;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
-using ApertureMessenger.UserInterface.Messaging.Commands;
 using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Messaging.InterfaceHandlers;
 
 public class MessagingInterfaceHandler : IInterfaceHandler
 {
-    private static readonly ICommand[] Commands =
-    [
-        new Conversation()
-    ];
-    
     private static readonly MessagingInterfaceHandler Instance = new();
 
     private MessagingInterfaceHandler()
@@ -27,17 +21,21 @@ public class MessagingInterfaceHandler : IInterfaceHandler
     public void Process()
     {
         SharedData.InterfaceHandler = this;
-        SharedData.CommandResponse = new CommandResponse(
-            "Type :help to get information about available actions.",
-            CommandResponse.ResponseType.Info
-        );
+
+        if (SharedData.CommandResponse?.Type == CommandResponse.ResponseType.Info)
+        {
+            SharedData.CommandResponse = new CommandResponse(
+                "Type :help to get information about available actions.",
+                CommandResponse.ResponseType.Info
+            );
+        }
         
         while (true)
         {
             DrawUserInterface();
-
+            
             var userInput = ConsoleReader.ReadCommandFromUser();
-            var commandResult = CommandProcessor.InvokeCommand(userInput, Commands);
+            var commandResult = CommandProcessor.InvokeCommand(userInput, GlobalCommands.Commands);
             switch (commandResult)
             {
                 case CommandProcessor.Result.NotACommand:
@@ -54,7 +52,7 @@ public class MessagingInterfaceHandler : IInterfaceHandler
                     break;
                 case CommandProcessor.Result.Success:
                 default:
-                    break;
+                    return;
             }
         }
     }

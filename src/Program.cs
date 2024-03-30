@@ -8,6 +8,8 @@ internal static class Program
     private static void Main()
     {
         ConsoleColors.Setup();
+        ConsoleWriter.Setup();
+        MessageRefresher.StartRefresherThread();
         
         while (true)
         {
