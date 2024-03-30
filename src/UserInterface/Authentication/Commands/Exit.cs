@@ -1,4 +1,4 @@
-using ApertureMessenger.UserInterface.Authentication.InterfaceHandlers;
+using ApertureMessenger.UserInterface.Authentication.Views;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Objects;
@@ -11,7 +11,7 @@ public class Exit : ICommand
 
     public void Invoke(string[] args)
     {
-        if (SharedData.InterfaceHandler == AuthenticationInterfaceHandler.GetInstance())
+        if (SharedData.View == AuthenticationView.GetInstance())
         {
             ConsoleWriter.Clear();
             Environment.Exit(0);
@@ -21,6 +21,6 @@ public class Exit : ICommand
             "Use the :login or :register commands to authenticate.",
             CommandResponse.ResponseType.Info
         );
-        SharedData.InterfaceHandler = AuthenticationInterfaceHandler.GetInstance();
+        SharedData.View = AuthenticationView.GetInstance();
     }
 }

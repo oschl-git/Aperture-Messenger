@@ -6,9 +6,9 @@ using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Objects;
 
-namespace ApertureMessenger.UserInterface.Messaging.InterfaceHandlers;
+namespace ApertureMessenger.UserInterface.Messaging.Views;
 
-public class ConversationInterfaceHandler : IInterfaceHandler
+public class ConversationView : IView
 {
     private static readonly ICommand[] Commands =
     [
@@ -17,7 +17,7 @@ public class ConversationInterfaceHandler : IInterfaceHandler
     private readonly Conversation _conversation;
     private readonly List<Message> _messages;
 
-    public ConversationInterfaceHandler(Conversation conversation)
+    public ConversationView(Conversation conversation)
     {
         _conversation = conversation;
         
@@ -28,7 +28,7 @@ public class ConversationInterfaceHandler : IInterfaceHandler
 
     public void Process()
     {
-        SharedData.InterfaceHandler = this;
+        SharedData.View = this;
         SharedData.CommandResponse = new CommandResponse(
             "Input is sent as a message unless you prefix it with a colon (:).",
             CommandResponse.ResponseType.Info

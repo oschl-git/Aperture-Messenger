@@ -1,6 +1,6 @@
 namespace ApertureMessenger.UserInterface.Interfaces;
 
-public interface IInterfaceHandler
+public interface IView
 {
     public void Process();
     public void DrawUserInterface();

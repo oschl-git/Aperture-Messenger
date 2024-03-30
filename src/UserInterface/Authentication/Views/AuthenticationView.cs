@@ -2,14 +2,14 @@ using ApertureMessenger.AlmsConnection;
 using ApertureMessenger.UserInterface.Authentication.Commands;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
-using ApertureMessenger.UserInterface.Messaging.InterfaceHandlers;
+using ApertureMessenger.UserInterface.Messaging.Views;
 using ApertureMessenger.UserInterface.Objects;
 
-namespace ApertureMessenger.UserInterface.Authentication.InterfaceHandlers;
+namespace ApertureMessenger.UserInterface.Authentication.Views;
 
-public class AuthenticationInterfaceHandler : IInterfaceHandler
+public class AuthenticationView : IView
 {
-    private static readonly AuthenticationInterfaceHandler Instance = new();
+    private static readonly AuthenticationView Instance = new();
 
     private static readonly ICommand[] Commands =
     [
@@ -18,18 +18,18 @@ public class AuthenticationInterfaceHandler : IInterfaceHandler
         new Exit()
     ];
 
-    private AuthenticationInterfaceHandler()
+    private AuthenticationView()
     {
     }
 
-    public static AuthenticationInterfaceHandler GetInstance()
+    public static AuthenticationView GetInstance()
     {
         return Instance;
     }
 
     public void Process()
     {
-        SharedData.InterfaceHandler = this;
+        SharedData.View = this;
         SharedData.CommandResponse = new CommandResponse("Use the :login or :register commands to authenticate.",
             CommandResponse.ResponseType.Info);
 
@@ -59,7 +59,7 @@ public class AuthenticationInterfaceHandler : IInterfaceHandler
             }
         }
 
-        SharedData.InterfaceHandler = MessagingInterfaceHandler.GetInstance();
+        SharedData.View = MessagingView.GetInstance();
     }
 
     public void DrawUserInterface()

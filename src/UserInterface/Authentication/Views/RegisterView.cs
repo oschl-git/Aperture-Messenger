@@ -6,9 +6,9 @@ using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Objects;
 
-namespace ApertureMessenger.UserInterface.Authentication.InterfaceHandlers;
+namespace ApertureMessenger.UserInterface.Authentication.Views;
 
-public class RegisterInterfaceHandler : IInterfaceHandler
+public class RegisterView : IView
 {
     private static readonly ICommand[] Commands =
     [
@@ -41,7 +41,7 @@ public class RegisterInterfaceHandler : IInterfaceHandler
 
     public void Process()
     {
-        SharedData.InterfaceHandler = this;
+        SharedData.View = this;
 
         SharedData.CommandResponse = new CommandResponse("Follow the required steps to register a new account.",
             CommandResponse.ResponseType.Info);
@@ -256,7 +256,7 @@ public class RegisterInterfaceHandler : IInterfaceHandler
                 "Registration successful. You can now log in.", CommandResponse.ResponseType.Success
             );
             _currentStage = Stage.RegisterSuccess;
-            SharedData.InterfaceHandler = AuthenticationInterfaceHandler.GetInstance();
+            SharedData.View = AuthenticationView.GetInstance();
         }
         else {
             SharedData.CommandResponse = new CommandResponse(

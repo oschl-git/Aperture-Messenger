@@ -3,7 +3,7 @@ using ApertureMessenger.AlmsConnection.Exceptions;
 using ApertureMessenger.AlmsConnection.Objects;
 using ApertureMessenger.AlmsConnection.Repositories;
 using ApertureMessenger.UserInterface.Interfaces;
-using ApertureMessenger.UserInterface.Messaging.InterfaceHandlers;
+using ApertureMessenger.UserInterface.Messaging.Views;
 using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Messaging.Commands;
@@ -57,6 +57,6 @@ public class DirectMessage : ICommand
             return;
         }
         
-        SharedData.InterfaceHandler = new ConversationInterfaceHandler(conversation);
+        SharedData.View = new ConversationView(conversation);
     }
 }

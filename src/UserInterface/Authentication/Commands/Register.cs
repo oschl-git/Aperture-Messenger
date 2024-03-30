@@ -1,4 +1,4 @@
-using ApertureMessenger.UserInterface.Authentication.InterfaceHandlers;
+using ApertureMessenger.UserInterface.Authentication.Views;
 using ApertureMessenger.UserInterface.Interfaces;
 
 namespace ApertureMessenger.UserInterface.Authentication.Commands;
@@ -9,7 +9,7 @@ public class Register : ICommand
 
     public void Invoke(string[] args)
     {
-        SharedData.InterfaceHandler = new RegisterInterfaceHandler();
-        SharedData.InterfaceHandler.Process();
+        SharedData.View = new RegisterView();
+        SharedData.View.Process();
     }
 }

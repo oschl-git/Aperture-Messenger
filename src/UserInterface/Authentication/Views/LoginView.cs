@@ -7,9 +7,9 @@ using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Objects;
 
-namespace ApertureMessenger.UserInterface.Authentication.InterfaceHandlers;
+namespace ApertureMessenger.UserInterface.Authentication.Views;
 
-public class LoginInterfaceHandler : IInterfaceHandler
+public class LoginView : IView
 {
     private static readonly ICommand[] Commands =
     [
@@ -33,7 +33,7 @@ public class LoginInterfaceHandler : IInterfaceHandler
 
     public void Process()
     {
-        SharedData.InterfaceHandler = this;
+        SharedData.View = this;
 
         SharedData.CommandResponse = new CommandResponse(
             "Input your authentication details to log in.",

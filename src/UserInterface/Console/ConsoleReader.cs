@@ -18,7 +18,7 @@ public static class ConsoleReader
                 SharedData.UserInput += key.KeyChar;
             }
 
-            SharedData.InterfaceHandler.DrawUserInterface();
+            SharedData.View.DrawUserInterface();
         } while (key.Key != ConsoleKey.Enter || SharedData.UserInput.Length <= 0);
 
         var command = SharedData.UserInput;

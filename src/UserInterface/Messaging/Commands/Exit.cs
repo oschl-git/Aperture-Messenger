@@ -1,6 +1,6 @@
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
-using ApertureMessenger.UserInterface.Messaging.InterfaceHandlers;
+using ApertureMessenger.UserInterface.Messaging.Views;
 
 namespace ApertureMessenger.UserInterface.Messaging.Commands;
 
@@ -10,12 +10,12 @@ public class Exit : ICommand
 
     public void Invoke(string[] args)
     {
-        if (SharedData.InterfaceHandler == MessagingInterfaceHandler.GetInstance())
+        if (SharedData.View == MessagingView.GetInstance())
         {
             ConsoleWriter.Clear();
             Environment.Exit(0);
         }
 
-        SharedData.InterfaceHandler = MessagingInterfaceHandler.GetInstance();
+        SharedData.View = MessagingView.GetInstance();
     }
 }

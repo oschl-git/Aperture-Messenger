@@ -13,7 +13,7 @@ internal static class Program
         
         while (true)
         {
-            SharedData.InterfaceHandler.Process();
+            SharedData.View.Process();
         }
     }
 }

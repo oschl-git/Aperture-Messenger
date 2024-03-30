@@ -3,24 +3,24 @@ using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Objects;
 
-namespace ApertureMessenger.UserInterface.Messaging.InterfaceHandlers;
+namespace ApertureMessenger.UserInterface.Messaging.Views;
 
-public class MessagingInterfaceHandler : IInterfaceHandler
+public class MessagingView : IView
 {
-    private static readonly MessagingInterfaceHandler Instance = new();
+    private static readonly MessagingView Instance = new();
 
-    private MessagingInterfaceHandler()
+    private MessagingView()
     {
     }
 
-    public static MessagingInterfaceHandler GetInstance()
+    public static MessagingView GetInstance()
     {
         return Instance;
     }
 
     public void Process()
     {
-        SharedData.InterfaceHandler = this;
+        SharedData.View = this;
         
         while (true)
         {

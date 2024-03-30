@@ -1,4 +1,4 @@
-using ApertureMessenger.UserInterface.Messaging.InterfaceHandlers;
+using ApertureMessenger.UserInterface.Messaging.Views;
 
 namespace ApertureMessenger.UserInterface;
 
@@ -14,12 +14,12 @@ public static class MessageRefresher
             {
                 Thread.Sleep(2 * 1000);
 
-                if (SharedData.InterfaceHandler is ConversationInterfaceHandler handler)
+                if (SharedData.View is ConversationView handler)
                 {
                     handler.GetNewMessages();
                 }
                 
-                SharedData.InterfaceHandler.DrawUserInterface();
+                SharedData.View.DrawUserInterface();
             }
         });
         refresher.Start();
