@@ -1,4 +1,5 @@
 using ApertureMessenger.AlmsConnection;
+using ApertureMessenger.AlmsConnection.Exceptions;
 using ApertureMessenger.AlmsConnection.Objects;
 using ApertureMessenger.AlmsConnection.Repositories;
 using ApertureMessenger.AlmsConnection.Requests;
@@ -10,17 +11,13 @@ namespace ApertureMessenger.UserInterface.Messaging.Views;
 
 public class ConversationView : IView
 {
-    private static readonly ICommand[] Commands =
-    [
-    ];
-
     private readonly Conversation _conversation;
     private readonly List<Message> _messages;
 
     public ConversationView(Conversation conversation)
     {
         _conversation = conversation;
-        
+
         var messages = MessageRepository.GetMessages(_conversation.Id).ToList();
         messages.Reverse();
         _messages = messages;
@@ -43,7 +40,20 @@ public class ConversationView : IView
 
             if (commandResult == CommandProcessor.Result.NotACommand)
             {
-                MessageRepository.SendMessage(new SendMessageRequest(_conversation.Id, userInput));
+                try
+                {
+                    MessageRepository.SendMessage(new SendMessageRequest(_conversation.Id, userInput));
+                }
+                catch (MessageContentWasTooLong)
+                {
+                    SharedData.CommandResponse = new CommandResponse(
+                        "The message was too long to be sent.",
+                        CommandResponse.ResponseType.Error
+                    );
+                    SharedData.UserInput = userInput;
+                    continue;
+                }
+
                 GetNewMessages();
                 SharedData.CommandResponse = new CommandResponse(
                     "Message sent.",
@@ -51,7 +61,7 @@ public class ConversationView : IView
                 );
                 continue;
             }
-            
+
             switch (commandResult)
             {
                 case CommandProcessor.Result.InvalidCommand:
@@ -75,7 +85,7 @@ public class ConversationView : IView
 
         foreach (var message in _messages)
         {
-            var employeeString = $"{message.Employee.Username}: ";
+            var employeeString = $"{message.Employee.Username} [{message.DateTimeSent.ToLocalTime()}]: ";
             var employeeColor = message.Employee.Username == Session.GetInstance().Employee?.Username
                 ? ConsoleColor.Magenta
                 : ConsoleColor.Cyan;
