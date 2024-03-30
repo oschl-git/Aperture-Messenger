@@ -21,14 +21,6 @@ public class MessagingInterfaceHandler : IInterfaceHandler
     public void Process()
     {
         SharedData.InterfaceHandler = this;
-
-        if (SharedData.CommandResponse?.Type == CommandResponse.ResponseType.Info)
-        {
-            SharedData.CommandResponse = new CommandResponse(
-                "Type :help to get information about available actions.",
-                CommandResponse.ResponseType.Info
-            );
-        }
         
         while (true)
         {
