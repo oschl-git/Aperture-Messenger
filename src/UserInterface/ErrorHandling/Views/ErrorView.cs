@@ -1,34 +1,30 @@
-using ApertureMessenger.UserInterface.Authentication.Commands;
+using ApertureMessenger.AlmsConnection.Exceptions;
 using ApertureMessenger.UserInterface.Console;
+using ApertureMessenger.UserInterface.ErrorHandling.Commands;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Objects;
 
-namespace ApertureMessenger.UserInterface.Authentication.Views;
+namespace ApertureMessenger.UserInterface.ErrorHandling.Views;
 
-public class AuthenticationView : IView
+public class ErrorView : IView
 {
-    private static readonly AuthenticationView Instance = new();
-
     private static readonly ICommand[] Commands =
     [
-        new Login(),
-        new Register(),
+        new Retry(),
         new Exit()
     ];
 
-    private AuthenticationView()
-    {
-    }
+    private Exception _exception;
 
-    public static AuthenticationView GetInstance()
+    public ErrorView(Exception exception)
     {
-        return Instance;
+        _exception = exception;
     }
 
     public void Process()
     {
         Shared.View = this;
-        Shared.CommandResponse = new CommandResponse("Use the :login or :register commands to authenticate.",
+        Shared.CommandResponse = new CommandResponse("Use :retry to restart the application or :exit to exit.",
             CommandResponse.ResponseType.Info);
 
         while (true)
@@ -37,7 +33,7 @@ public class AuthenticationView : IView
 
             var userInput = ConsoleReader.ReadCommandFromUser();
             var commandResult = CommandProcessor.InvokeCommand(userInput, Commands);
-            
+
             switch (commandResult)
             {
                 case CommandProcessor.Result.NotACommand:
@@ -48,7 +44,7 @@ public class AuthenticationView : IView
                     break;
                 case CommandProcessor.Result.InvalidCommand:
                     Shared.CommandResponse = new CommandResponse(
-                        $"{userInput} is not a valid authentication command.",
+                        $"{userInput} is not a valid command in this context.",
                         CommandResponse.ResponseType.Error
                     );
                     break;
@@ -63,27 +59,34 @@ public class AuthenticationView : IView
     {
         ConsoleWriter.Clear();
 
-        ComponentWriter.WriteHeader("ALMS AUTHENTICATION");
+        ComponentWriter.WriteHeader("FATAL RUNTIME ERROR", ConsoleColor.DarkRed);
         ConsoleWriter.WriteLine();
 
         ConsoleWriter.WriteWithWordWrap(
-            "Hello and, again, welcome to Aperture Messenger.", ConsoleColor.Cyan
+            $"\u26a0 {GetMessage()}", ConsoleColor.Red
         );
         ConsoleWriter.WriteLine();
+
         ConsoleWriter.WriteWithWordWrap(
-            "ALMS authentication is required to access ASCAMP services. " +
-            "Please, log in or register a new employee account.");
+            "If this is unexpected behaviour, please create an issue with the details below at " +
+            "github.com/oschl-git/aperture-messenger. Your help is greatly appreciated!"
+        );
+        ConsoleWriter.WriteLine();
 
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();
-        ConsoleWriter.WriteWithWordWrap("Available authentication commands:", ConsoleColor.Yellow);
-        ConsoleWriter.WriteLine();
-        ConsoleWriter.WriteWithWordWrap(":login");
-        ConsoleWriter.WriteLine();
-        ConsoleWriter.WriteWithWordWrap(":register");
-        ConsoleWriter.WriteLine();
-        ConsoleWriter.WriteWithWordWrap(":exit");
+        ConsoleWriter.WriteLine("DETAILS:", ConsoleColor.Yellow);
+        ConsoleWriter.WriteWithWordWrap(_exception.ToString(), ConsoleColor.Red);
 
         ComponentWriter.WriteUserInput();
+    }
+
+    private string GetMessage()
+    {
+        return _exception switch
+        {
+            FailedContactingAlms => "Failed contacting ALMS. Check your internet connection.",
+            _ => "An unexpected fatal error has occurred during the runtime of Aperture Messenger."
+        };
     }
 }

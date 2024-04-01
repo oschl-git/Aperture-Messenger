@@ -8,7 +8,7 @@ namespace ApertureMessenger.UserInterface;
 public static class Shared
 {
     private static readonly object ViewLocker = new();
-    public static IView View = AuthenticationView.GetInstance();
+    public static IView View = new ConnectionView();
     
     public static string UserInput  = "";
     public static CommandResponse? CommandResponse;
