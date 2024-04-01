@@ -6,7 +6,7 @@ public static class ConsoleWriter
     {
         System.Console.TreatControlCAsInput = true;
     }
-    
+
     public static void Write(string content = "", ConsoleColor color = ConsoleColors.DefaultForegroundColor)
     {
         System.Console.ForegroundColor = color;
@@ -30,8 +30,10 @@ public static class ConsoleWriter
         var currentLength = firstLineOffset;
         var maxLength = System.Console.WindowWidth;
 
-        foreach (var word in words)
+        for (var i = 0; i < words.Length; i++)
         {
+            var word = words[i];
+
             // Handle words longer than the window
             if (word.Length > maxLength)
             {
@@ -63,6 +65,12 @@ public static class ConsoleWriter
             {
                 WriteLine("", color);
                 currentLength = 0;
+            }
+
+            if (i + 1 >= words.Length)
+            {
+                Write(word, color);
+                return;
             }
 
             Write(currentLength + word.Length + 1 <= maxLength ? word + " " : word, color);

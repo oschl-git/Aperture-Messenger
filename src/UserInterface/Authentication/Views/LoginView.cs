@@ -70,7 +70,7 @@ public class LoginView : IView
     {
         ConsoleWriter.Clear();
 
-        ComponentWriter.WriteHeader("ALMS EMPLOYEE LOGIN", ConsoleColor.DarkBlue);
+        ComponentWriter.WriteHeader("ALMS EMPLOYEE LOGIN", ConsoleColor.DarkCyan);
         ConsoleWriter.WriteLine();
 
         ConsoleWriter.WriteWithWordWrap(
@@ -92,6 +92,9 @@ public class LoginView : IView
             (int)Stage.PasswordInput,
             (int)Stage.LoginSuccess
         );
+        
+        ConsoleWriter.WriteLine();
+        ConsoleWriter.WriteWithWordWrap("Use the :exit command to cancel logging in.", ConsoleColor.Red);
 
         ComponentWriter.WriteUserInput(GetPrompt());
     }

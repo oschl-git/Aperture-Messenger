@@ -41,7 +41,7 @@ public class CommandResponse
             ResponseType.Error => ConsoleColor.Red,
             ResponseType.Warning => ConsoleColor.Yellow,
             ResponseType.Info => ConsoleColor.DarkCyan,
-            ResponseType.Loading => ConsoleColor.DarkGray,
+            ResponseType.Loading => ConsoleColor.Gray,
             _ => ConsoleColor.Black
         }; 
     }

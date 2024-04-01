@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 namespace ApertureMessenger.AlmsConnection.Requests;
 
 [Serializable]
-public class CreateGroupConversationRequest : Request
+public class CreateGroupConversationRequest : IRequest
 {
     [JsonProperty("name")]
     public string Name;

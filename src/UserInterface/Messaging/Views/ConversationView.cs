@@ -81,7 +81,7 @@ public class ConversationView : IView
     {
         ConsoleWriter.Clear();
 
-        ComponentWriter.WriteHeader(GetHeaderContent());
+        ComponentWriter.WriteHeader(GetHeaderContent(), GetHeaderColor());
 
         foreach (var message in _messages)
         {
@@ -120,10 +120,14 @@ public class ConversationView : IView
         return $"DIRECT CONVERSATION WITH {otherEmployee?.Username} ({otherEmployee?.Name} {otherEmployee?.Surname})";
     }
 
+    private ConsoleColor GetHeaderColor()
+    {
+        return _conversation.IsGroup ? ConsoleColor.DarkMagenta : ConsoleColor.DarkCyan;
+    }
+
     public void GetNewMessages()
     {
         var unreadMessages = MessageRepository.GetUnreadMessages(_conversation.Id).ToList();
-        unreadMessages.Reverse();
         foreach (var message in unreadMessages)
         {
             _messages.Add(message);

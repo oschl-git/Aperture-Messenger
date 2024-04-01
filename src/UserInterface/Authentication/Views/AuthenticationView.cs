@@ -69,10 +69,13 @@ public class AuthenticationView : IView
         ComponentWriter.WriteHeader("ALMS AUTHENTICATION");
         ConsoleWriter.WriteLine();
 
-        ConsoleWriter.WriteWithWordWrap("Hello and, again, welcome to Aperture Messenger.", ConsoleColor.DarkCyan);
+        ConsoleWriter.WriteWithWordWrap(
+            "Hello and, again, welcome to Aperture Messenger.", ConsoleColor.Cyan
+        );
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteWithWordWrap(
-            "ALMS (ASAP) authentication is required to access Aperture Intelligence services. Please, log in or register a new employee account.");
+            "ALMS authentication is required to access ASCAMP services. " +
+            "Please, log in or register a new employee account.");
 
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();

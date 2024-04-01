@@ -89,6 +89,57 @@ public class RegisterView : IView
             }
         }
     }
+    
+    public void DrawUserInterface()
+    {
+        ConsoleWriter.Clear();
+
+        ComponentWriter.WriteHeader("CREATING A NEW ALMS EMPLOYEE ACCOUNT", ConsoleColor.DarkYellow);
+        ConsoleWriter.WriteLine();
+
+        ConsoleWriter.WriteWithWordWrap(
+            "To create a new ALMS employee account, complete the following steps:",
+            ConsoleColor.Yellow
+        );
+        ConsoleWriter.WriteLine();
+        ConsoleWriter.WriteLine();
+
+        ComponentWriter.WriteStep(
+            "Input a username.",
+            (int)_currentStage,
+            (int)Stage.UsernameInput,
+            (int)Stage.NameInput
+        );
+        ComponentWriter.WriteStep(
+            "Input your first name.",
+            (int)_currentStage,
+            (int)Stage.NameInput,
+            (int)Stage.SurnameInput
+        );
+        ComponentWriter.WriteStep(
+            "Input your surname.",
+            (int)_currentStage,
+            (int)Stage.SurnameInput,
+            (int)Stage.PasswordInput
+        );
+        ComponentWriter.WriteStep(
+            "Input a password.",
+            (int)_currentStage,
+            (int)Stage.PasswordInput,
+            (int)Stage.SecondPasswordInput
+        );
+        ComponentWriter.WriteStep(
+            "Input the password again for verification.",
+            (int)_currentStage,
+            (int)Stage.SecondPasswordInput,
+            (int)Stage.RegisterSuccess
+        );
+        
+        ConsoleWriter.WriteLine();
+        ConsoleWriter.WriteWithWordWrap("Use the :exit command to cancel the registration.", ConsoleColor.Red);
+
+        ComponentWriter.WriteUserInput(GetPrompt());
+    }
 
     private void HandleUsernameInput()
     {
@@ -247,8 +298,7 @@ public class RegisterView : IView
         }
 
         var result = EmployeeCreator.Register(
-            new RegisterRequest(_submittedUsername, _submittedName, _submittedSurname, _submittedPassword)
-        );
+            new RegisterRequest(_submittedUsername, _submittedName, _submittedSurname, _submittedPassword));
 
         if (result == EmployeeCreator.RegisterResult.Success)
         {
@@ -264,54 +314,6 @@ public class RegisterView : IView
             );
             _currentStage = Stage.UsernameInput;
         }
-    }
-
-    public void DrawUserInterface()
-    {
-        ConsoleWriter.Clear();
-
-        ComponentWriter.WriteHeader("CREATING A NEW ALMS EMPLOYEE ACCOUNT", ConsoleColor.DarkYellow);
-        ConsoleWriter.WriteLine();
-
-        ConsoleWriter.WriteWithWordWrap(
-            "To create a new ALMS employee account, complete the following steps:",
-            ConsoleColor.Yellow
-        );
-        ConsoleWriter.WriteLine();
-        ConsoleWriter.WriteLine();
-
-        ComponentWriter.WriteStep(
-            "Input a username.",
-            (int)_currentStage,
-            (int)Stage.UsernameInput,
-            (int)Stage.NameInput
-        );
-        ComponentWriter.WriteStep(
-            "Input your first name.",
-            (int)_currentStage,
-            (int)Stage.NameInput,
-            (int)Stage.SurnameInput
-        );
-        ComponentWriter.WriteStep(
-            "Input your surname.",
-            (int)_currentStage,
-            (int)Stage.SurnameInput,
-            (int)Stage.PasswordInput
-        );
-        ComponentWriter.WriteStep(
-            "Input a password.",
-            (int)_currentStage,
-            (int)Stage.PasswordInput,
-            (int)Stage.SecondPasswordInput
-        );
-        ComponentWriter.WriteStep(
-            "Input the password again for verification.",
-            (int)_currentStage,
-            (int)Stage.SecondPasswordInput,
-            (int)Stage.RegisterSuccess
-        );
-
-        ComponentWriter.WriteUserInput(GetPrompt());
     }
 
     private string GetPrompt()

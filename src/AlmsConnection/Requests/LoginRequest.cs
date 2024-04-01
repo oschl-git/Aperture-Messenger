@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 namespace ApertureMessenger.AlmsConnection.Requests;
 
 [Serializable]
-public class LoginRequest : Request
+public class LoginRequest : IRequest
 {
     [JsonProperty("username")]
     public string Username;

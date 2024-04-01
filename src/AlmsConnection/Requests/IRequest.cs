@@ -1,6 +1,6 @@
 namespace ApertureMessenger.AlmsConnection.Requests;
 
-public interface Request
+public interface IRequest
 {
     public string getRequestJson();
 }
