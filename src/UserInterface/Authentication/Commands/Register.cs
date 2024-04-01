@@ -9,7 +9,6 @@ public class Register : ICommand
 
     public void Invoke(string[] args)
     {
-        SharedData.View = new RegisterView();
-        SharedData.View.Process();
+        Shared.View = new RegisterView();
     }
 }

@@ -20,24 +20,24 @@ public class MessagingView : IView
 
     public void Process()
     {
-        SharedData.View = this;
+        Shared.View = this;
         
         while (true)
         {
-            DrawUserInterface();
+            Shared.RefreshView();
             
             var userInput = ConsoleReader.ReadCommandFromUser();
             var commandResult = CommandProcessor.InvokeCommand(userInput, GlobalCommands.Commands);
             switch (commandResult)
             {
                 case CommandProcessor.Result.NotACommand:
-                    SharedData.CommandResponse = new CommandResponse(
+                    Shared.CommandResponse = new CommandResponse(
                         "Commands must start with a colon (:).",
                         CommandResponse.ResponseType.Error
                     );
                     break;
                 case CommandProcessor.Result.InvalidCommand:
-                    SharedData.CommandResponse = new CommandResponse(
+                    Shared.CommandResponse = new CommandResponse(
                         $"{userInput} is not a valid command.",
                         CommandResponse.ResponseType.Error
                     );

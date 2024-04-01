@@ -29,37 +29,36 @@ public class AuthenticationView : IView
 
     public void Process()
     {
-        SharedData.View = this;
-        SharedData.CommandResponse = new CommandResponse("Use the :login or :register commands to authenticate.",
+        Shared.View = this;
+        Shared.CommandResponse = new CommandResponse("Use the :login or :register commands to authenticate.",
             CommandResponse.ResponseType.Info);
 
-        while (!Session.GetInstance().IsAuthenticated())
+        while (true)
         {
-            DrawUserInterface();
+            Shared.RefreshView();
 
             var userInput = ConsoleReader.ReadCommandFromUser();
             var commandResult = CommandProcessor.InvokeCommand(userInput, Commands);
+            
             switch (commandResult)
             {
                 case CommandProcessor.Result.NotACommand:
-                    SharedData.CommandResponse = new CommandResponse(
+                    Shared.CommandResponse = new CommandResponse(
                         "Commands must start with a colon (:).",
                         CommandResponse.ResponseType.Error
                     );
                     break;
                 case CommandProcessor.Result.InvalidCommand:
-                    SharedData.CommandResponse = new CommandResponse(
+                    Shared.CommandResponse = new CommandResponse(
                         $"{userInput} is not a valid authentication command.",
                         CommandResponse.ResponseType.Error
                     );
                     break;
                 case CommandProcessor.Result.Success:
                 default:
-                    break;
+                    return;
             }
         }
-
-        SharedData.View = MessagingView.GetInstance();
     }
 
     public void DrawUserInterface()

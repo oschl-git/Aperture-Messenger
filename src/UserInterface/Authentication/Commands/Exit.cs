@@ -11,16 +11,17 @@ public class Exit : ICommand
 
     public void Invoke(string[] args)
     {
-        if (SharedData.View == AuthenticationView.GetInstance())
+        if (Shared.View == AuthenticationView.GetInstance())
         {
             ConsoleWriter.Clear();
             Environment.Exit(0);
         }
 
-        SharedData.CommandResponse = new CommandResponse(
+        Shared.CommandResponse = new CommandResponse(
             "Use the :login or :register commands to authenticate.",
             CommandResponse.ResponseType.Info
         );
-        SharedData.View = AuthenticationView.GetInstance();
+        
+        Shared.View = AuthenticationView.GetInstance();
     }
 }

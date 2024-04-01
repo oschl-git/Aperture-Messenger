@@ -5,6 +5,7 @@ using ApertureMessenger.AlmsConnection.Requests;
 using ApertureMessenger.UserInterface.Authentication.Commands;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
+using ApertureMessenger.UserInterface.Messaging.Views;
 using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Authentication.Views;
@@ -33,16 +34,16 @@ public class LoginView : IView
 
     public void Process()
     {
-        SharedData.View = this;
+        Shared.View = this;
 
-        SharedData.CommandResponse = new CommandResponse(
+        Shared.CommandResponse = new CommandResponse(
             "Input your authentication details to log in.",
             CommandResponse.ResponseType.Info
         );
 
         while (_currentStage != Stage.LoginSuccess)
         {
-            DrawUserInterface();
+            Shared.RefreshView();
 
             switch (_currentStage)
             {
@@ -108,11 +109,11 @@ public class LoginView : IView
 
     private void HandleUsernameVerification()
     {
-        SharedData.CommandResponse = new CommandResponse(
+        Shared.CommandResponse = new CommandResponse(
             "Checking username validity...",
             CommandResponse.ResponseType.Loading
         );
-        DrawUserInterface();
+        Shared.RefreshView();
 
         var usernameExists = _submittedUsername != null && EmployeeRepository.IsUsernameTaken(_submittedUsername);
 
@@ -121,7 +122,7 @@ public class LoginView : IView
 
         if (usernameExists)
         {
-            SharedData.CommandResponse = new CommandResponse(
+            Shared.CommandResponse = new CommandResponse(
                 usernameIsGlados ? gladosEasterEggQuote : "Username is valid.",
                 CommandResponse.ResponseType.Success
             );
@@ -129,7 +130,7 @@ public class LoginView : IView
         }
         else
         {
-            SharedData.CommandResponse = new CommandResponse(
+            Shared.CommandResponse = new CommandResponse(
                 usernameIsGlados ? gladosEasterEggQuote : "Employee with the submitted username doesn't exist.",
                 CommandResponse.ResponseType.Error
             );
@@ -146,8 +147,8 @@ public class LoginView : IView
 
     private void HandleLoginAttempt()
     {
-        SharedData.CommandResponse = new CommandResponse("Authenticating...", CommandResponse.ResponseType.Loading);
-        DrawUserInterface();
+        Shared.CommandResponse = new CommandResponse("Authenticating...", CommandResponse.ResponseType.Loading);
+        Shared.RefreshView();
 
         var result = Authenticator.Login(new LoginRequest(_submittedUsername ?? "", _submittedPassword ?? ""));
 
@@ -155,21 +156,22 @@ public class LoginView : IView
         {
             case Authenticator.LoginResult.Success:
                 _currentStage = Stage.LoginSuccess;
-                SharedData.CommandResponse = new CommandResponse(
+                Shared.CommandResponse = new CommandResponse(
                     $"Employee {Session.GetInstance().Employee?.Name} {Session.GetInstance().Employee?.Surname} successfully logged in!",
                     CommandResponse.ResponseType.Success
                 );
+                Shared.View = MessagingView.GetInstance();
                 break;
 
             case Authenticator.LoginResult.UserDoesNotExist:
-                SharedData.CommandResponse = new CommandResponse(
+                Shared.CommandResponse = new CommandResponse(
                     "Somehow, you don't exist anymore.", CommandResponse.ResponseType.Error
                 );
                 _currentStage = Stage.UsernameInput;
                 break;
 
             case Authenticator.LoginResult.IncorrectPassword:
-                SharedData.CommandResponse = new CommandResponse(
+                Shared.CommandResponse = new CommandResponse(
                     "Incorrect password.", CommandResponse.ResponseType.Error
                 );
                 _currentStage = Stage.PasswordInput;

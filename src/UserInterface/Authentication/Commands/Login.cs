@@ -9,7 +9,6 @@ public class Login : ICommand
 
     public void Invoke(string[] args)
     {
-        SharedData.View = new LoginView();
-        SharedData.View.Process();
+        Shared.View = new LoginView();
     }
 }

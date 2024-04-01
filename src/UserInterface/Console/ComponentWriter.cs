@@ -25,14 +25,14 @@ public static class ComponentWriter
         ConsoleWriter.WriteLine();
         
         var commandResponseLength =
-            $" {SharedData.CommandResponse?.GetTypeSymbol()} {SharedData.CommandResponse?.Response}".Length;
-        var commandResponseBackgroundColor = SharedData.CommandResponse?.GetTypeConsoleColor() ?? ConsoleColor.White;
+            $" {Shared.CommandResponse?.GetTypeSymbol()} {Shared.CommandResponse?.Response}".Length;
+        var commandResponseBackgroundColor = Shared.CommandResponse?.GetTypeConsoleColor() ?? ConsoleColor.White;
 
         System.Console.BackgroundColor = commandResponseBackgroundColor;
         
         ConsoleWriter.MoveCursorToBottom(2);
         ConsoleWriter.Write(
-            $" {SharedData.CommandResponse?.GetTypeSymbol()} {SharedData.CommandResponse?.Response}",
+            $" {Shared.CommandResponse?.GetTypeSymbol()} {Shared.CommandResponse?.Response}",
             ConsoleColors.GetTextColorForBackground(commandResponseBackgroundColor)
         );
         FillerWriter.WriteFiller(' ', System.Console.WindowWidth - commandResponseLength);
@@ -41,7 +41,7 @@ public static class ComponentWriter
         System.Console.BackgroundColor = ConsoleColors.DefaultBackgroundColor;
         ConsoleWriter.MoveCursorToBottom();
         ConsoleWriter.Write(prompt);
-        ConsoleWriter.WriteWithWordWrap($" {SharedData.UserInput}", firstLineOffset: prompt.Length);
+        ConsoleWriter.WriteWithWordWrap($" {Shared.UserInput}", firstLineOffset: prompt.Length);
     }
 
     public static void WriteStep(

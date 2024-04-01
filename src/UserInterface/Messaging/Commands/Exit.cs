@@ -10,12 +10,12 @@ public class Exit : ICommand
 
     public void Invoke(string[] args)
     {
-        if (SharedData.View == MessagingView.GetInstance())
+        if (Shared.View == MessagingView.GetInstance())
         {
             ConsoleWriter.Clear();
             Environment.Exit(0);
         }
 
-        SharedData.View = MessagingView.GetInstance();
+        Shared.View = MessagingView.GetInstance();
     }
 }

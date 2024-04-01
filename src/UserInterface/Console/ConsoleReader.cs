@@ -9,20 +9,20 @@ public static class ConsoleReader
         {
             key = System.Console.ReadKey(true);
 
-            if (key.Key == ConsoleKey.Backspace && SharedData.UserInput.Length > 0)
+            if (key.Key == ConsoleKey.Backspace && Shared.UserInput.Length > 0)
             {
-                SharedData.UserInput = SharedData.UserInput[..^1];
+                Shared.UserInput = Shared.UserInput[..^1];
             }
             else if (!char.IsControl(key.KeyChar))
             {
-                SharedData.UserInput += key.KeyChar;
+                Shared.UserInput += key.KeyChar;
             }
 
-            SharedData.View.DrawUserInterface();
-        } while (key.Key != ConsoleKey.Enter || SharedData.UserInput.Length <= 0);
+            Shared.RefreshView();
+        } while (key.Key != ConsoleKey.Enter || Shared.UserInput.Length <= 0);
 
-        var command = SharedData.UserInput;
-        SharedData.UserInput = "";
+        var command = Shared.UserInput;
+        Shared.UserInput = "";
         return command;
     }
 }

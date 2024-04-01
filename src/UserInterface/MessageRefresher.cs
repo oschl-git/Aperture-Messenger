@@ -13,13 +13,7 @@ public static class MessageRefresher
             while (true)
             {
                 Thread.Sleep(2 * 1000);
-
-                if (SharedData.View is ConversationView handler)
-                {
-                    handler.GetNewMessages();
-                }
-                
-                SharedData.View.DrawUserInterface();
+                Shared.RefreshView();
             }
         });
         refresher.Start();
