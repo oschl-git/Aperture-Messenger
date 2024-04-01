@@ -17,11 +17,18 @@ public static class Shared
     {
         lock (ViewLocker)
         {
+            View.DrawUserInterface();
+        }
+    }
+    
+    public static void GetNewMessages()
+    {
+        lock (ViewLocker)
+        {
             if (View is ConversationView conversationView)
             {
                 conversationView.GetNewMessages();
             }
-            
             View.DrawUserInterface();
         }
     }

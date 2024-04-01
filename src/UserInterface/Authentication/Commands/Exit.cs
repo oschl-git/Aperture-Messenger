@@ -11,7 +11,7 @@ public class Exit : ICommand
 
     public void Invoke(string[] args)
     {
-        if (Shared.View == AuthenticationView.GetInstance())
+        if (Shared.View is AuthenticationView)
         {
             ConsoleWriter.Clear();
             Environment.Exit(0);
@@ -22,6 +22,6 @@ public class Exit : ICommand
             CommandResponse.ResponseType.Info
         );
         
-        Shared.View = AuthenticationView.GetInstance();
+        Shared.View = new AuthenticationView();
     }
 }

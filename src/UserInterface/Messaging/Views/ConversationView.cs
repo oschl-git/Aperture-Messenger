@@ -54,7 +54,7 @@ public class ConversationView : IView
                     continue;
                 }
 
-                GetNewMessages();
+                Shared.GetNewMessages();
                 Shared.CommandResponse = new CommandResponse(
                     "Message sent.",
                     CommandResponse.ResponseType.Success

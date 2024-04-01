@@ -26,6 +26,7 @@ public class ErrorView : IView
         Shared.View = this;
         Shared.CommandResponse = new CommandResponse("Use :retry to restart the application or :exit to exit.",
             CommandResponse.ResponseType.Info);
+        Shared.UserInput = "";
 
         while (true)
         {
@@ -86,7 +87,12 @@ public class ErrorView : IView
         return _exception switch
         {
             FailedContactingAlms => "Failed contacting ALMS. Check your internet connection.",
-            _ => "An unexpected fatal error has occurred during the runtime of Aperture Messenger."
+            TooManyRequests => "You've sent too many ALMS requests. Try again in a few minutes.",
+            InternalAlmsError => "An internal ALMS error occurred.",
+            TokenInvalid => "Your ALMS token is invalid. Have you logged in somewhere else? " +
+                            "Restart the application with :retry and login again to continue on this computer.",
+            TokenExpired => "Your ALMS token has expired. Please, restart the application with :retry and login again.",
+            _ => "An unexpected error has occurred during the runtime of Aperture Messenger."
         };
     }
 }

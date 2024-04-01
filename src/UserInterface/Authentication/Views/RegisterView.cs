@@ -306,7 +306,7 @@ public class RegisterView : IView
                 "Registration successful. You can now log in.", CommandResponse.ResponseType.Success
             );
             _currentStage = Stage.RegisterSuccess;
-            Shared.View = AuthenticationView.GetInstance();
+            Shared.View = new AuthenticationView();
         }
         else {
             Shared.CommandResponse = new CommandResponse(

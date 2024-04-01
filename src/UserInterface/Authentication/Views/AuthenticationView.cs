@@ -7,23 +7,12 @@ namespace ApertureMessenger.UserInterface.Authentication.Views;
 
 public class AuthenticationView : IView
 {
-    private static readonly AuthenticationView Instance = new();
-
     private static readonly ICommand[] Commands =
     [
         new Login(),
         new Register(),
         new Exit()
     ];
-
-    private AuthenticationView()
-    {
-    }
-
-    public static AuthenticationView GetInstance()
-    {
-        return Instance;
-    }
 
     public void Process()
     {

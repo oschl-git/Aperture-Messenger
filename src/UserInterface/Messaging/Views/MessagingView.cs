@@ -7,17 +7,6 @@ namespace ApertureMessenger.UserInterface.Messaging.Views;
 
 public class MessagingView : IView
 {
-    private static readonly MessagingView Instance = new();
-
-    private MessagingView()
-    {
-    }
-
-    public static MessagingView GetInstance()
-    {
-        return Instance;
-    }
-
     public void Process()
     {
         Shared.View = this;

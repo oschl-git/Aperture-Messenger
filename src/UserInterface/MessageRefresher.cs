@@ -1,5 +1,3 @@
-using ApertureMessenger.UserInterface.Messaging.Views;
-
 namespace ApertureMessenger.UserInterface;
 
 public static class MessageRefresher
@@ -13,7 +11,7 @@ public static class MessageRefresher
             while (true)
             {
                 Thread.Sleep(2 * 1000);
-                Shared.RefreshView();
+                Shared.GetNewMessages();
             }
         });
         refresher.Start();

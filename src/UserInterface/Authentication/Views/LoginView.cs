@@ -160,7 +160,7 @@ public class LoginView : IView
                     $"Employee {Session.GetInstance().Employee?.Name} {Session.GetInstance().Employee?.Surname} successfully logged in!",
                     CommandResponse.ResponseType.Success
                 );
-                Shared.View = MessagingView.GetInstance();
+                Shared.View = new MessagingView();
                 break;
 
             case Authenticator.LoginResult.UserDoesNotExist:

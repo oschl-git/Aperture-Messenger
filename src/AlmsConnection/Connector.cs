@@ -49,6 +49,8 @@ public sealed class Connector
 
         var response = SendRequest(request);
 
+        ThrowRateLimitError(response);
+        
         if (!disableAuthorizationErrors)
         {
             ThrowAuthorizationErrors(response);
@@ -68,7 +70,7 @@ public sealed class Connector
         {
             Content = new StringContent(content, Encoding.UTF8, "application/json")
         };
-
+        
         if (!disableAuthorizationHeaders)
         {
             AddAuthorizationHeaders(request);
@@ -76,6 +78,8 @@ public sealed class Connector
 
         var response = SendRequest(request);
 
+        ThrowRateLimitError(response);
+        
         if (!disableAuthorizationErrors)
         {
             ThrowAuthorizationErrors(response);
@@ -120,5 +124,12 @@ public sealed class Connector
             case "AUTH TOKEN EXPIRED":
                 throw new TokenExpired();
         }
+    }
+
+    private static void ThrowRateLimitError(HttpResponseMessage response)
+    {
+        if (response.StatusCode != HttpStatusCode.TooManyRequests) return;
+
+        throw new TooManyRequests();
     }
 }

@@ -16,7 +16,7 @@ public class ConnectionView : IView
             throw new FailedContactingAlms();
         }
         
-        Shared.View = AuthenticationView.GetInstance();
+        Shared.View = new AuthenticationView();
     }
 
     public void DrawUserInterface()
