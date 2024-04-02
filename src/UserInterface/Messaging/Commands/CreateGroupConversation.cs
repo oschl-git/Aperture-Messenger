@@ -12,29 +12,40 @@ public class CreateGroupConversation : ICommand
     public string[] Aliases { get; } = ["creategroup", "cg"];
     public void Invoke(string[] args)
     {
-        switch (args.Length)
+        if (args.Length < 3)
         {
-            case > 11:
-                Shared.CommandResponse = new CommandResponse(
-                    "Group conversations cannot have more than 10 participants.",
-                    CommandResponse.ResponseType.Error
-                );
-                return;
-            case < 3:
-                Shared.CommandResponse = new CommandResponse(
-                    "Missing arguments: You must specify the name and at least two other participants.",
-                    CommandResponse.ResponseType.Error
-                );
-                return;
+            Shared.CommandResponse = new CommandResponse(
+                "Missing arguments: You must specify the name and at least two other participants.",
+                CommandResponse.ResponseType.Error
+            );
+            return;
         }
 
         var name = args[0];
-        var participants = args.Skip(1).ToArray();
+        var participants = args.Skip(1).Distinct().ToArray();
 
         if (name.Length > 64)
         {
             Shared.CommandResponse = new CommandResponse(
                 "Name can't be longer than 64 characters.",
+                CommandResponse.ResponseType.Error
+            );
+            return;
+        }
+        
+        if (participants.Length < 2)
+        {
+            Shared.CommandResponse = new CommandResponse(
+                "Missing arguments: You must specify at least two unique participants, you moron!",
+                CommandResponse.ResponseType.Error
+            );
+            return;
+        }
+
+        if (participants.Length > 10)
+        {
+            Shared.CommandResponse = new CommandResponse(
+                "Group conversations cannot have more than 10 participants.",
                 CommandResponse.ResponseType.Error
             );
             return;
