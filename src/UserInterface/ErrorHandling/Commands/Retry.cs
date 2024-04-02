@@ -8,6 +8,6 @@ public class Retry : ICommand
     public string[] Aliases { get; } = ["retry", "restart", "continue", "r", "c"];
     public void Invoke(string[] args)
     {
-        Shared.View = new AuthenticationView();
+        Shared.View = new ConnectionView();
     }
 }

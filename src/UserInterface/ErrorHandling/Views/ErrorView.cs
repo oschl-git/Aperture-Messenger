@@ -14,7 +14,7 @@ public class ErrorView : IView
         new Exit()
     ];
 
-    private Exception _exception;
+    private readonly Exception _exception;
 
     public ErrorView(Exception exception)
     {
@@ -67,15 +67,16 @@ public class ErrorView : IView
             $"\u26a0 {GetMessage()}", ConsoleColor.Red
         );
         ConsoleWriter.WriteLine();
+        ConsoleWriter.WriteLine();
 
         ConsoleWriter.WriteWithWordWrap(
             "If this is unexpected behaviour, please create an issue with the details below at " +
             "github.com/oschl-git/aperture-messenger. Your help is greatly appreciated!"
         );
         ConsoleWriter.WriteLine();
-
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();
+        
         ConsoleWriter.WriteLine("DETAILS:", ConsoleColor.Yellow);
         ConsoleWriter.WriteWithWordWrap(_exception.ToString(), ConsoleColor.Red);
 

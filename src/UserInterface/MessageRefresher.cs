@@ -2,18 +2,29 @@ namespace ApertureMessenger.UserInterface;
 
 public static class MessageRefresher
 {
-    private static Thread refresher;
+    private const int SecondsToSleep = 3;
+    private static Thread? _refresher;
 
     public static void StartRefresherThread()
     {
-        refresher = new Thread(() =>
+        _refresher = new Thread(Refresher);
+        _refresher.Start();
+    }
+
+    private static void Refresher()
+    {
+        while (true)
         {
-            while (true)
+            Thread.Sleep(SecondsToSleep * 1000);
+            
+            try
             {
-                Thread.Sleep(2 * 1000);
                 Shared.GetNewMessages();
             }
-        });
-        refresher.Start();
+            catch (Exception)
+            {
+                // unsuccessful refresh can be ignored
+            }
+        }
     }
 }

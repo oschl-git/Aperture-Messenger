@@ -3,11 +3,13 @@ using ApertureMessenger.UserInterface.Messaging.Commands;
 
 namespace ApertureMessenger.UserInterface.Messaging;
 
-public class GlobalCommands
+public static class GlobalCommands
 {
     public static readonly ICommand[] Commands =
     [
         new DirectMessage(),
+        new CreateGroupConversation(),
+        new ConversationById(),
         new Exit()
     ];
 }
