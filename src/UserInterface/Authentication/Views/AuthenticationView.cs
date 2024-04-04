@@ -1,3 +1,6 @@
+using System.Configuration;
+using ApertureMessenger.AlmsConnection;
+using ApertureMessenger.Logic;
 using ApertureMessenger.UserInterface.Authentication.Commands;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
@@ -16,6 +19,23 @@ public class AuthenticationView : IView
         new Register(),
         new Exit()
     ];
+
+    private VersionConflictResult? _conflictResult;
+
+    public AuthenticationView()
+    {
+        _conflictResult = GetConflictResult();
+    }
+
+    private VersionConflictResult? GetConflictResult()
+    {
+        var targetVersion = ConfigurationManager.AppSettings.Get("TargetAlmsVersion");
+        if (targetVersion == null) return null;
+
+        var actualVersion = ConnectionTester.GetAlmsStatus().Stats.Version;
+
+        return new VersionConflictResult(targetVersion, actualVersion);
+    }
 
     public void Process()
     {
@@ -57,6 +77,9 @@ public class AuthenticationView : IView
         ConsoleWriter.WriteWithWordWrap(
             "Hello and, again, welcome to Aperture Messenger.", ConsoleColor.Cyan
         );
+
+        PrintVersionConflict();
+
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteWithWordWrap(
             "ALMS authentication is required to access ASCAMP services. " +
@@ -73,5 +96,37 @@ public class AuthenticationView : IView
         ConsoleWriter.WriteWithWordWrap(":exit");
 
         ComponentWriter.WriteUserInput();
+    }
+
+    private void PrintVersionConflict()
+    {
+        if (_conflictResult == null) return;
+        
+        switch (_conflictResult.Result)
+        {
+            case AlmsVersionComparer.Result.Older:
+                ConsoleWriter.WriteLine();
+                ConsoleWriter.WriteLine();
+                ConsoleWriter.WriteWithWordWrap(
+                    "WARNING: Your version of Aperture Messenger is made for an older " +
+                    "version of ALMS than you're connected to. Check if an update has been released.",
+                    ConsoleColor.Red
+                );
+                ConsoleWriter.WriteLine();
+                break;
+            case AlmsVersionComparer.Result.Newer:
+                ConsoleWriter.WriteLine();
+                ConsoleWriter.WriteLine();
+                ConsoleWriter.WriteWithWordWrap(
+                    "WARNING: Your version of Aperture Messenger is made for a newer " +
+                    "version of ALMS than you're connected to. Consider downgrading or switching to a different ALMS.",
+                    ConsoleColor.Red
+                );
+                ConsoleWriter.WriteLine();
+                break;
+            case AlmsVersionComparer.Result.Same:
+            default:
+                return;
+        }
     }
 }
