@@ -21,13 +21,13 @@ public class ConversationById : ICommand
             case 0:
                 Shared.Feedback = new CommandFeedback(
                     "Missing argument: You must provide the ID of the conversation.",
-                    CommandFeedback.ResponseType.Error
+                    CommandFeedback.FeedbackType.Error
                 );
                 return;
             case > 1:
                 Shared.Feedback = new CommandFeedback(
                     "Too many arguments for command.",
-                    CommandFeedback.ResponseType.Error
+                    CommandFeedback.FeedbackType.Error
                 );
                 return;
         }
@@ -41,7 +41,7 @@ public class ConversationById : ICommand
         {
             Shared.Feedback = new CommandFeedback(
                 "The provided conversation doesn't exist.",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             return;
         }
@@ -49,7 +49,7 @@ public class ConversationById : ICommand
         {
             Shared.Feedback = new CommandFeedback(
                 "The provided conversation ID must be an integer.",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             return;
         }

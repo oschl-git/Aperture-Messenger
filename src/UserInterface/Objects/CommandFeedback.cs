@@ -2,7 +2,7 @@ namespace ApertureMessenger.UserInterface.Objects;
 
 public class CommandFeedback
 {
-    public enum ResponseType
+    public enum FeedbackType
     {
         Success,
         Error,
@@ -12,9 +12,9 @@ public class CommandFeedback
     }
 
     public string Response;
-    public ResponseType Type;
+    public FeedbackType Type;
 
-    public CommandFeedback(string response, ResponseType type)
+    public CommandFeedback(string response, FeedbackType type)
     {
         Response = response;
         Type = type;
@@ -24,11 +24,11 @@ public class CommandFeedback
     {
         return Type switch
         {
-            ResponseType.Success => "\u2713",
-            ResponseType.Error => "\ud83d\uddd9",
-            ResponseType.Warning => "\u26a0",
-            ResponseType.Info => "\ud83d\udec8",
-            ResponseType.Loading => "\u27f3",
+            FeedbackType.Success => "\u2713",
+            FeedbackType.Error => "\ud83d\uddd9",
+            FeedbackType.Warning => "\u26a0",
+            FeedbackType.Info => "\ud83d\udec8",
+            FeedbackType.Loading => "\u27f3",
             _ => "?"
         };
     }
@@ -37,11 +37,11 @@ public class CommandFeedback
     {
         return Type switch
         {
-            ResponseType.Success => ConsoleColor.Green,
-            ResponseType.Error => ConsoleColor.Red,
-            ResponseType.Warning => ConsoleColor.Yellow,
-            ResponseType.Info => ConsoleColor.DarkCyan,
-            ResponseType.Loading => ConsoleColor.Gray,
+            FeedbackType.Success => ConsoleColor.Green,
+            FeedbackType.Error => ConsoleColor.Red,
+            FeedbackType.Warning => ConsoleColor.Yellow,
+            FeedbackType.Info => ConsoleColor.DarkCyan,
+            FeedbackType.Loading => ConsoleColor.Gray,
             _ => ConsoleColor.Black
         };
     }

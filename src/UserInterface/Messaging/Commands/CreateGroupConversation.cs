@@ -21,7 +21,7 @@ public class CreateGroupConversation : ICommand
         {
             Shared.Feedback = new CommandFeedback(
                 "Missing arguments: You must specify the name and at least two other participants.",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             return;
         }
@@ -33,7 +33,7 @@ public class CreateGroupConversation : ICommand
         {
             Shared.Feedback = new CommandFeedback(
                 "Name can't be longer than 16 characters.",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             return;
         }
@@ -43,13 +43,13 @@ public class CreateGroupConversation : ICommand
             case < 2:
                 Shared.Feedback = new CommandFeedback(
                     "Missing arguments: You must specify at least two unique participants, you moron!",
-                    CommandFeedback.ResponseType.Error
+                    CommandFeedback.FeedbackType.Error
                 );
                 return;
             case > 9:
                 Shared.Feedback = new CommandFeedback(
                     "Group conversations cannot have more than 10 participants.",
-                    CommandFeedback.ResponseType.Error
+                    CommandFeedback.FeedbackType.Error
                 );
                 return;
         }
@@ -59,7 +59,7 @@ public class CreateGroupConversation : ICommand
             {
                 Shared.Feedback = new CommandFeedback(
                     "You can't specify yourself as one of the participants.",
-                    CommandFeedback.ResponseType.Error
+                    CommandFeedback.FeedbackType.Error
                 );
                 return;
             }
@@ -72,7 +72,7 @@ public class CreateGroupConversation : ICommand
         {
             Shared.Feedback = new CommandFeedback(
                 $"Employees do not exist: {string.Join(", ", e.Usernames)}.",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             return;
         }
@@ -81,7 +81,7 @@ public class CreateGroupConversation : ICommand
 
         Shared.Feedback = new CommandFeedback(
             $"Conversation {name} successfully created!",
-            CommandFeedback.ResponseType.Success
+            CommandFeedback.FeedbackType.Success
         );
     }
 }

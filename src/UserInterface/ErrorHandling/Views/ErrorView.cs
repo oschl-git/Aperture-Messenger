@@ -27,7 +27,7 @@ public class ErrorView : IView
     public void Process()
     {
         Shared.Feedback = new CommandFeedback("Use :retry to restart the application or :exit to exit.",
-            CommandFeedback.ResponseType.Info);
+            CommandFeedback.FeedbackType.Info);
         Shared.UserInput = "";
 
         while (true)
@@ -42,13 +42,13 @@ public class ErrorView : IView
                 case CommandProcessor.Result.NotACommand:
                     Shared.Feedback = new CommandFeedback(
                         "Commands must start with a colon (:).",
-                        CommandFeedback.ResponseType.Error
+                        CommandFeedback.FeedbackType.Error
                     );
                     break;
                 case CommandProcessor.Result.InvalidCommand:
                     Shared.Feedback = new CommandFeedback(
                         "The provided input is not a valid command in this context.",
-                        CommandFeedback.ResponseType.Error
+                        CommandFeedback.FeedbackType.Error
                     );
                     break;
                 case CommandProcessor.Result.Success:

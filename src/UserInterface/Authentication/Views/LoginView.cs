@@ -34,7 +34,7 @@ public class LoginView : IView
     {
         Shared.Feedback = new CommandFeedback(
             "Input your authentication details to log in.",
-            CommandFeedback.ResponseType.Info
+            CommandFeedback.FeedbackType.Info
         );
 
         while (_currentStage != Stage.LoginSuccess)
@@ -107,7 +107,7 @@ public class LoginView : IView
     {
         Shared.Feedback = new CommandFeedback(
             "Checking username validity...",
-            CommandFeedback.ResponseType.Loading
+            CommandFeedback.FeedbackType.Loading
         );
         Shared.RefreshView();
 
@@ -120,7 +120,7 @@ public class LoginView : IView
         {
             Shared.Feedback = new CommandFeedback(
                 usernameIsGlados ? gladosEasterEggQuote : "Username is valid.",
-                CommandFeedback.ResponseType.Success
+                CommandFeedback.FeedbackType.Success
             );
             _currentStage = Stage.PasswordInput;
         }
@@ -128,7 +128,7 @@ public class LoginView : IView
         {
             Shared.Feedback = new CommandFeedback(
                 usernameIsGlados ? gladosEasterEggQuote : "Employee with the submitted username doesn't exist.",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             _currentStage = Stage.UsernameInput;
         }
@@ -143,7 +143,7 @@ public class LoginView : IView
 
     private void HandleLoginAttempt()
     {
-        Shared.Feedback = new CommandFeedback("Authenticating...", CommandFeedback.ResponseType.Loading);
+        Shared.Feedback = new CommandFeedback("Authenticating...", CommandFeedback.FeedbackType.Loading);
         Shared.RefreshView();
 
         var result = Authenticator.Login(new LoginRequest(_submittedUsername ?? "", _submittedPassword ?? ""));
@@ -154,21 +154,21 @@ public class LoginView : IView
                 _currentStage = Stage.LoginSuccess;
                 Shared.Feedback = new CommandFeedback(
                     $"Employee {Session.Employee?.Name} {Session.Employee?.Surname} successfully logged in!",
-                    CommandFeedback.ResponseType.Success
+                    CommandFeedback.FeedbackType.Success
                 );
                 Shared.View = new MessagingView();
                 break;
 
             case Authenticator.LoginResult.UserDoesNotExist:
                 Shared.Feedback = new CommandFeedback(
-                    "Somehow, you don't exist anymore.", CommandFeedback.ResponseType.Error
+                    "Somehow, you don't exist anymore.", CommandFeedback.FeedbackType.Error
                 );
                 _currentStage = Stage.UsernameInput;
                 break;
 
             case Authenticator.LoginResult.IncorrectPassword:
                 Shared.Feedback = new CommandFeedback(
-                    "Incorrect password.", CommandFeedback.ResponseType.Error
+                    "Incorrect password.", CommandFeedback.FeedbackType.Error
                 );
                 _currentStage = Stage.PasswordInput;
                 break;

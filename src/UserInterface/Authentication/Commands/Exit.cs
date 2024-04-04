@@ -24,7 +24,7 @@ public class Exit : ICommand
 
         Shared.Feedback = new CommandFeedback(
             "Use the :login or :register commands to authenticate.",
-            CommandFeedback.ResponseType.Info
+            CommandFeedback.FeedbackType.Info
         );
 
         Shared.View = new AuthenticationView();

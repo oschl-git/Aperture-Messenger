@@ -18,7 +18,7 @@ public class ConnectionView : IView
         if (!ConnectionTester.TestConnection()) throw new FailedContactingAlms();
 
         Shared.Feedback = new CommandFeedback("Use the :login or :register commands to authenticate.",
-            CommandFeedback.ResponseType.Info);
+            CommandFeedback.FeedbackType.Info);
 
         Shared.View = new AuthenticationView();
     }

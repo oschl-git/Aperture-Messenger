@@ -14,7 +14,7 @@ public static class Shared
     public static IView View { get; set; } = new ConnectionView();
 
     public static string UserInput { get; set; } = "";
-    public static CommandFeedback Feedback { get; set; } = new("", CommandFeedback.ResponseType.Info);
+    public static CommandFeedback Feedback { get; set; } = new("", CommandFeedback.FeedbackType.Info);
 
     public static void RefreshView()
     {

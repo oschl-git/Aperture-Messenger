@@ -21,7 +21,7 @@ public class DirectMessage : ICommand
         {
             Shared.Feedback = new CommandFeedback(
                 "Missing argument: You must provide a username of the user to message.",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             return;
         }
@@ -30,7 +30,7 @@ public class DirectMessage : ICommand
         {
             Shared.Feedback = new CommandFeedback(
                 "Too many arguments for command.",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             return;
         }
@@ -41,7 +41,7 @@ public class DirectMessage : ICommand
         {
             Shared.Feedback = new CommandFeedback(
                 "You can't message yourself, you moron!",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             return;
         }
@@ -55,7 +55,7 @@ public class DirectMessage : ICommand
         {
             Shared.Feedback = new CommandFeedback(
                 "The provided username doesn't exist.",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             return;
         }

@@ -40,7 +40,7 @@ public class RegisterView : IView
     public void Process()
     {
         Shared.Feedback = new CommandFeedback("Follow the required steps to register a new account.",
-            CommandFeedback.ResponseType.Info);
+            CommandFeedback.FeedbackType.Info);
 
         while (_currentStage != Stage.RegisterSuccess)
         {
@@ -152,13 +152,13 @@ public class RegisterView : IView
             Shared.Feedback = result switch
             {
                 UsernameValidityChecker.Result.InvalidCharacters => new CommandFeedback(
-                    "Only English letters and numbers are allowed for usernames.", CommandFeedback.ResponseType.Error),
+                    "Only English letters and numbers are allowed for usernames.", CommandFeedback.FeedbackType.Error),
                 UsernameValidityChecker.Result.TooShort => new CommandFeedback(
-                    "Username must be at least 2 characters long.", CommandFeedback.ResponseType.Error),
+                    "Username must be at least 2 characters long.", CommandFeedback.FeedbackType.Error),
                 UsernameValidityChecker.Result.TooLong => new CommandFeedback(
-                    "Username must be shorter than 32 characters.", CommandFeedback.ResponseType.Error),
+                    "Username must be shorter than 32 characters.", CommandFeedback.FeedbackType.Error),
                 UsernameValidityChecker.Result.Taken => new CommandFeedback(
-                    "Username is already taken.", CommandFeedback.ResponseType.Error),
+                    "Username is already taken.", CommandFeedback.FeedbackType.Error),
                 _ => Shared.Feedback
             };
 
@@ -166,7 +166,7 @@ public class RegisterView : IView
             return;
         }
 
-        Shared.Feedback = new CommandFeedback("Username OK.", CommandFeedback.ResponseType.Success);
+        Shared.Feedback = new CommandFeedback("Username OK.", CommandFeedback.FeedbackType.Success);
         _currentStage = Stage.NameInput;
     }
 
@@ -185,9 +185,9 @@ public class RegisterView : IView
             Shared.Feedback = result switch
             {
                 NameValidityChecker.Result.TooShort => new CommandFeedback(
-                    "Name must be at least 2 characters long.", CommandFeedback.ResponseType.Error),
+                    "Name must be at least 2 characters long.", CommandFeedback.FeedbackType.Error),
                 NameValidityChecker.Result.TooLong => new CommandFeedback(
-                    "Name must be shorter than 32 characters.", CommandFeedback.ResponseType.Error),
+                    "Name must be shorter than 32 characters.", CommandFeedback.FeedbackType.Error),
                 _ => Shared.Feedback
             };
 
@@ -195,7 +195,7 @@ public class RegisterView : IView
             return;
         }
 
-        Shared.Feedback = new CommandFeedback("Name OK.", CommandFeedback.ResponseType.Success);
+        Shared.Feedback = new CommandFeedback("Name OK.", CommandFeedback.FeedbackType.Success);
         _currentStage = Stage.SurnameInput;
     }
 
@@ -214,9 +214,9 @@ public class RegisterView : IView
             Shared.Feedback = result switch
             {
                 NameValidityChecker.Result.TooShort => new CommandFeedback(
-                    "Surname must be at least 2 characters long.", CommandFeedback.ResponseType.Error),
+                    "Surname must be at least 2 characters long.", CommandFeedback.FeedbackType.Error),
                 NameValidityChecker.Result.TooLong => new CommandFeedback(
-                    "Surname must be shorter than 32 characters.", CommandFeedback.ResponseType.Error),
+                    "Surname must be shorter than 32 characters.", CommandFeedback.FeedbackType.Error),
                 _ => Shared.Feedback
             };
 
@@ -226,7 +226,7 @@ public class RegisterView : IView
 
         Shared.Feedback = new CommandFeedback(
             "Surname OK.",
-            CommandFeedback.ResponseType.Success
+            CommandFeedback.FeedbackType.Success
         );
         _currentStage = Stage.PasswordInput;
     }
@@ -241,7 +241,7 @@ public class RegisterView : IView
     private void HandleSecondPasswordInput()
     {
         Shared.Feedback = new CommandFeedback(
-            "Type the same password again for verification.", CommandFeedback.ResponseType.Info);
+            "Type the same password again for verification.", CommandFeedback.FeedbackType.Info);
         Shared.RefreshView();
 
         _submittedSecondPassword = ConsoleReader.ReadCommandFromUser();
@@ -254,7 +254,7 @@ public class RegisterView : IView
         if (_submittedPassword != _submittedSecondPassword)
         {
             Shared.Feedback = new CommandFeedback(
-                "Passwords do not match.", CommandFeedback.ResponseType.Error);
+                "Passwords do not match.", CommandFeedback.FeedbackType.Error);
             _currentStage = Stage.PasswordInput;
             return;
         }
@@ -265,9 +265,9 @@ public class RegisterView : IView
             Shared.Feedback = result switch
             {
                 PasswordValidityChecker.Result.TooShort => new CommandFeedback(
-                    "Password must be at least 8 characters long.", CommandFeedback.ResponseType.Error),
+                    "Password must be at least 8 characters long.", CommandFeedback.FeedbackType.Error),
                 PasswordValidityChecker.Result.TooLong => new CommandFeedback(
-                    "Password must be shorter than 49 characters.", CommandFeedback.ResponseType.Error),
+                    "Password must be shorter than 49 characters.", CommandFeedback.FeedbackType.Error),
                 _ => Shared.Feedback
             };
 
@@ -287,7 +287,7 @@ public class RegisterView : IView
            )
         {
             Shared.Feedback = new CommandFeedback(
-                "Employee details were not properly submitted.", CommandFeedback.ResponseType.Error
+                "Employee details were not properly submitted.", CommandFeedback.FeedbackType.Error
             );
             _currentStage = Stage.UsernameInput;
             return;
@@ -299,7 +299,7 @@ public class RegisterView : IView
         if (result == EmployeeCreator.RegisterResult.Success)
         {
             Shared.Feedback = new CommandFeedback(
-                "Registration successful. You can now log in.", CommandFeedback.ResponseType.Success
+                "Registration successful. You can now log in.", CommandFeedback.FeedbackType.Success
             );
             _currentStage = Stage.RegisterSuccess;
             Shared.View = new AuthenticationView();
@@ -307,7 +307,7 @@ public class RegisterView : IView
         else
         {
             Shared.Feedback = new CommandFeedback(
-                "Employee details were rejected by ALMS.", CommandFeedback.ResponseType.Error
+                "Employee details were rejected by ALMS.", CommandFeedback.FeedbackType.Error
             );
             _currentStage = Stage.UsernameInput;
         }

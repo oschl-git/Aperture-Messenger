@@ -30,7 +30,7 @@ public class ConversationView : IView
     {
         Shared.Feedback = new CommandFeedback(
             "Input is sent as a message unless you prefix it with a colon (:).",
-            CommandFeedback.ResponseType.Info
+            CommandFeedback.FeedbackType.Info
         );
 
         while (true)
@@ -51,7 +51,7 @@ public class ConversationView : IView
                 case CommandProcessor.Result.InvalidCommand:
                     Shared.Feedback = new CommandFeedback(
                         "The provided input is not a valid command in this context.",
-                        CommandFeedback.ResponseType.Error
+                        CommandFeedback.FeedbackType.Error
                     );
                     break;
                 case CommandProcessor.Result.Success:
@@ -71,7 +71,7 @@ public class ConversationView : IView
         {
             Shared.Feedback = new CommandFeedback(
                 "The message was too long to be sent.",
-                CommandFeedback.ResponseType.Error
+                CommandFeedback.FeedbackType.Error
             );
             Shared.UserInput = content;
             return;
@@ -80,7 +80,7 @@ public class ConversationView : IView
         Shared.GetNewMessages();
         Shared.Feedback = new CommandFeedback(
             "Message sent.",
-            CommandFeedback.ResponseType.Success
+            CommandFeedback.FeedbackType.Success
         );
     }
 

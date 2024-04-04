@@ -49,13 +49,13 @@ public class AuthenticationView : IView
                 case CommandProcessor.Result.NotACommand:
                     Shared.Feedback = new CommandFeedback(
                         "Commands must start with a colon (:).",
-                        CommandFeedback.ResponseType.Error
+                        CommandFeedback.FeedbackType.Error
                     );
                     break;
                 case CommandProcessor.Result.InvalidCommand:
                     Shared.Feedback = new CommandFeedback(
                         "The provided input is not a valid command in this context.",
-                        CommandFeedback.ResponseType.Error
+                        CommandFeedback.FeedbackType.Error
                     );
                     break;
                 case CommandProcessor.Result.Success:
