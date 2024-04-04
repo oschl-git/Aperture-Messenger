@@ -1,8 +1,6 @@
 using System.Net;
-using ApertureMessenger.AlmsConnection.Exceptions;
-using ApertureMessenger.AlmsConnection.Helpers;
-using ApertureMessenger.AlmsConnection.Responses;
-using Newtonsoft.Json;
+using ApertureMessenger.AlmsConnection.Objects;
+using ApertureMessenger.Logic;
 
 namespace ApertureMessenger.AlmsConnection;
 
@@ -17,39 +15,13 @@ public static class ConnectionTester
     /// <returns>Whether an 200 OK code was received.</returns>
     public static bool TestConnection()
     {
-        var response = Connector.Get(
-            "/"
-        );
-
+        var response = Connector.Get("/", true);
         return response.StatusCode == HttpStatusCode.OK;
     }
 
-    public static StatusResponse GetAlmsStatus()
+    public static VersionConflictResult CompareMessengerAndAlmsVersions(string targetVersion, string actualVersion)
     {
-        var response = Connector.Get("/");
-
-        switch (response.StatusCode)
-        {
-            case HttpStatusCode.OK:
-                var contentString = ResponseParser.GetResponseContent(response);
-
-                StatusResponse? status;
-                try
-                {
-                    status = JsonConvert.DeserializeObject<StatusResponse>(contentString);
-                }
-                catch (Exception)
-                {
-                    throw new JsonException("Failed parsing direct conversation JSON");
-                }
-
-                if (status == null) throw new JsonException("Direct conversation JSON was empty");
-
-                return status;
-        }
-
-        throw new UnhandledResponseError();
+        var result = AlmsVersionComparer.CompareAlmsVersions(targetVersion, actualVersion);
+        return new VersionConflictResult(targetVersion, actualVersion, result);
     }
-
-    
 }
