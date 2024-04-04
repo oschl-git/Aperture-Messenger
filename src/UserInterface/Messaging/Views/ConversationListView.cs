@@ -155,49 +155,7 @@ public class ConversationListView : IView
         } 
     }
 
-    private void PrintGroupConversations()
-    {
-        foreach (var conversation in _conversations)
-        {
-            if (conversation.Name == null || conversation.Participants == null)
-                throw new InvalidDataException("Group conversations didn't have required attributes.");
-
-            ConsoleWriter.Write(" - ");
-            ConsoleWriter.Write(conversation.Name, ConsoleColor.Magenta);
-            ConsoleWriter.Write(", ID: ");
-            ConsoleWriter.Write(conversation.Id.ToString(), ConsoleColor.Green);
-            ConsoleWriter.Write(
-                $" ({conversation.Participants.Count} members, " +
-                $"last updated: [{conversation.DateTimeUpdated.ToLocalTime()}])"
-            );
-            ConsoleWriter.WriteLine();
-        }
-    }
-
-    private void PrintDirectConversations()
-    {
-        foreach (var conversation in _conversations)
-        {
-            if (conversation.Participants == null)
-                throw new InvalidDataException("Direct conversations didn't have required attributes.");
-
-            ConsoleWriter.Write(" - ");
-
-            var otherParticipant = GetOtherParticipant(conversation.Participants.ToArray());
-            ConsoleWriter.Write(
-                $"DM with {otherParticipant.Username} ({otherParticipant.Name} {otherParticipant.Surname})",
-                ConsoleColor.Cyan
-            );
-            ConsoleWriter.Write(", ID: ");
-            ConsoleWriter.Write(conversation.Id.ToString(), ConsoleColor.Green);
-            ConsoleWriter.Write(
-                $" (last updated: [{conversation.DateTimeUpdated.ToLocalTime()}])"
-            );
-            ConsoleWriter.WriteLine();
-        }
-    }
-
-    private Employee GetOtherParticipant(Employee[]? participants)
+    private static Employee GetOtherParticipant(Employee[]? participants)
     {
         if (participants != null)
             foreach (var participant in participants)

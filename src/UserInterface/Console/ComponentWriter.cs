@@ -7,7 +7,7 @@ namespace ApertureMessenger.UserInterface.Console;
 /// </summary>
 public static class ComponentWriter
 {
-    public enum StepStates
+    private enum StepState
     {
         Scheduled,
         Started,
@@ -18,6 +18,7 @@ public static class ComponentWriter
     {
         System.Console.BackgroundColor = backgroundColor;
 
+        title = $" {title}";
         ConsoleWriter.Write(title, ConsoleColors.GetTextColorForBackground(backgroundColor));
         FillerWriter.WriteFiller(' ', System.Console.WindowWidth - title.Length);
         ConsoleWriter.WriteLine();
@@ -59,26 +60,26 @@ public static class ComponentWriter
         int stepCompletedStage
     )
     {
-        StepStates state;
+        StepState state;
 
         if (currentStage == stepStage)
-            state = StepStates.Started;
+            state = StepState.Started;
         else if (currentStage >= stepCompletedStage)
-            state = StepStates.Completed;
+            state = StepState.Completed;
         else
-            state = StepStates.Scheduled;
+            state = StepState.Scheduled;
 
         var color = state switch
         {
-            StepStates.Started => ConsoleColor.Cyan,
-            StepStates.Completed => ConsoleColor.Green,
+            StepState.Started => ConsoleColor.Cyan,
+            StepState.Completed => ConsoleColor.Green,
             _ => ConsoleColor.White
         };
 
         var prefix = state switch
         {
-            StepStates.Started => "[\u2192]",
-            StepStates.Completed => "[\u2713]",
+            StepState.Started => "[\u2192]",
+            StepState.Completed => "[\u2713]",
             _ => "[ ]"
         };
 
