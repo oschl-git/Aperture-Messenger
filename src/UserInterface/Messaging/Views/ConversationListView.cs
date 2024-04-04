@@ -12,25 +12,39 @@ namespace ApertureMessenger.UserInterface.Messaging.Views;
 /// </summary>
 public class ConversationListView : IView
 {
-    private Conversation[] _conversations;
-    private readonly bool _areGroup;
-
-    public ConversationListView(bool areGroup)
+    public enum ConversationType
     {
-        _areGroup = areGroup;
-        _conversations = GetConversations();
+        All,
+        Direct,
+        Group
+    }
+    
+    private Conversation[] _conversations;
+    private ConversationType _type;
+
+    public ConversationListView(ConversationType type)
+    {
+        _conversations = GetConversations(type);
+        _type = type;
     }
 
-    private Conversation[] GetConversations()
+    private static Conversation[] GetConversations(ConversationType type)
     {
-        return _areGroup
-            ? ConversationRepository.GetGroupConversations()
-            : ConversationRepository.GetDirectConversations();
+        switch (type)
+        {
+            case ConversationType.Direct:
+                return ConversationRepository.GetDirectConversations();
+            case ConversationType.Group:
+                return ConversationRepository.GetGroupConversations();
+            case ConversationType.All:
+            default:
+                return ConversationRepository.GetAllConversations();
+        }
     }
 
     public void RefreshConversations()
     {
-        _conversations = GetConversations();
+        _conversations = GetConversations(_type);
         Shared.RefreshView();
     }
 
@@ -70,20 +84,75 @@ public class ConversationListView : IView
         ComponentWriter.WriteHeader(GetHeaderContent(), GetHeaderColor());
         ConsoleWriter.WriteLine();
 
-        if (_areGroup) PrintGroupConversations();
-        else PrintDirectConversations();
+        foreach (var conversation in _conversations) PrintConversation(conversation);
 
         ComponentWriter.WriteUserInput($"{Session.Employee?.Username}>");
     }
 
     private string GetHeaderContent()
     {
-        return _areGroup ? "RECENT GROUP CONVERSATIONS" : "RECENT DIRECT CONVERSATIONS";
+        switch (_type)
+        {
+            case ConversationType.Direct:
+                return "RECENT DIRECT CONVERSATIONS";
+            case ConversationType.Group:
+                return "RECENT GROUP CONVERSATIONS";
+            case ConversationType.All:
+            default:
+                return "RECENT CONVERSATIONS";
+        }
     }
 
     private ConsoleColor GetHeaderColor()
     {
-        return _areGroup ? ConsoleColor.DarkMagenta : ConsoleColor.DarkCyan;
+        switch (_type)
+        {
+            case ConversationType.Direct:
+                return ConsoleColor.DarkCyan;
+            case ConversationType.Group:
+                return ConsoleColor.DarkMagenta;
+            case ConversationType.All:
+            default:
+                return ConsoleColor.DarkYellow;
+        }
+    }
+
+    private void PrintConversation(Conversation conversation)
+    {
+        if (conversation.IsGroup)
+        {
+            if (conversation.Name == null || conversation.Participants == null)
+                throw new InvalidDataException("Group conversations didn't have required attributes.");
+
+            ConsoleWriter.Write(" - ");
+            ConsoleWriter.Write(conversation.Name, ConsoleColor.Magenta);
+            ConsoleWriter.Write(", ID: ");
+            ConsoleWriter.Write(conversation.Id.ToString(), ConsoleColor.Green);
+            ConsoleWriter.Write(
+                $" ({conversation.Participants.Count} members, " +
+                $"last updated: [{conversation.DateTimeUpdated.ToLocalTime()}])"
+            );
+            ConsoleWriter.WriteLine();
+        }
+        else
+        {
+            if (conversation.Participants == null)
+                throw new InvalidDataException("Direct conversations didn't have required attributes.");
+
+            ConsoleWriter.Write(" - ");
+
+            var otherParticipant = GetOtherParticipant(conversation.Participants.ToArray());
+            ConsoleWriter.Write(
+                $"DM with {otherParticipant.Username} ({otherParticipant.Name} {otherParticipant.Surname})",
+                ConsoleColor.Cyan
+            );
+            ConsoleWriter.Write(", ID: ");
+            ConsoleWriter.Write(conversation.Id.ToString(), ConsoleColor.Green);
+            ConsoleWriter.Write(
+                $" (last updated: [{conversation.DateTimeUpdated.ToLocalTime()}])"
+            );
+            ConsoleWriter.WriteLine();
+        } 
     }
 
     private void PrintGroupConversations()

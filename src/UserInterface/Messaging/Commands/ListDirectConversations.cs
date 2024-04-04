@@ -12,6 +12,6 @@ public class ListDirectConversations : ICommand
 
     public void Invoke(string[] args)
     {
-        Shared.View = new ConversationListView(false);
+        Shared.View = new ConversationListView(ConversationListView.ConversationType.Direct);
     }
 }

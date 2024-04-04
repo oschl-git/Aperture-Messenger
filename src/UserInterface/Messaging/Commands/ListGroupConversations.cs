@@ -12,6 +12,6 @@ public class ListGroupConversations : ICommand
 
     public void Invoke(string[] args)
     {
-        Shared.View = new ConversationListView(true);
+        Shared.View = new ConversationListView(ConversationListView.ConversationType.Group);
     }
 }
