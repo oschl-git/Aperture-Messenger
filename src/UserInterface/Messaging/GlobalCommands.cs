@@ -15,6 +15,7 @@ public static class GlobalCommands
         new ConversationById(),
         new ListGroupConversations(),
         new ListDirectConversations(),
+        new Logout(),
         new Exit()
     ];
 }
