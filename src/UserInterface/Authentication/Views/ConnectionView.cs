@@ -6,20 +6,20 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Authentication.Views;
 
+/// <summary>
+/// A view/UI handler that is displayed while an ALMS connection is being established.
+/// </summary>
 public class ConnectionView : IView
 {
     public void Process()
     {
         DrawUserInterface();
-        
-        if (!ConnectionTester.TestConnection())
-        {
-            throw new FailedContactingAlms();
-        }
-        
-        
-        Shared.CommandResponse = new CommandResponse("Use the :login or :register commands to authenticate.",
+
+        if (!ConnectionTester.TestConnection()) throw new FailedContactingAlms();
+
+        Shared.Response = new CommandResponse("Use the :login or :register commands to authenticate.",
             CommandResponse.ResponseType.Info);
+
         Shared.View = new AuthenticationView();
     }
 

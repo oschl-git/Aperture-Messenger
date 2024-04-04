@@ -5,6 +5,9 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Messaging.Views;
 
+/// <summary>
+/// A base messaging view/UI handler.
+/// </summary>
 public class MessagingView : IView
 {
     public void Process()
@@ -12,19 +15,19 @@ public class MessagingView : IView
         while (true)
         {
             Shared.RefreshView();
-            
+
             var userInput = ConsoleReader.ReadCommandFromUser();
             var commandResult = CommandProcessor.InvokeCommand(userInput, GlobalCommands.Commands);
             switch (commandResult)
             {
                 case CommandProcessor.Result.NotACommand:
-                    Shared.CommandResponse = new CommandResponse(
+                    Shared.Response = new CommandResponse(
                         "Commands must start with a colon (:).",
                         CommandResponse.ResponseType.Error
                     );
                     break;
                 case CommandProcessor.Result.InvalidCommand:
-                    Shared.CommandResponse = new CommandResponse(
+                    Shared.Response = new CommandResponse(
                         $"{userInput} is not a valid command in this context.",
                         CommandResponse.ResponseType.Error
                     );
@@ -46,8 +49,10 @@ public class MessagingView : IView
         ConsoleWriter.WriteWithWordWrap("Successfully authenticated and connected to ALMS.", ConsoleColor.Green);
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();
-        
-        ConsoleWriter.WriteWithWordWrap($"Welcome, employee {Session.Employee?.Id} ({Session.Employee?.Name} {Session.Employee?.Surname}).", ConsoleColor.Cyan);
+
+        ConsoleWriter.WriteWithWordWrap(
+            $"Welcome, employee {Session.Employee?.Id} ({Session.Employee?.Name} {Session.Employee?.Surname}).",
+            ConsoleColor.Cyan);
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteWithWordWrap(
             "You are now able to message other Aperture Science and Laboratories personnel. If you're lost, use the :help command to get a list of available actions.");

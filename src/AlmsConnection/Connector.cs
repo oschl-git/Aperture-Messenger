@@ -19,10 +19,7 @@ public sealed class Connector
     {
         var url = ConfigurationManager.AppSettings.Get("AlmsUrl");
 
-        if (url == null)
-        {
-            throw new ConfigurationErrorsException("ALMS URL is not properly configured");
-        }
+        if (url == null) throw new ConfigurationErrorsException("ALMS URL is not properly configured");
 
         _almsClient = new HttpClient
         {
@@ -48,19 +45,13 @@ public sealed class Connector
     {
         var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
 
-        if (!disableAuthorization)
-        {
-            AddAuthorizationHeaders(request);
-        }
+        if (!disableAuthorization) AddAuthorizationHeaders(request);
 
         var response = SendRequest(request);
 
         ThrowRateLimitError(response);
-        
-        if (!disableAuthorization)
-        {
-            ThrowAuthorizationErrors(response);
-        }
+
+        if (!disableAuthorization) ThrowAuthorizationErrors(response);
 
         return response;
     }
@@ -82,20 +73,14 @@ public sealed class Connector
         {
             Content = new StringContent(content, Encoding.UTF8, "application/json")
         };
-        
-        if (!disableAuthorization)
-        {
-            AddAuthorizationHeaders(request);
-        }
+
+        if (!disableAuthorization) AddAuthorizationHeaders(request);
 
         var response = SendRequest(request);
 
         ThrowRateLimitError(response);
-        
-        if (!disableAuthorization)
-        {
-            ThrowAuthorizationErrors(response);
-        }
+
+        if (!disableAuthorization) ThrowAuthorizationErrors(response);
 
         return response;
     }

@@ -10,7 +10,7 @@ public class InternalAlmsError : Exception
         : base(message)
     {
     }
-    
+
     public InternalAlmsError(string message, Exception inner)
         : base(message, inner)
     {

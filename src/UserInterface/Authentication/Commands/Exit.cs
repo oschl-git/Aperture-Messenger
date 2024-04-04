@@ -5,6 +5,10 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Authentication.Commands;
 
+/// <summary>
+/// An authentication command that handles exiting the application or returning to the default view depending on the
+/// context.
+/// </summary>
 public class Exit : ICommand
 {
     public string[] Aliases { get; } = ["exit", "quit", "e", "q"];
@@ -13,15 +17,16 @@ public class Exit : ICommand
     {
         if (Shared.View is AuthenticationView)
         {
+            System.Console.ResetColor();
             ConsoleWriter.Clear();
             Environment.Exit(0);
         }
 
-        Shared.CommandResponse = new CommandResponse(
+        Shared.Response = new CommandResponse(
             "Use the :login or :register commands to authenticate.",
             CommandResponse.ResponseType.Info
         );
-        
+
         Shared.View = new AuthenticationView();
     }
 }

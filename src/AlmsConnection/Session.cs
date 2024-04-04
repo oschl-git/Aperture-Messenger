@@ -9,7 +9,7 @@ public static class Session
 {
     public static string? Token { get; private set; }
     public static Employee? Employee;
-    
+
     public static void SetSession(string token, Employee employee)
     {
         Token = token;

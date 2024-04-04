@@ -3,6 +3,9 @@ using ApertureMessenger.UserInterface.Interfaces;
 
 namespace ApertureMessenger.UserInterface.Authentication.Commands;
 
+/// <summary>
+/// An authentication command that handles switching to the register view.
+/// </summary>
 public class Register : ICommand
 {
     public string[] Aliases { get; } = ["register", "r"];

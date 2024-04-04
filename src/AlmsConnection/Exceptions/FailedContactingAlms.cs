@@ -10,7 +10,7 @@ public class FailedContactingAlms : Exception
         : base(message)
     {
     }
-    
+
     public FailedContactingAlms(string message, Exception inner)
         : base(message, inner)
     {

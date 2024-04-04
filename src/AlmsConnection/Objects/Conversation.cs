@@ -5,23 +5,17 @@ namespace ApertureMessenger.AlmsConnection.Objects;
 [Serializable]
 public class Conversation
 {
-    [JsonProperty("id")]
-    public int Id;
-    
-    [JsonProperty("name")]
-    public string? Name;
-    
-    [JsonProperty("isGroup")]
-    public bool IsGroup;
-    
-    [JsonProperty("datetimeCreated")]
-    public DateTime DateTimeCreated;
-    
-    [JsonProperty("datetimeUpdated")]
-    public DateTime DateTimeUpdated;
-    
-    [JsonProperty("participants")]
-    public List<Employee>? Participants;
+    [JsonProperty("id")] public int Id;
+
+    [JsonProperty("name")] public string? Name;
+
+    [JsonProperty("isGroup")] public bool IsGroup;
+
+    [JsonProperty("datetimeCreated")] public DateTime DateTimeCreated;
+
+    [JsonProperty("datetimeUpdated")] public DateTime DateTimeUpdated;
+
+    [JsonProperty("participants")] public List<Employee>? Participants;
 
     [JsonConstructor]
     public Conversation(
@@ -40,10 +34,11 @@ public class Conversation
         DateTimeUpdated = dateTimeUpdated;
         Participants = participants;
     }
-    
+
     public override string ToString()
     {
-        var participantList = Participants != null ? string.Join(", ", Participants.ConvertAll(p => p.Username)) : "null";
+        var participantList =
+            Participants != null ? string.Join(", ", Participants.ConvertAll(p => p.Username)) : "null";
 
         return $"Conversation ID: {Id}\n" +
                $"Name: {Name ?? "null"}\n" +

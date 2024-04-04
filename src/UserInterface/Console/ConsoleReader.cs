@@ -1,5 +1,8 @@
 namespace ApertureMessenger.UserInterface.Console;
 
+/// <summary>
+/// Handles reading input from the console.
+/// </summary>
 public static class ConsoleReader
 {
     public static string ReadCommandFromUser()
@@ -10,13 +13,8 @@ public static class ConsoleReader
             key = System.Console.ReadKey(true);
 
             if (key.Key == ConsoleKey.Backspace && Shared.UserInput.Length > 0)
-            {
                 Shared.UserInput = Shared.UserInput[..^1];
-            }
-            else if (!char.IsControl(key.KeyChar))
-            {
-                Shared.UserInput += key.KeyChar;
-            }
+            else if (!char.IsControl(key.KeyChar)) Shared.UserInput += key.KeyChar;
 
             Shared.RefreshView();
         } while (key.Key != ConsoleKey.Enter || Shared.UserInput.Length <= 0);

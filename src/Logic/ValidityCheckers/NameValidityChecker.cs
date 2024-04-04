@@ -1,5 +1,8 @@
 namespace ApertureMessenger.Logic.ValidityCheckers;
 
+/// <summary>
+/// Allows checking if names and surnames are valid.
+/// </summary>
 public static class NameValidityChecker
 {
     public enum Result
@@ -11,16 +14,11 @@ public static class NameValidityChecker
 
     public static Result CheckName(string name)
     {
-        if (name.Length < 2)
+        return name.Length switch
         {
-            return Result.TooShort;
-        }
-
-        if (name.Length > 32)
-        {
-            return Result.TooLong;
-        }
-
-        return Result.Ok;
+            < 2 => Result.TooShort,
+            > 32 => Result.TooLong,
+            _ => Result.Ok
+        };
     }
 }

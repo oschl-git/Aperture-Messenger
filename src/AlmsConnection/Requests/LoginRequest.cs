@@ -5,11 +5,9 @@ namespace ApertureMessenger.AlmsConnection.Requests;
 [Serializable]
 public class LoginRequest : IRequest
 {
-    [JsonProperty("username")]
-    public string Username;
-    
-    [JsonProperty("password")]
-    public string Password;
+    [JsonProperty("username")] public string Username;
+
+    [JsonProperty("password")] public string Password;
 
     [JsonConstructor]
     public LoginRequest(string username, string password)
@@ -18,7 +16,7 @@ public class LoginRequest : IRequest
         Password = password;
     }
 
-    public string getRequestJson()
+    public string GetRequestJson()
     {
         return JsonConvert.SerializeObject(this);
     }

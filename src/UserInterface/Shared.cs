@@ -5,13 +5,16 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface;
 
+/// <summary>
+/// Values shared between views.
+/// </summary>
 public static class Shared
 {
     private static readonly object ViewLocker = new();
-    public static IView View = new ConnectionView();
-    
-    public static string UserInput  = "";
-    public static CommandResponse CommandResponse = new CommandResponse("", CommandResponse.ResponseType.Info);
+    public static IView View { get; set; } = new ConnectionView();
+
+    public static string UserInput { get; set; } = "";
+    public static CommandResponse Response { get; set; } = new("", CommandResponse.ResponseType.Info);
 
     public static void RefreshView()
     {
@@ -20,15 +23,12 @@ public static class Shared
             View.DrawUserInterface();
         }
     }
-    
+
     public static void GetNewMessages()
     {
         lock (ViewLocker)
         {
-            if (View is ConversationView conversationView)
-            {
-                conversationView.GetNewMessages();
-            }
+            if (View is ConversationView conversationView) conversationView.GetNewMessages();
             View.DrawUserInterface();
         }
     }

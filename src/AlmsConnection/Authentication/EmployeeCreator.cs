@@ -27,13 +27,13 @@ public static class EmployeeCreator
     public static RegisterResult Register(RegisterRequest request)
     {
         LastRegisterAttemptIssues = null;
-        
+
         var response = Connector.Post(
             "register",
-            request.getRequestJson(),
+            request.GetRequestJson(),
             true
         );
-        
+
         switch (response.StatusCode)
         {
             case HttpStatusCode.InternalServerError:

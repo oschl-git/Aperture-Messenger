@@ -5,11 +5,9 @@ namespace ApertureMessenger.AlmsConnection.Requests;
 [Serializable]
 public class SendMessageRequest : IRequest
 {
-    [JsonProperty("conversationId")]
-    public int ConversationId;
-    
-    [JsonProperty("content")]
-    public string Content;
+    [JsonProperty("conversationId")] public int ConversationId;
+
+    [JsonProperty("content")] public string Content;
 
     [JsonConstructor]
     public SendMessageRequest(int conversationId, string content)
@@ -18,7 +16,7 @@ public class SendMessageRequest : IRequest
         Content = content;
     }
 
-    public string getRequestJson()
+    public string GetRequestJson()
     {
         return JsonConvert.SerializeObject(this);
     }

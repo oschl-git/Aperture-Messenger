@@ -8,6 +8,9 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Messaging.Commands;
 
+/// <summary>
+/// A command that handles entering a direct conversation with another user.
+/// </summary>
 public class DirectMessage : ICommand
 {
     public string[] Aliases { get; } = ["directmessage", "dm"];
@@ -16,7 +19,7 @@ public class DirectMessage : ICommand
     {
         if (args.Length == 0)
         {
-            Shared.CommandResponse = new CommandResponse(
+            Shared.Response = new CommandResponse(
                 "Missing argument: You must provide a username of the user to message.",
                 CommandResponse.ResponseType.Error
             );
@@ -25,7 +28,7 @@ public class DirectMessage : ICommand
 
         if (args.Length > 1)
         {
-            Shared.CommandResponse = new CommandResponse(
+            Shared.Response = new CommandResponse(
                 "Too many arguments for command.",
                 CommandResponse.ResponseType.Error
             );
@@ -36,7 +39,7 @@ public class DirectMessage : ICommand
 
         if (username == Session.Employee?.Username)
         {
-            Shared.CommandResponse = new CommandResponse(
+            Shared.Response = new CommandResponse(
                 "You can't message yourself, you moron!",
                 CommandResponse.ResponseType.Error
             );
@@ -50,13 +53,13 @@ public class DirectMessage : ICommand
         }
         catch (EmployeeDoesNotExist)
         {
-            Shared.CommandResponse = new CommandResponse(
+            Shared.Response = new CommandResponse(
                 "The provided username doesn't exist.",
                 CommandResponse.ResponseType.Error
             );
             return;
         }
-        
+
         Shared.View = new ConversationView(conversation);
     }
 }

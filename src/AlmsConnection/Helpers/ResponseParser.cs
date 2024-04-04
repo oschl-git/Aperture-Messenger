@@ -18,7 +18,7 @@ public static class ResponseParser
         using var reader = new StreamReader(response.Content.ReadAsStream());
         return reader.ReadToEnd();
     }
-    
+
     public static ErrorResponse GetErrorResponse(HttpResponseMessage response)
     {
         var contentString = GetResponseContent(response);
@@ -33,10 +33,7 @@ public static class ResponseParser
             throw new JsonException("Failed parsing JSON error response");
         }
 
-        if (errorContent == null)
-        {
-            throw new JsonException("JSON error response was empty");
-        }
+        if (errorContent == null) throw new JsonException("JSON error response was empty");
 
         return errorContent;
     }

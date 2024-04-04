@@ -10,13 +10,11 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Authentication.Views;
 
+/// <summary>
+/// A view/UI handler for displaying the login CLI.
+/// </summary>
 public class LoginView : IView
 {
-    private static readonly ICommand[] Commands =
-    [
-        new Exit()
-    ];
-
     private enum Stage
     {
         UsernameInput,
@@ -24,7 +22,7 @@ public class LoginView : IView
         PasswordInput,
         LoginAttempt,
         LoginSuccess,
-        LoginAborted,
+        LoginAborted
     }
 
     private Stage _currentStage = Stage.UsernameInput;
@@ -34,7 +32,7 @@ public class LoginView : IView
 
     public void Process()
     {
-        Shared.CommandResponse = new CommandResponse(
+        Shared.Response = new CommandResponse(
             "Input your authentication details to log in.",
             CommandResponse.ResponseType.Info
         );
@@ -91,7 +89,7 @@ public class LoginView : IView
             (int)Stage.PasswordInput,
             (int)Stage.LoginSuccess
         );
-        
+
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteWithWordWrap("Use the :exit command to cancel logging in.", ConsoleColor.Red);
 
@@ -107,7 +105,7 @@ public class LoginView : IView
 
     private void HandleUsernameVerification()
     {
-        Shared.CommandResponse = new CommandResponse(
+        Shared.Response = new CommandResponse(
             "Checking username validity...",
             CommandResponse.ResponseType.Loading
         );
@@ -120,7 +118,7 @@ public class LoginView : IView
 
         if (usernameExists)
         {
-            Shared.CommandResponse = new CommandResponse(
+            Shared.Response = new CommandResponse(
                 usernameIsGlados ? gladosEasterEggQuote : "Username is valid.",
                 CommandResponse.ResponseType.Success
             );
@@ -128,7 +126,7 @@ public class LoginView : IView
         }
         else
         {
-            Shared.CommandResponse = new CommandResponse(
+            Shared.Response = new CommandResponse(
                 usernameIsGlados ? gladosEasterEggQuote : "Employee with the submitted username doesn't exist.",
                 CommandResponse.ResponseType.Error
             );
@@ -145,7 +143,7 @@ public class LoginView : IView
 
     private void HandleLoginAttempt()
     {
-        Shared.CommandResponse = new CommandResponse("Authenticating...", CommandResponse.ResponseType.Loading);
+        Shared.Response = new CommandResponse("Authenticating...", CommandResponse.ResponseType.Loading);
         Shared.RefreshView();
 
         var result = Authenticator.Login(new LoginRequest(_submittedUsername ?? "", _submittedPassword ?? ""));
@@ -154,7 +152,7 @@ public class LoginView : IView
         {
             case Authenticator.LoginResult.Success:
                 _currentStage = Stage.LoginSuccess;
-                Shared.CommandResponse = new CommandResponse(
+                Shared.Response = new CommandResponse(
                     $"Employee {Session.Employee?.Name} {Session.Employee?.Surname} successfully logged in!",
                     CommandResponse.ResponseType.Success
                 );
@@ -162,14 +160,14 @@ public class LoginView : IView
                 break;
 
             case Authenticator.LoginResult.UserDoesNotExist:
-                Shared.CommandResponse = new CommandResponse(
+                Shared.Response = new CommandResponse(
                     "Somehow, you don't exist anymore.", CommandResponse.ResponseType.Error
                 );
                 _currentStage = Stage.UsernameInput;
                 break;
 
             case Authenticator.LoginResult.IncorrectPassword:
-                Shared.CommandResponse = new CommandResponse(
+                Shared.Response = new CommandResponse(
                     "Incorrect password.", CommandResponse.ResponseType.Error
                 );
                 _currentStage = Stage.PasswordInput;
@@ -189,9 +187,9 @@ public class LoginView : IView
 
     private bool CheckForExitCommand(string userInput)
     {
-        var result = CommandProcessor.InvokeCommand(userInput, Commands);
+        var result = CommandProcessor.InvokeCommand(userInput, [new Exit()]);
         if (result != CommandProcessor.Result.Success) return false;
-        
+
         _currentStage = Stage.LoginAborted;
         return true;
     }

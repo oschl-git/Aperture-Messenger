@@ -5,11 +5,9 @@ namespace ApertureMessenger.AlmsConnection.Requests;
 [Serializable]
 public class CreateGroupConversationRequest : IRequest
 {
-    [JsonProperty("name")]
-    public string Name;
+    [JsonProperty("name")] public string Name;
 
-    [JsonProperty("employees")]
-    public string[] EmployeeUsernames;
+    [JsonProperty("employees")] public string[] EmployeeUsernames;
 
     [JsonConstructor]
     public CreateGroupConversationRequest(string name, string[] employeeUsernames)
@@ -18,7 +16,7 @@ public class CreateGroupConversationRequest : IRequest
         EmployeeUsernames = employeeUsernames;
     }
 
-    public string getRequestJson()
+    public string GetRequestJson()
     {
         return JsonConvert.SerializeObject(this);
     }

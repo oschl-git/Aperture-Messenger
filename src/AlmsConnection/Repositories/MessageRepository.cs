@@ -16,7 +16,7 @@ public static class MessageRepository
     {
         var response = Connector.Post(
             "send-message",
-            request.getRequestJson()
+            request.GetRequestJson()
         );
 
         switch (response.StatusCode)
@@ -70,10 +70,7 @@ public static class MessageRepository
                     throw new JsonException("Failed parsing message JSON");
                 }
 
-                if (messages == null)
-                {
-                    throw new JsonException("Message JSON was empty");
-                }
+                if (messages == null) throw new JsonException("Message JSON was empty");
 
                 return messages;
 
@@ -89,7 +86,7 @@ public static class MessageRepository
 
         throw new UnhandledResponseError();
     }
-    
+
     public static Message[] GetUnreadMessages(int conversationId)
     {
         var response = Connector.Get(
@@ -111,10 +108,7 @@ public static class MessageRepository
                     throw new JsonException("Failed parsing unread message JSON");
                 }
 
-                if (messages == null)
-                {
-                    throw new JsonException("Unread message JSON was empty");
-                }
+                if (messages == null) throw new JsonException("Unread message JSON was empty");
 
                 return messages;
 

@@ -8,14 +8,18 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Messaging.Commands;
 
+/// <summary>
+/// A command that handles creating a new group conversation.
+/// </summary>
 public class CreateGroupConversation : ICommand
 {
     public string[] Aliases { get; } = ["creategroup", "cg"];
+
     public void Invoke(string[] args)
     {
         if (args.Length < 3)
         {
-            Shared.CommandResponse = new CommandResponse(
+            Shared.Response = new CommandResponse(
                 "Missing arguments: You must specify the name and at least two other participants.",
                 CommandResponse.ResponseType.Error
             );
@@ -27,23 +31,23 @@ public class CreateGroupConversation : ICommand
 
         if (name.Length > 64)
         {
-            Shared.CommandResponse = new CommandResponse(
+            Shared.Response = new CommandResponse(
                 "Name can't be longer than 64 characters.",
                 CommandResponse.ResponseType.Error
             );
             return;
         }
-        
+
         switch (participants.Length)
         {
             case < 2:
-                Shared.CommandResponse = new CommandResponse(
+                Shared.Response = new CommandResponse(
                     "Missing arguments: You must specify at least two unique participants, you moron!",
                     CommandResponse.ResponseType.Error
                 );
                 return;
             case > 10:
-                Shared.CommandResponse = new CommandResponse(
+                Shared.Response = new CommandResponse(
                     "Group conversations cannot have more than 10 participants.",
                     CommandResponse.ResponseType.Error
                 );
@@ -51,16 +55,14 @@ public class CreateGroupConversation : ICommand
         }
 
         foreach (var participant in participants)
-        {
             if (participant == Session.Employee?.Username)
             {
-                Shared.CommandResponse = new CommandResponse(
+                Shared.Response = new CommandResponse(
                     "You can't specify yourself as one of the participants.",
                     CommandResponse.ResponseType.Error
                 );
                 return;
             }
-        }
 
         try
         {
@@ -68,19 +70,16 @@ public class CreateGroupConversation : ICommand
         }
         catch (EmployeesDoNotExist e)
         {
-            Shared.CommandResponse = new CommandResponse(
+            Shared.Response = new CommandResponse(
                 $"Employees do not exist: {string.Join(", ", e.Usernames)}.",
                 CommandResponse.ResponseType.Error
             );
             return;
         }
 
-        if (Shared.View is ConversationListView conversationListView)
-        {
-            conversationListView.RefreshConversations();
-        }
-        
-        Shared.CommandResponse = new CommandResponse(
+        if (Shared.View is ConversationListView conversationListView) conversationListView.RefreshConversations();
+
+        Shared.Response = new CommandResponse(
             $"Conversation {name} successfully created!",
             CommandResponse.ResponseType.Success
         );

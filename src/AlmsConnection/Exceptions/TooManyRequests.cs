@@ -10,7 +10,7 @@ public class TooManyRequests : Exception
         : base(message)
     {
     }
-    
+
     public TooManyRequests(string message, Exception inner)
         : base(message, inner)
     {

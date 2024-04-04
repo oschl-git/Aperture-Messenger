@@ -9,6 +9,9 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Messaging.Views;
 
+/// <summary>
+/// A view/UI handler for displaying a live conversation.
+/// </summary>
 public class ConversationView : IView
 {
     private readonly Conversation _conversation;
@@ -25,7 +28,7 @@ public class ConversationView : IView
 
     public void Process()
     {
-        Shared.CommandResponse = new CommandResponse(
+        Shared.Response = new CommandResponse(
             "Input is sent as a message unless you prefix it with a colon (:).",
             CommandResponse.ResponseType.Info
         );
@@ -45,7 +48,7 @@ public class ConversationView : IView
                 }
                 catch (MessageContentWasTooLong)
                 {
-                    Shared.CommandResponse = new CommandResponse(
+                    Shared.Response = new CommandResponse(
                         "The message was too long to be sent.",
                         CommandResponse.ResponseType.Error
                     );
@@ -54,7 +57,7 @@ public class ConversationView : IView
                 }
 
                 Shared.GetNewMessages();
-                Shared.CommandResponse = new CommandResponse(
+                Shared.Response = new CommandResponse(
                     "Message sent.",
                     CommandResponse.ResponseType.Success
                 );
@@ -64,7 +67,7 @@ public class ConversationView : IView
             switch (commandResult)
             {
                 case CommandProcessor.Result.InvalidCommand:
-                    Shared.CommandResponse = new CommandResponse(
+                    Shared.Response = new CommandResponse(
                         $"{userInput} is not a valid command.",
                         CommandResponse.ResponseType.Error
                     );
@@ -104,9 +107,7 @@ public class ConversationView : IView
         if (_conversation.Participants == null) return $"A MYSTERIOUS CONVERSATION (ID: {_conversation.Id})";
 
         if (_conversation.IsGroup)
-        {
             return $"GROUP CONVERSATION \"{_conversation.Name}\" ({_conversation.Participants.Count} members)";
-        }
 
         Employee? otherEmployee = null;
         foreach (var employee in _conversation.Participants)
@@ -127,9 +128,6 @@ public class ConversationView : IView
     public void GetNewMessages()
     {
         var unreadMessages = MessageRepository.GetUnreadMessages(_conversation.Id).ToList();
-        foreach (var message in unreadMessages)
-        {
-            _messages.Add(message);
-        }
+        foreach (var message in unreadMessages) _messages.Add(message);
     }
 }

@@ -1,22 +1,26 @@
+using System.Configuration;
+
 namespace ApertureMessenger.UserInterface;
 
+/// <summary>
+/// Handles refreshing the UI and messages in a separate thread.
+/// </summary>
 public static class MessageRefresher
 {
-    private const int SecondsToSleep = 3;
     private static Thread? _refresher;
 
     public static void StartRefresherThread()
     {
-        _refresher = new Thread(Refresher);
+        _refresher = new Thread(() => { Refresher(GetSecondsToSleep()); });
         _refresher.Start();
     }
 
-    private static void Refresher()
+    private static void Refresher(int secondsToSleep)
     {
         while (true)
         {
-            Thread.Sleep(SecondsToSleep * 1000);
-            
+            Thread.Sleep(secondsToSleep * 1000);
+
             try
             {
                 Shared.GetNewMessages();
@@ -26,5 +30,10 @@ public static class MessageRefresher
                 // unsuccessful refresh can be ignored
             }
         }
+    }
+
+    private static int GetSecondsToSleep()
+    {
+        return int.Parse(ConfigurationManager.AppSettings.Get("RefreshSleepSeconds") ?? "3");
     }
 }

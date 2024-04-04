@@ -10,7 +10,7 @@ public class BadRequestSent : Exception
         : base(message)
     {
     }
-    
+
     public BadRequestSent(string message, Exception inner)
         : base(message, inner)
     {

@@ -6,11 +6,9 @@ namespace ApertureMessenger.AlmsConnection.Responses;
 [Serializable]
 public class LoginResponse
 {
-    [JsonProperty("token")]
-    public string Token;
-    
-    [JsonProperty("employee")]
-    public Employee Employee;
+    [JsonProperty("token")] public string Token;
+
+    [JsonProperty("employee")] public Employee Employee;
 
     [JsonConstructor]
     public LoginResponse(string token, Employee employee)

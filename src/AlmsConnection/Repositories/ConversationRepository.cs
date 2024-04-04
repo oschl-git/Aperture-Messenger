@@ -16,7 +16,7 @@ public static class ConversationRepository
     {
         var response = Connector.Post(
             "create-group-conversation",
-            request.getRequestJson()
+            request.GetRequestJson()
         );
 
         switch (response.StatusCode)
@@ -46,12 +46,12 @@ public static class ConversationRepository
         var response = Connector.Get(
             "get-direct-conversation/" + username
         );
-        
+
         switch (response.StatusCode)
         {
             case HttpStatusCode.OK:
                 var contentString = ResponseParser.GetResponseContent(response);
-                
+
                 Conversation? conversation;
                 try
                 {
@@ -62,10 +62,7 @@ public static class ConversationRepository
                     throw new JsonException("Failed parsing direct conversation JSON");
                 }
 
-                if (conversation == null)
-                {
-                    throw new JsonException("Direct conversation JSON was empty");
-                }
+                if (conversation == null) throw new JsonException("Direct conversation JSON was empty");
 
                 return conversation;
 
@@ -106,10 +103,7 @@ public static class ConversationRepository
                     throw new JsonException("Failed parsing conversations JSON");
                 }
 
-                if (conversations == null)
-                {
-                    throw new JsonException("Conversations JSON was empty");
-                }
+                if (conversations == null) throw new JsonException("Conversations JSON was empty");
 
                 return conversations;
         }
@@ -138,10 +132,7 @@ public static class ConversationRepository
                     throw new JsonException("Failed parsing direct conversations JSON");
                 }
 
-                if (conversations == null)
-                {
-                    throw new JsonException("Direct conversations JSON was empty");
-                }
+                if (conversations == null) throw new JsonException("Direct conversations JSON was empty");
 
                 return conversations;
         }
@@ -170,10 +161,7 @@ public static class ConversationRepository
                     throw new JsonException("Failed parsing group conversations JSON");
                 }
 
-                if (conversations == null)
-                {
-                    throw new JsonException("Group conversations JSON was empty");
-                }
+                if (conversations == null) throw new JsonException("Group conversations JSON was empty");
 
                 return conversations;
         }
@@ -186,7 +174,7 @@ public static class ConversationRepository
         var response = Connector.Get(
             "get-conversation-by-id/" + id
         );
-        
+
         switch (response.StatusCode)
         {
             case HttpStatusCode.OK:
@@ -201,10 +189,7 @@ public static class ConversationRepository
                     throw new JsonException("Failed parsing conversation JSON");
                 }
 
-                if (conversation == null)
-                {
-                    throw new JsonException("Conversation JSON was empty");
-                }
+                if (conversation == null) throw new JsonException("Conversation JSON was empty");
 
                 return conversation;
 

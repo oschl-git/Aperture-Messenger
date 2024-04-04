@@ -5,6 +5,9 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Authentication.Views;
 
+/// <summary>
+/// A view/UI handler for displaying the base authentication CLI.
+/// </summary>
 public class AuthenticationView : IView
 {
     private static readonly ICommand[] Commands =
@@ -22,17 +25,17 @@ public class AuthenticationView : IView
 
             var userInput = ConsoleReader.ReadCommandFromUser();
             var commandResult = CommandProcessor.InvokeCommand(userInput, Commands);
-            
+
             switch (commandResult)
             {
                 case CommandProcessor.Result.NotACommand:
-                    Shared.CommandResponse = new CommandResponse(
+                    Shared.Response = new CommandResponse(
                         "Commands must start with a colon (:).",
                         CommandResponse.ResponseType.Error
                     );
                     break;
                 case CommandProcessor.Result.InvalidCommand:
-                    Shared.CommandResponse = new CommandResponse(
+                    Shared.Response = new CommandResponse(
                         $"{userInput} is not a valid authentication command.",
                         CommandResponse.ResponseType.Error
                     );

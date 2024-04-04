@@ -1,5 +1,8 @@
 namespace ApertureMessenger.UserInterface.Console;
 
+/// <summary>
+/// Handles writing to the console.
+/// </summary>
 public static class ConsoleWriter
 {
     public static void Setup()

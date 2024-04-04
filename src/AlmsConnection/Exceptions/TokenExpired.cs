@@ -10,7 +10,7 @@ public class TokenExpired : Exception
         : base(message)
     {
     }
-    
+
     public TokenExpired(string message, Exception inner)
         : base(message, inner)
     {

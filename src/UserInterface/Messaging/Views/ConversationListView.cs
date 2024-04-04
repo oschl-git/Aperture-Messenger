@@ -7,6 +7,9 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Messaging.Views;
 
+/// <summary>
+/// A view/UI handler for displaying a list of conversations.
+/// </summary>
 public class ConversationListView : IView
 {
     private Conversation[] _conversations;
@@ -42,13 +45,13 @@ public class ConversationListView : IView
             switch (commandResult)
             {
                 case CommandProcessor.Result.NotACommand:
-                    Shared.CommandResponse = new CommandResponse(
+                    Shared.Response = new CommandResponse(
                         "Commands must start with a colon (:).",
                         CommandResponse.ResponseType.Error
                     );
                     break;
                 case CommandProcessor.Result.InvalidCommand:
-                    Shared.CommandResponse = new CommandResponse(
+                    Shared.Response = new CommandResponse(
                         $"{userInput} is not a valid command in this context.",
                         CommandResponse.ResponseType.Error
                     );
@@ -88,9 +91,7 @@ public class ConversationListView : IView
         foreach (var conversation in _conversations)
         {
             if (conversation.Name == null || conversation.Participants == null)
-            {
                 throw new InvalidDataException("Group conversations didn't have required attributes.");
-            }
 
             ConsoleWriter.Write(" - ");
             ConsoleWriter.Write(conversation.Name, ConsoleColor.Magenta);
@@ -109,9 +110,7 @@ public class ConversationListView : IView
         foreach (var conversation in _conversations)
         {
             if (conversation.Participants == null)
-            {
                 throw new InvalidDataException("Direct conversations didn't have required attributes.");
-            }
 
             ConsoleWriter.Write(" - ");
 
@@ -132,15 +131,9 @@ public class ConversationListView : IView
     private Employee GetOtherParticipant(Employee[]? participants)
     {
         if (participants != null)
-        {
             foreach (var participant in participants)
-            {
                 if (participant.Username != Session.Employee?.Username)
-                {
                     return participant;
-                }
-            }
-        }
 
         throw new InvalidDataException("Direct conversation had an invalid participant list.");
     }

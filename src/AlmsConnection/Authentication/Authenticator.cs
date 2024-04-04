@@ -28,15 +28,15 @@ public static class Authenticator
     {
         var response = Connector.Post(
             "login",
-            request.getRequestJson(),
+            request.GetRequestJson(),
             true
         );
-        
+
         switch (response.StatusCode)
         {
             case HttpStatusCode.OK:
                 var contentString = ResponseParser.GetResponseContent(response);
-                
+
                 LoginResponse? content;
                 try
                 {
@@ -47,10 +47,7 @@ public static class Authenticator
                     throw new JsonException("Failed parsing JSON login response");
                 }
 
-                if (content == null)
-                {
-                    throw new JsonException("JSON login response was empty");
-                }
+                if (content == null) throw new JsonException("JSON login response was empty");
 
                 Session.SetSession(content.Token, content.Employee);
                 return LoginResult.Success;

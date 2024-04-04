@@ -6,6 +6,9 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.ErrorHandling.Views;
 
+/// <summary>
+/// A view/UI handler for displaying the error view CLI.
+/// </summary>
 public class ErrorView : IView
 {
     private static readonly ICommand[] Commands =
@@ -23,7 +26,7 @@ public class ErrorView : IView
 
     public void Process()
     {
-        Shared.CommandResponse = new CommandResponse("Use :retry to restart the application or :exit to exit.",
+        Shared.Response = new CommandResponse("Use :retry to restart the application or :exit to exit.",
             CommandResponse.ResponseType.Info);
         Shared.UserInput = "";
 
@@ -37,13 +40,13 @@ public class ErrorView : IView
             switch (commandResult)
             {
                 case CommandProcessor.Result.NotACommand:
-                    Shared.CommandResponse = new CommandResponse(
+                    Shared.Response = new CommandResponse(
                         "Commands must start with a colon (:).",
                         CommandResponse.ResponseType.Error
                     );
                     break;
                 case CommandProcessor.Result.InvalidCommand:
-                    Shared.CommandResponse = new CommandResponse(
+                    Shared.Response = new CommandResponse(
                         $"{userInput} is not a valid command in this context.",
                         CommandResponse.ResponseType.Error
                     );
@@ -75,7 +78,7 @@ public class ErrorView : IView
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();
-        
+
         ConsoleWriter.WriteLine("DETAILS:", ConsoleColor.Yellow);
         ConsoleWriter.WriteWithWordWrap(_exception.ToString(), ConsoleColor.Red);
 

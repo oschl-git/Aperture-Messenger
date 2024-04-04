@@ -10,7 +10,7 @@ public class CommandResponse
         Info,
         Loading
     }
-    
+
     public string Response;
     public ResponseType Type;
 
@@ -43,7 +43,7 @@ public class CommandResponse
             ResponseType.Info => ConsoleColor.DarkCyan,
             ResponseType.Loading => ConsoleColor.Gray,
             _ => ConsoleColor.Black
-        }; 
+        };
     }
 
     public override string ToString()
