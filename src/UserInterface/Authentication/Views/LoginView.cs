@@ -32,9 +32,9 @@ public class LoginView : IView
 
     public void Process()
     {
-        Shared.Response = new CommandResponse(
+        Shared.Feedback = new CommandFeedback(
             "Input your authentication details to log in.",
-            CommandResponse.ResponseType.Info
+            CommandFeedback.ResponseType.Info
         );
 
         while (_currentStage != Stage.LoginSuccess)
@@ -105,9 +105,9 @@ public class LoginView : IView
 
     private void HandleUsernameVerification()
     {
-        Shared.Response = new CommandResponse(
+        Shared.Feedback = new CommandFeedback(
             "Checking username validity...",
-            CommandResponse.ResponseType.Loading
+            CommandFeedback.ResponseType.Loading
         );
         Shared.RefreshView();
 
@@ -118,17 +118,17 @@ public class LoginView : IView
 
         if (usernameExists)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 usernameIsGlados ? gladosEasterEggQuote : "Username is valid.",
-                CommandResponse.ResponseType.Success
+                CommandFeedback.ResponseType.Success
             );
             _currentStage = Stage.PasswordInput;
         }
         else
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 usernameIsGlados ? gladosEasterEggQuote : "Employee with the submitted username doesn't exist.",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             _currentStage = Stage.UsernameInput;
         }
@@ -143,7 +143,7 @@ public class LoginView : IView
 
     private void HandleLoginAttempt()
     {
-        Shared.Response = new CommandResponse("Authenticating...", CommandResponse.ResponseType.Loading);
+        Shared.Feedback = new CommandFeedback("Authenticating...", CommandFeedback.ResponseType.Loading);
         Shared.RefreshView();
 
         var result = Authenticator.Login(new LoginRequest(_submittedUsername ?? "", _submittedPassword ?? ""));
@@ -152,23 +152,23 @@ public class LoginView : IView
         {
             case Authenticator.LoginResult.Success:
                 _currentStage = Stage.LoginSuccess;
-                Shared.Response = new CommandResponse(
+                Shared.Feedback = new CommandFeedback(
                     $"Employee {Session.Employee?.Name} {Session.Employee?.Surname} successfully logged in!",
-                    CommandResponse.ResponseType.Success
+                    CommandFeedback.ResponseType.Success
                 );
                 Shared.View = new MessagingView();
                 break;
 
             case Authenticator.LoginResult.UserDoesNotExist:
-                Shared.Response = new CommandResponse(
-                    "Somehow, you don't exist anymore.", CommandResponse.ResponseType.Error
+                Shared.Feedback = new CommandFeedback(
+                    "Somehow, you don't exist anymore.", CommandFeedback.ResponseType.Error
                 );
                 _currentStage = Stage.UsernameInput;
                 break;
 
             case Authenticator.LoginResult.IncorrectPassword:
-                Shared.Response = new CommandResponse(
-                    "Incorrect password.", CommandResponse.ResponseType.Error
+                Shared.Feedback = new CommandFeedback(
+                    "Incorrect password.", CommandFeedback.ResponseType.Error
                 );
                 _currentStage = Stage.PasswordInput;
                 break;

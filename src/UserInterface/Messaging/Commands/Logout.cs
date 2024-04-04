@@ -11,7 +11,7 @@ public class Logout : ICommand
     public void Invoke(string[] args)
     {
         Session.ClearSession();
-        Shared.Response = new CommandResponse("Successfully logged out.", CommandResponse.ResponseType.Success);
+        Shared.Feedback = new CommandFeedback("Successfully logged out.", CommandFeedback.ResponseType.Success);
         Shared.View = new AuthenticationView();
     }
 }

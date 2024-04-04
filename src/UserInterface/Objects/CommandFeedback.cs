@@ -1,6 +1,6 @@
 namespace ApertureMessenger.UserInterface.Objects;
 
-public class CommandResponse
+public class CommandFeedback
 {
     public enum ResponseType
     {
@@ -14,7 +14,7 @@ public class CommandResponse
     public string Response;
     public ResponseType Type;
 
-    public CommandResponse(string response, ResponseType type)
+    public CommandFeedback(string response, ResponseType type)
     {
         Response = response;
         Type = type;

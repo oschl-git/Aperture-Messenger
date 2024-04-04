@@ -19,15 +19,15 @@ public class ConversationById : ICommand
         switch (args.Length)
         {
             case 0:
-                Shared.Response = new CommandResponse(
+                Shared.Feedback = new CommandFeedback(
                     "Missing argument: You must provide the ID of the conversation.",
-                    CommandResponse.ResponseType.Error
+                    CommandFeedback.ResponseType.Error
                 );
                 return;
             case > 1:
-                Shared.Response = new CommandResponse(
+                Shared.Feedback = new CommandFeedback(
                     "Too many arguments for command.",
-                    CommandResponse.ResponseType.Error
+                    CommandFeedback.ResponseType.Error
                 );
                 return;
         }
@@ -39,17 +39,17 @@ public class ConversationById : ICommand
         }
         catch (ConversationNotFound)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 "The provided conversation doesn't exist.",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             return;
         }
         catch (FormatException)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 "The provided conversation ID must be an integer.",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             return;
         }

@@ -21,15 +21,15 @@ public class MessagingView : IView
             switch (commandResult)
             {
                 case CommandProcessor.Result.NotACommand:
-                    Shared.Response = new CommandResponse(
+                    Shared.Feedback = new CommandFeedback(
                         "Commands must start with a colon (:).",
-                        CommandResponse.ResponseType.Error
+                        CommandFeedback.ResponseType.Error
                     );
                     break;
                 case CommandProcessor.Result.InvalidCommand:
-                    Shared.Response = new CommandResponse(
+                    Shared.Feedback = new CommandFeedback(
                         "The provided input is not a valid command in this context.",
-                        CommandResponse.ResponseType.Error
+                        CommandFeedback.ResponseType.Error
                     );
                     break;
                 case CommandProcessor.Result.Success:

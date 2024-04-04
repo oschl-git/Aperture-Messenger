@@ -28,9 +28,9 @@ public class ConversationView : IView
 
     public void Process()
     {
-        Shared.Response = new CommandResponse(
+        Shared.Feedback = new CommandFeedback(
             "Input is sent as a message unless you prefix it with a colon (:).",
-            CommandResponse.ResponseType.Info
+            CommandFeedback.ResponseType.Info
         );
 
         while (true)
@@ -49,9 +49,9 @@ public class ConversationView : IView
             switch (commandResult)
             {
                 case CommandProcessor.Result.InvalidCommand:
-                    Shared.Response = new CommandResponse(
+                    Shared.Feedback = new CommandFeedback(
                         "The provided input is not a valid command in this context.",
-                        CommandResponse.ResponseType.Error
+                        CommandFeedback.ResponseType.Error
                     );
                     break;
                 case CommandProcessor.Result.Success:
@@ -69,18 +69,18 @@ public class ConversationView : IView
         }
         catch (MessageContentWasTooLong)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 "The message was too long to be sent.",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             Shared.UserInput = content;
             return;
         }
 
         Shared.GetNewMessages();
-        Shared.Response = new CommandResponse(
+        Shared.Feedback = new CommandFeedback(
             "Message sent.",
-            CommandResponse.ResponseType.Success
+            CommandFeedback.ResponseType.Success
         );
     }
 

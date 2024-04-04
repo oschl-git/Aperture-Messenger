@@ -19,18 +19,18 @@ public class DirectMessage : ICommand
     {
         if (args.Length == 0)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 "Missing argument: You must provide a username of the user to message.",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             return;
         }
 
         if (args.Length > 1)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 "Too many arguments for command.",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             return;
         }
@@ -39,9 +39,9 @@ public class DirectMessage : ICommand
 
         if (username == Session.Employee?.Username)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 "You can't message yourself, you moron!",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             return;
         }
@@ -53,9 +53,9 @@ public class DirectMessage : ICommand
         }
         catch (EmployeeDoesNotExist)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 "The provided username doesn't exist.",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             return;
         }

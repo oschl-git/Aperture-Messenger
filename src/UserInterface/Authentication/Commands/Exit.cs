@@ -22,9 +22,9 @@ public class Exit : ICommand
             Environment.Exit(0);
         }
 
-        Shared.Response = new CommandResponse(
+        Shared.Feedback = new CommandFeedback(
             "Use the :login or :register commands to authenticate.",
-            CommandResponse.ResponseType.Info
+            CommandFeedback.ResponseType.Info
         );
 
         Shared.View = new AuthenticationView();

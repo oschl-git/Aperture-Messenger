@@ -31,14 +31,14 @@ public static class ComponentWriter
         ConsoleWriter.WriteLine();
 
         var commandResponseLength =
-            $" {Shared.Response.GetTypeSymbol()} {Shared.Response.Response}".Length;
-        var commandResponseBackgroundColor = Shared.Response.GetTypeConsoleColor();
+            $" {Shared.Feedback.GetTypeSymbol()} {Shared.Feedback.Response}".Length;
+        var commandResponseBackgroundColor = Shared.Feedback.GetTypeConsoleColor();
 
         System.Console.BackgroundColor = commandResponseBackgroundColor;
 
         ConsoleWriter.MoveCursorToBottom(2);
         ConsoleWriter.Write(
-            $" {Shared.Response.GetTypeSymbol()} {Shared.Response.Response}",
+            $" {Shared.Feedback.GetTypeSymbol()} {Shared.Feedback.Response}",
             ConsoleColors.GetTextColorForBackground(commandResponseBackgroundColor)
         );
         FillerWriter.WriteFiller(' ', System.Console.WindowWidth - commandResponseLength);

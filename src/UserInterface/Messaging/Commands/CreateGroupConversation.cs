@@ -19,9 +19,9 @@ public class CreateGroupConversation : ICommand
     {
         if (args.Length < 3)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 "Missing arguments: You must specify the name and at least two other participants.",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             return;
         }
@@ -31,9 +31,9 @@ public class CreateGroupConversation : ICommand
 
         if (name.Length > 16)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 "Name can't be longer than 16 characters.",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             return;
         }
@@ -41,15 +41,15 @@ public class CreateGroupConversation : ICommand
         switch (participants.Length)
         {
             case < 2:
-                Shared.Response = new CommandResponse(
+                Shared.Feedback = new CommandFeedback(
                     "Missing arguments: You must specify at least two unique participants, you moron!",
-                    CommandResponse.ResponseType.Error
+                    CommandFeedback.ResponseType.Error
                 );
                 return;
             case > 9:
-                Shared.Response = new CommandResponse(
+                Shared.Feedback = new CommandFeedback(
                     "Group conversations cannot have more than 10 participants.",
-                    CommandResponse.ResponseType.Error
+                    CommandFeedback.ResponseType.Error
                 );
                 return;
         }
@@ -57,9 +57,9 @@ public class CreateGroupConversation : ICommand
         foreach (var participant in participants)
             if (participant == Session.Employee?.Username)
             {
-                Shared.Response = new CommandResponse(
+                Shared.Feedback = new CommandFeedback(
                     "You can't specify yourself as one of the participants.",
-                    CommandResponse.ResponseType.Error
+                    CommandFeedback.ResponseType.Error
                 );
                 return;
             }
@@ -70,18 +70,18 @@ public class CreateGroupConversation : ICommand
         }
         catch (EmployeesDoNotExist e)
         {
-            Shared.Response = new CommandResponse(
+            Shared.Feedback = new CommandFeedback(
                 $"Employees do not exist: {string.Join(", ", e.Usernames)}.",
-                CommandResponse.ResponseType.Error
+                CommandFeedback.ResponseType.Error
             );
             return;
         }
 
         if (Shared.View is ConversationListView conversationListView) conversationListView.RefreshConversations();
 
-        Shared.Response = new CommandResponse(
+        Shared.Feedback = new CommandFeedback(
             $"Conversation {name} successfully created!",
-            CommandResponse.ResponseType.Success
+            CommandFeedback.ResponseType.Success
         );
     }
 }
