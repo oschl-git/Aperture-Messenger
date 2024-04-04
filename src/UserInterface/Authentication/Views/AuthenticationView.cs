@@ -36,7 +36,7 @@ public class AuthenticationView : IView
                     break;
                 case CommandProcessor.Result.InvalidCommand:
                     Shared.Response = new CommandResponse(
-                        $"{userInput} is not a valid authentication command.",
+                        "The provided input is not a valid command in this context.",
                         CommandResponse.ResponseType.Error
                     );
                     break;

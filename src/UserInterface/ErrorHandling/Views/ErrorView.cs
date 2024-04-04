@@ -47,7 +47,7 @@ public class ErrorView : IView
                     break;
                 case CommandProcessor.Result.InvalidCommand:
                     Shared.Response = new CommandResponse(
-                        $"{userInput} is not a valid command in this context.",
+                        "The provided input is not a valid command in this context.",
                         CommandResponse.ResponseType.Error
                     );
                     break;

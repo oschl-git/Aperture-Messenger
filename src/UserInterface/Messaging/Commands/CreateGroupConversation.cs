@@ -29,10 +29,10 @@ public class CreateGroupConversation : ICommand
         var name = args[0];
         var participants = args.Skip(1).Distinct().ToArray();
 
-        if (name.Length > 64)
+        if (name.Length > 16)
         {
             Shared.Response = new CommandResponse(
-                "Name can't be longer than 64 characters.",
+                "Name can't be longer than 16 characters.",
                 CommandResponse.ResponseType.Error
             );
             return;
@@ -46,7 +46,7 @@ public class CreateGroupConversation : ICommand
                     CommandResponse.ResponseType.Error
                 );
                 return;
-            case > 10:
+            case > 9:
                 Shared.Response = new CommandResponse(
                     "Group conversations cannot have more than 10 participants.",
                     CommandResponse.ResponseType.Error

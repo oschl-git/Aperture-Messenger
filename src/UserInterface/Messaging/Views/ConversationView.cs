@@ -42,25 +42,7 @@ public class ConversationView : IView
 
             if (commandResult == CommandProcessor.Result.NotACommand)
             {
-                try
-                {
-                    MessageRepository.SendMessage(new SendMessageRequest(_conversation.Id, userInput));
-                }
-                catch (MessageContentWasTooLong)
-                {
-                    Shared.Response = new CommandResponse(
-                        "The message was too long to be sent.",
-                        CommandResponse.ResponseType.Error
-                    );
-                    Shared.UserInput = userInput;
-                    continue;
-                }
-
-                Shared.GetNewMessages();
-                Shared.Response = new CommandResponse(
-                    "Message sent.",
-                    CommandResponse.ResponseType.Success
-                );
+                SendMessage(userInput);
                 continue;
             }
 
@@ -68,7 +50,7 @@ public class ConversationView : IView
             {
                 case CommandProcessor.Result.InvalidCommand:
                     Shared.Response = new CommandResponse(
-                        $"{userInput} is not a valid command.",
+                        "The provided input is not a valid command in this context.",
                         CommandResponse.ResponseType.Error
                     );
                     break;
@@ -77,6 +59,29 @@ public class ConversationView : IView
                     return;
             }
         }
+    }
+
+    private void SendMessage(string content)
+    {
+        try
+        {
+            MessageRepository.SendMessage(new SendMessageRequest(_conversation.Id, content));
+        }
+        catch (MessageContentWasTooLong)
+        {
+            Shared.Response = new CommandResponse(
+                "The message was too long to be sent.",
+                CommandResponse.ResponseType.Error
+            );
+            Shared.UserInput = content;
+            return;
+        }
+
+        Shared.GetNewMessages();
+        Shared.Response = new CommandResponse(
+            "Message sent.",
+            CommandResponse.ResponseType.Success
+        );
     }
 
     public void DrawUserInterface()
