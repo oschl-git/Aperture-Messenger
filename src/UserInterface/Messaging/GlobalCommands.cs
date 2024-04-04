@@ -10,6 +10,8 @@ public static class GlobalCommands
         new DirectMessage(),
         new CreateGroupConversation(),
         new ConversationById(),
+        new ListGroupConversations(),
+        new ListDirectConversations(),
         new Exit()
     ];
 }

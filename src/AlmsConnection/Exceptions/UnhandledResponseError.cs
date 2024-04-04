@@ -10,4 +10,9 @@ public class UnhandledResponseError : Exception
         : base(message)
     {
     }
+    
+    public UnhandledResponseError(string message, Exception inner)
+        : base(message, inner)
+    {
+    }
 }

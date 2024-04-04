@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 
 namespace ApertureMessenger.AlmsConnection.Repositories;
 
+/// <summary>
+/// Handles access to ALMS messages.
+/// </summary>
 public static class MessageRepository
 {
     public static void SendMessage(SendMessageRequest request)

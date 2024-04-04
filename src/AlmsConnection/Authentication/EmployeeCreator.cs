@@ -2,11 +2,12 @@ using System.Net;
 using ApertureMessenger.AlmsConnection.Exceptions;
 using ApertureMessenger.AlmsConnection.Helpers;
 using ApertureMessenger.AlmsConnection.Requests;
-using ApertureMessenger.AlmsConnection.Responses;
-using Newtonsoft.Json;
 
 namespace ApertureMessenger.AlmsConnection.Authentication;
 
+/// <summary>
+/// Handles registering new users.
+/// </summary>
 public static class EmployeeCreator
 {
     public static List<string>? LastRegisterAttemptIssues;
@@ -18,6 +19,11 @@ public static class EmployeeCreator
         RequirementsNotSatisfied
     }
 
+    /// <summary>
+    /// Sends a registration request to ALMS.
+    /// </summary>
+    /// <param name="request">The registration request to send</param>
+    /// <returns>Registration attempt result</returns>
     public static RegisterResult Register(RegisterRequest request)
     {
         LastRegisterAttemptIssues = null;
@@ -25,7 +31,6 @@ public static class EmployeeCreator
         var response = Connector.Post(
             "register",
             request.getRequestJson(),
-            true,
             true
         );
         

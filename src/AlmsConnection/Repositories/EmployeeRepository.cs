@@ -5,6 +5,9 @@ using Newtonsoft.Json;
 
 namespace ApertureMessenger.AlmsConnection.Repositories;
 
+/// <summary>
+/// Handles access to ALMS employees.
+/// </summary>
 public static class EmployeeRepository
 {
     public static bool IsUsernameTaken(string username)

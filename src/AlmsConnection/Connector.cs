@@ -3,11 +3,12 @@ using System.Net;
 using System.Text;
 using ApertureMessenger.AlmsConnection.Exceptions;
 using ApertureMessenger.AlmsConnection.Helpers;
-using ApertureMessenger.AlmsConnection.Responses;
-using Newtonsoft.Json;
 
 namespace ApertureMessenger.AlmsConnection;
 
+/// <summary>
+/// A singleton that handles sending requests to ALMS.
+/// </summary>
 public sealed class Connector
 {
     private readonly HttpClient _almsClient;
@@ -34,15 +35,20 @@ public sealed class Connector
         return Instance;
     }
 
+    /// <summary>
+    /// Sends a GET HTTP request to ALMS.
+    /// </summary>
+    /// <param name="endpoint">Endpoint to send the request to</param>
+    /// <param name="disableAuthorization">Disables sending auth headers and reading auth errors</param>
+    /// <returns>ALMS response</returns>
     public static HttpResponseMessage Get(
         string endpoint,
-        bool disableAuthorizationHeaders = false,
-        bool disableAuthorizationErrors = false
+        bool disableAuthorization = false
     )
     {
         var request = new HttpRequestMessage(HttpMethod.Get, endpoint);
 
-        if (!disableAuthorizationHeaders)
+        if (!disableAuthorization)
         {
             AddAuthorizationHeaders(request);
         }
@@ -51,7 +57,7 @@ public sealed class Connector
 
         ThrowRateLimitError(response);
         
-        if (!disableAuthorizationErrors)
+        if (!disableAuthorization)
         {
             ThrowAuthorizationErrors(response);
         }
@@ -59,11 +65,17 @@ public sealed class Connector
         return response;
     }
 
+    /// <summary>
+    /// Sends a POST HTTP request to ALMS.
+    /// </summary>
+    /// <param name="endpoint">Endpoint to send the request to</param>
+    /// <param name="content">Content to include in the request</param>
+    /// <param name="disableAuthorization">Disables sending auth headers and reading auth errors</param>
+    /// <returns>ALMS response</returns>
     public static HttpResponseMessage Post(
         string endpoint,
         string content,
-        bool disableAuthorizationHeaders = false,
-        bool disableAuthorizationErrors = false
+        bool disableAuthorization = false
     )
     {
         var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
@@ -71,7 +83,7 @@ public sealed class Connector
             Content = new StringContent(content, Encoding.UTF8, "application/json")
         };
         
-        if (!disableAuthorizationHeaders)
+        if (!disableAuthorization)
         {
             AddAuthorizationHeaders(request);
         }
@@ -80,7 +92,7 @@ public sealed class Connector
 
         ThrowRateLimitError(response);
         
-        if (!disableAuthorizationErrors)
+        if (!disableAuthorization)
         {
             ThrowAuthorizationErrors(response);
         }
@@ -105,7 +117,7 @@ public sealed class Connector
 
     private static void AddAuthorizationHeaders(HttpRequestMessage request)
     {
-        request.Headers.Add("Token", Session.GetInstance().Token);
+        request.Headers.Add("Token", Session.Token);
     }
 
     private static void ThrowAuthorizationErrors(HttpResponseMessage response)

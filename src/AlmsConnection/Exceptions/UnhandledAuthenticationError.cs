@@ -10,4 +10,9 @@ public class UnhandledAuthenticationError : Exception
         : base(message)
     {
     }
+    
+    public UnhandledAuthenticationError(string message, Exception inner)
+        : base(message, inner)
+    {
+    }
 }

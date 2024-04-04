@@ -34,7 +34,7 @@ public class DirectMessage : ICommand
 
         var username = args[0];
 
-        if (username == Session.GetInstance().Employee?.Username)
+        if (username == Session.Employee?.Username)
         {
             Shared.CommandResponse = new CommandResponse(
                 "You can't message yourself, you moron!",

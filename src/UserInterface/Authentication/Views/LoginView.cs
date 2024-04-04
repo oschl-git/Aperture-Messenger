@@ -34,8 +34,6 @@ public class LoginView : IView
 
     public void Process()
     {
-        Shared.View = this;
-
         Shared.CommandResponse = new CommandResponse(
             "Input your authentication details to log in.",
             CommandResponse.ResponseType.Info
@@ -97,7 +95,7 @@ public class LoginView : IView
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteWithWordWrap("Use the :exit command to cancel logging in.", ConsoleColor.Red);
 
-        ComponentWriter.WriteUserInput(GetPrompt());
+        ComponentWriter.WriteUserInput(GetPrompt(), _currentStage == Stage.PasswordInput);
     }
 
     private void HandleUsernameInput()
@@ -157,7 +155,7 @@ public class LoginView : IView
             case Authenticator.LoginResult.Success:
                 _currentStage = Stage.LoginSuccess;
                 Shared.CommandResponse = new CommandResponse(
-                    $"Employee {Session.GetInstance().Employee?.Name} {Session.GetInstance().Employee?.Surname} successfully logged in!",
+                    $"Employee {Session.Employee?.Name} {Session.Employee?.Surname} successfully logged in!",
                     CommandResponse.ResponseType.Success
                 );
                 Shared.View = new MessagingView();

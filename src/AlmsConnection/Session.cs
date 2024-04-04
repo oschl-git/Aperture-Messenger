@@ -2,30 +2,23 @@ using ApertureMessenger.AlmsConnection.Objects;
 
 namespace ApertureMessenger.AlmsConnection;
 
-public sealed class Session
+/// <summary>
+/// Stores details about the current session.
+/// </summary>
+public static class Session
 {
-    public string? Token;
-    public Employee? Employee;
+    public static string? Token { get; private set; }
+    public static Employee? Employee;
     
-    private static readonly Session Instance = new();
-
-    private Session()
-    {
-    }
-
-    public static Session GetInstance()
-    {
-        return Instance;
-    }
-    
-    public void SetParameters(string token, Employee employee)
+    public static void SetSession(string token, Employee employee)
     {
         Token = token;
         Employee = employee;
     }
 
-    public bool IsAuthenticated()
+    public static void ClearSession()
     {
-        return Token != null;
+        Token = null;
+        Employee = null;
     }
 }

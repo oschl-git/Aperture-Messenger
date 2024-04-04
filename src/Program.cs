@@ -1,4 +1,5 @@
-﻿using ApertureMessenger.UserInterface;
+﻿using ApertureMessenger.AlmsConnection;
+using ApertureMessenger.UserInterface;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.ErrorHandling.Views;
 
@@ -20,6 +21,7 @@ internal static class Program
             }
             catch (Exception e)
             {
+                Session.ClearSession();
                 Shared.View = new ErrorView(e);
             }
         }

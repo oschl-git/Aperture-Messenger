@@ -16,10 +16,6 @@ public class AuthenticationView : IView
 
     public void Process()
     {
-        Shared.View = this;
-        Shared.CommandResponse = new CommandResponse("Use the :login or :register commands to authenticate.",
-            CommandResponse.ResponseType.Info);
-
         while (true)
         {
             Shared.RefreshView();

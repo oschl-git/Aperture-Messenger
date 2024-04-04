@@ -2,6 +2,7 @@ using ApertureMessenger.AlmsConnection;
 using ApertureMessenger.AlmsConnection.Exceptions;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
+using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Authentication.Views;
 
@@ -16,6 +17,9 @@ public class ConnectionView : IView
             throw new FailedContactingAlms();
         }
         
+        
+        Shared.CommandResponse = new CommandResponse("Use the :login or :register commands to authenticate.",
+            CommandResponse.ResponseType.Info);
         Shared.View = new AuthenticationView();
     }
 

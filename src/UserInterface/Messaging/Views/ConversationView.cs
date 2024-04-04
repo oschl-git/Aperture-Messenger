@@ -25,7 +25,6 @@ public class ConversationView : IView
 
     public void Process()
     {
-        Shared.View = this;
         Shared.CommandResponse = new CommandResponse(
             "Input is sent as a message unless you prefix it with a colon (:).",
             CommandResponse.ResponseType.Info
@@ -86,7 +85,7 @@ public class ConversationView : IView
         foreach (var message in _messages)
         {
             var employeeString = $"{message.Employee.Username} [{message.DateTimeSent.ToLocalTime()}]: ";
-            var employeeColor = message.Employee.Username == Session.GetInstance().Employee?.Username
+            var employeeColor = message.Employee.Username == Session.Employee?.Username
                 ? ConsoleColor.Magenta
                 : ConsoleColor.Cyan;
 
@@ -97,7 +96,7 @@ public class ConversationView : IView
             ConsoleWriter.WriteLine();
         }
 
-        ComponentWriter.WriteUserInput($"{Session.GetInstance().Employee?.Username}>");
+        ComponentWriter.WriteUserInput($"{Session.Employee?.Username}>");
     }
 
     private string GetHeaderContent()
@@ -112,7 +111,7 @@ public class ConversationView : IView
         Employee? otherEmployee = null;
         foreach (var employee in _conversation.Participants)
         {
-            if (employee.Username == Session.GetInstance().Employee?.Username) continue;
+            if (employee.Username == Session.Employee?.Username) continue;
             otherEmployee = employee;
             break;
         }

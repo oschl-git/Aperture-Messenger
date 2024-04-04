@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 
 namespace ApertureMessenger.AlmsConnection.Repositories;
 
+/// <summary>
+/// Handles access to ALMS conversations.
+/// </summary>
 public static class ConversationRepository
 {
     public static void CreateGroupConversation(CreateGroupConversationRequest request)
@@ -183,12 +186,11 @@ public static class ConversationRepository
         var response = Connector.Get(
             "get-conversation-by-id/" + id
         );
-
-        var contentString = ResponseParser.GetResponseContent(response);
-
+        
         switch (response.StatusCode)
         {
             case HttpStatusCode.OK:
+                var contentString = ResponseParser.GetResponseContent(response);
                 Conversation? conversation;
                 try
                 {

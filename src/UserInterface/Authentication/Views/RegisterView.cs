@@ -41,8 +41,6 @@ public class RegisterView : IView
 
     public void Process()
     {
-        Shared.View = this;
-
         Shared.CommandResponse = new CommandResponse("Follow the required steps to register a new account.",
             CommandResponse.ResponseType.Info);
 
@@ -138,7 +136,7 @@ public class RegisterView : IView
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteWithWordWrap("Use the :exit command to cancel the registration.", ConsoleColor.Red);
 
-        ComponentWriter.WriteUserInput(GetPrompt());
+        ComponentWriter.WriteUserInput(GetPrompt(), _currentStage is Stage.PasswordInput or Stage.SecondPasswordInput);
     }
 
     private void HandleUsernameInput()

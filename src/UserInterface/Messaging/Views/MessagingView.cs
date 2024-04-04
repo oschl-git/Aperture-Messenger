@@ -9,8 +9,6 @@ public class MessagingView : IView
 {
     public void Process()
     {
-        Shared.View = this;
-        
         while (true)
         {
             Shared.RefreshView();
@@ -27,7 +25,7 @@ public class MessagingView : IView
                     break;
                 case CommandProcessor.Result.InvalidCommand:
                     Shared.CommandResponse = new CommandResponse(
-                        $"{userInput} is not a valid command.",
+                        $"{userInput} is not a valid command in this context.",
                         CommandResponse.ResponseType.Error
                     );
                     break;
@@ -49,11 +47,11 @@ public class MessagingView : IView
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();
         
-        ConsoleWriter.WriteWithWordWrap($"Welcome, employee {Session.GetInstance().Employee?.Id} ({Session.GetInstance().Employee?.Name} {Session.GetInstance().Employee?.Surname}).", ConsoleColor.Cyan);
+        ConsoleWriter.WriteWithWordWrap($"Welcome, employee {Session.Employee?.Id} ({Session.Employee?.Name} {Session.Employee?.Surname}).", ConsoleColor.Cyan);
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteWithWordWrap(
             "You are now able to message other Aperture Science and Laboratories personnel. If you're lost, use the :help command to get a list of available actions.");
 
-        ComponentWriter.WriteUserInput($"{Session.GetInstance().Employee?.Username}>");
+        ComponentWriter.WriteUserInput($"{Session.Employee?.Username}>");
     }
 }

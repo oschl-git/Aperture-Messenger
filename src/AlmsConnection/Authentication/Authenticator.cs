@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 
 namespace ApertureMessenger.AlmsConnection.Authentication;
 
+/// <summary>
+/// Handles authenticating users with ALMS.
+/// </summary>
 public static class Authenticator
 {
     public enum LoginResult
@@ -16,12 +19,16 @@ public static class Authenticator
         IncorrectPassword
     }
 
+    /// <summary>
+    /// Sends a login request to ALMS.
+    /// </summary>
+    /// <param name="request">The login request to send</param>
+    /// <returns>Login attempt result</returns>
     public static LoginResult Login(LoginRequest request)
     {
         var response = Connector.Post(
             "login",
             request.getRequestJson(),
-            true,
             true
         );
         
@@ -45,7 +52,7 @@ public static class Authenticator
                     throw new JsonException("JSON login response was empty");
                 }
 
-                Session.GetInstance().SetParameters(content.Token, content.Employee);
+                Session.SetSession(content.Token, content.Employee);
                 return LoginResult.Success;
 
             case HttpStatusCode.BadRequest:

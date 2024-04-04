@@ -10,4 +10,9 @@ public class TokenInvalid : Exception
         : base(message)
     {
     }
+    
+    public TokenInvalid(string message, Exception inner)
+        : base(message, inner)
+    {
+    }
 }

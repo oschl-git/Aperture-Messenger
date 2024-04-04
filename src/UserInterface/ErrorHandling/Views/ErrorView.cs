@@ -23,7 +23,6 @@ public class ErrorView : IView
 
     public void Process()
     {
-        Shared.View = this;
         Shared.CommandResponse = new CommandResponse("Use :retry to restart the application or :exit to exit.",
             CommandResponse.ResponseType.Info);
         Shared.UserInput = "";

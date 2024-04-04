@@ -11,7 +11,7 @@ public static class Shared
     public static IView View = new ConnectionView();
     
     public static string UserInput  = "";
-    public static CommandResponse? CommandResponse;
+    public static CommandResponse CommandResponse = new CommandResponse("", CommandResponse.ResponseType.Info);
 
     public static void RefreshView()
     {

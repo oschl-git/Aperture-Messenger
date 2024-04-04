@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace ApertureMessenger.UserInterface.Console;
 
 public static class ComponentWriter
@@ -20,7 +22,7 @@ public static class ComponentWriter
         System.Console.BackgroundColor = ConsoleColors.DefaultBackgroundColor;
     }
 
-    public static void WriteUserInput(string prompt = ">")
+    public static void WriteUserInput(string prompt = ">", bool obfuscate = false)
     {
         ConsoleWriter.WriteLine();
         
@@ -41,7 +43,10 @@ public static class ComponentWriter
         System.Console.BackgroundColor = ConsoleColors.DefaultBackgroundColor;
         ConsoleWriter.MoveCursorToBottom();
         ConsoleWriter.Write(prompt);
-        ConsoleWriter.WriteWithWordWrap($" {Shared.UserInput}", firstLineOffset: prompt.Length);
+
+        var userInput = obfuscate ? ObfuscateString(Shared.UserInput) : Shared.UserInput;
+        
+        ConsoleWriter.WriteWithWordWrap($" {userInput}", firstLineOffset: prompt.Length);
     }
 
     public static void WriteStep(
@@ -82,4 +87,17 @@ public static class ComponentWriter
 
         ConsoleWriter.WriteLine($"{prefix} {description}", color);
     }
+    
+    private static string ObfuscateString(string value, char obfuscator = '*')
+    {
+        var output = new StringBuilder();
+        
+        for (var i = 0; i < value.Length; i++)
+        {
+            output.Append(obfuscator);
+        }
+
+        return output.ToString();
+    }
+
 }

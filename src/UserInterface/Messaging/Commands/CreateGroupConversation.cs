@@ -3,6 +3,7 @@ using ApertureMessenger.AlmsConnection.Exceptions;
 using ApertureMessenger.AlmsConnection.Repositories;
 using ApertureMessenger.AlmsConnection.Requests;
 using ApertureMessenger.UserInterface.Interfaces;
+using ApertureMessenger.UserInterface.Messaging.Views;
 using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Messaging.Commands;
@@ -33,27 +34,25 @@ public class CreateGroupConversation : ICommand
             return;
         }
         
-        if (participants.Length < 2)
+        switch (participants.Length)
         {
-            Shared.CommandResponse = new CommandResponse(
-                "Missing arguments: You must specify at least two unique participants, you moron!",
-                CommandResponse.ResponseType.Error
-            );
-            return;
-        }
-
-        if (participants.Length > 10)
-        {
-            Shared.CommandResponse = new CommandResponse(
-                "Group conversations cannot have more than 10 participants.",
-                CommandResponse.ResponseType.Error
-            );
-            return;
+            case < 2:
+                Shared.CommandResponse = new CommandResponse(
+                    "Missing arguments: You must specify at least two unique participants, you moron!",
+                    CommandResponse.ResponseType.Error
+                );
+                return;
+            case > 10:
+                Shared.CommandResponse = new CommandResponse(
+                    "Group conversations cannot have more than 10 participants.",
+                    CommandResponse.ResponseType.Error
+                );
+                return;
         }
 
         foreach (var participant in participants)
         {
-            if (participant == Session.GetInstance().Employee?.Username)
+            if (participant == Session.Employee?.Username)
             {
                 Shared.CommandResponse = new CommandResponse(
                     "You can't specify yourself as one of the participants.",
@@ -65,7 +64,7 @@ public class CreateGroupConversation : ICommand
 
         try
         {
-            ConversationRepository.CreateGroupConversation(new CreateGroupConversationRequest(args[0], participants));
+            ConversationRepository.CreateGroupConversation(new CreateGroupConversationRequest(name, participants));
         }
         catch (EmployeesDoNotExist e)
         {
@@ -75,9 +74,14 @@ public class CreateGroupConversation : ICommand
             );
             return;
         }
+
+        if (Shared.View is ConversationListView conversationListView)
+        {
+            conversationListView.RefreshConversations();
+        }
         
         Shared.CommandResponse = new CommandResponse(
-            $"Conversation {args[0]} successfully created!",
+            $"Conversation {name} successfully created!",
             CommandResponse.ResponseType.Success
         );
     }

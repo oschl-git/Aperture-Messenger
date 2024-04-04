@@ -10,4 +10,9 @@ public class TokenMissing : Exception
         : base(message)
     {
     }
+    
+    public TokenMissing(string message, Exception inner)
+        : base(message, inner)
+    {
+    }
 }

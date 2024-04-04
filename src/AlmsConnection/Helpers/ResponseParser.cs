@@ -3,14 +3,22 @@ using Newtonsoft.Json;
 
 namespace ApertureMessenger.AlmsConnection.Helpers;
 
+/// <summary>
+/// Handles parsing responses.
+/// </summary>
 public static class ResponseParser
 {
+    /// <summary>
+    /// Returns the response content as a string.
+    /// </summary>
+    /// <param name="response">The response to parse</param>
+    /// <returns>String response content</returns>
     public static string GetResponseContent(HttpResponseMessage response)
     {
         using var reader = new StreamReader(response.Content.ReadAsStream());
         return reader.ReadToEnd();
     }
-
+    
     public static ErrorResponse GetErrorResponse(HttpResponseMessage response)
     {
         var contentString = GetResponseContent(response);
