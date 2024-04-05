@@ -27,9 +27,7 @@ public class AuthenticationView : IView
 
     private static VersionConflictResult? GetConflictResult()
     {
-        var targetVersion = ConfigurationManager.AppSettings.Get("TargetAlmsVersion");
-        if (targetVersion == null) return null;
-
+        var targetVersion = Settings.TargetAlmsVersion;
         var actualVersion = Status.GetAlmsStatus().Stats.Version;
 
         return ConnectionTester.CompareMessengerAndAlmsVersions(targetVersion, actualVersion);

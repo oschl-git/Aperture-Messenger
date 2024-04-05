@@ -11,7 +11,7 @@ public static class MessageRefresher
 
     public static void StartRefresherThread()
     {
-        _refresher = new Thread(() => { Refresher(GetSecondsToSleep()); });
+        _refresher = new Thread(() => { Refresher(Settings.RefreshSleepSeconds); });
         _refresher.Start();
     }
 
@@ -30,10 +30,5 @@ public static class MessageRefresher
                 // unsuccessful refresh can be ignored
             }
         }
-    }
-
-    private static int GetSecondsToSleep()
-    {
-        return int.Parse(ConfigurationManager.AppSettings.Get("RefreshSleepSeconds") ?? "3");
     }
 }

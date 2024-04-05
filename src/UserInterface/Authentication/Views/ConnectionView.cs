@@ -13,7 +13,7 @@ public class ConnectionView : IView
 {
     public void Process()
     {
-        DrawUserInterface();
+        Shared.RefreshView();
 
         if (!ConnectionTester.TestConnection()) throw new FailedContactingAlms();
 

@@ -17,13 +17,9 @@ public sealed class Connector
 
     private Connector()
     {
-        var url = ConfigurationManager.AppSettings.Get("AlmsUrl");
-
-        if (url == null) throw new ConfigurationErrorsException("ALMS URL is not properly configured");
-
         _almsClient = new HttpClient
         {
-            BaseAddress = new Uri(url)
+            BaseAddress = new Uri(Settings.AlmsUrl)
         };
     }
 
