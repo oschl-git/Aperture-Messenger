@@ -1,4 +1,3 @@
-using System.Configuration;
 using System.Text;
 using ApertureMessenger.AlmsConnection;
 using ApertureMessenger.AlmsConnection.Objects;
@@ -25,7 +24,7 @@ public class AuthenticationView : IView
 
     private readonly VersionConflictResult? _conflictResult = GetConflictResult();
 
-    private static VersionConflictResult? GetConflictResult()
+    private static VersionConflictResult GetConflictResult()
     {
         var targetVersion = Settings.TargetAlmsVersion;
         var actualVersion = Status.GetAlmsStatus().Stats.Version;

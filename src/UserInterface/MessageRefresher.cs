@@ -1,5 +1,3 @@
-using System.Configuration;
-
 namespace ApertureMessenger.UserInterface;
 
 /// <summary>
