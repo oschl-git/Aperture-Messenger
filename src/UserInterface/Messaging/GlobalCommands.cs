@@ -13,8 +13,8 @@ public static class GlobalCommands
         new DirectMessage(),
         new ConversationById(),
         new ListAllConversations(),
-        new ListGroupConversations(),
         new ListDirectConversations(),
+        new ListGroupConversations(),
         new CreateGroupConversation(),
         new Logout(),
         new Exit()
