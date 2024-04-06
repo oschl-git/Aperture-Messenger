@@ -1,5 +1,8 @@
 using ApertureMessenger.AlmsConnection;
+using ApertureMessenger.AlmsConnection.Queries;
+using ApertureMessenger.AlmsConnection.Responses;
 using ApertureMessenger.UserInterface.Console;
+using ApertureMessenger.UserInterface.Fun;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Objects;
 
@@ -10,6 +13,9 @@ namespace ApertureMessenger.UserInterface.Messaging.Views;
 /// </summary>
 public class MessagingView : IView
 {
+    private StatusResponse _status = Status.GetAlmsStatus();
+    private string _apertureQuote = ApertureQuotes.GetRandomQuote();
+
     public void Process()
     {
         while (true)
@@ -43,19 +49,28 @@ public class MessagingView : IView
     {
         ConsoleWriter.Clear();
 
-        ComponentWriter.WriteHeader("APERTURE MESSAGING INTERFACE");
+        ComponentWriter.WriteHeader("MESSAGING INTERFACE", ConsoleColor.DarkCyan);
         ConsoleWriter.WriteLine();
 
         ConsoleWriter.WriteWithWordWrap("Successfully authenticated and connected to ALMS.", ConsoleColor.Green);
         ConsoleWriter.WriteLine();
+
+        ConsoleWriter.WriteWithWordWrap(
+            $"Welcome, employee {Session.Employee?.Id}. There are currently {_status.Stats.ActiveUsers} " +
+            $"employees online out of {_status.Stats.TotalUsers} total registered accounts.",
+            ConsoleColor.Cyan);
+        ConsoleWriter.WriteLine();
+        ConsoleWriter.WriteLine();
+
+        ConsoleWriter.WriteWithWordWrap(_apertureQuote);
+        ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();
 
         ConsoleWriter.WriteWithWordWrap(
-            $"Welcome, employee {Session.Employee?.Id} ({Session.Employee?.Name} {Session.Employee?.Surname}).",
-            ConsoleColor.Cyan);
+            "Use the :help command to see a list of available actions.", ConsoleColor.Yellow
+        );
         ConsoleWriter.WriteLine();
-        ConsoleWriter.WriteWithWordWrap(
-            "You are now able to message other Aperture Science and Laboratories personnel. If you're lost, use the :help command to get a list of available actions.");
+        ConsoleWriter.WriteLine();
 
         ComponentWriter.WriteUserInput($"{Session.Employee?.Username}>");
     }

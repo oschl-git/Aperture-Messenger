@@ -27,7 +27,7 @@ public class CommandFeedback
             FeedbackType.Success => "\u2713",
             FeedbackType.Error => "\ud83d\uddd9",
             FeedbackType.Warning => "\u26a0",
-            FeedbackType.Info => "\ud83d\udec8",
+            FeedbackType.Info => "i",
             FeedbackType.Loading => "\u27f3",
             _ => "?"
         };
