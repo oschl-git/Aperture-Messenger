@@ -6,9 +6,11 @@ namespace ApertureMessenger.UserInterface.ErrorHandling.Commands;
 /// <summary>
 /// An error handling command that handles exiting the application.
 /// </summary>
-public class Exit : ICommand
+public class Exit : IActionCommand
 {
     public string[] Aliases { get; } = ["exit", "quit", "e", "q"];
+    public string Description => "Exits the application";
+    public Tuple<string, string>[] Arguments { get; } = [];
 
     public void Invoke(string[] args)
     {

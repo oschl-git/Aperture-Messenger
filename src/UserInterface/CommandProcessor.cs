@@ -1,3 +1,4 @@
+using ApertureMessenger.UserInterface.Help;
 using ApertureMessenger.UserInterface.Interfaces;
 
 namespace ApertureMessenger.UserInterface;
@@ -14,25 +15,59 @@ public static class CommandProcessor
         InvalidCommand
     }
 
-    public static Result InvokeCommand(string userInput, ICommand[] commands)
+    public static Result InvokeCommand(string userInput, IActionCommand[] commands)
     {
+        // Check if input is a command
         if (!userInput.StartsWith(':')) return Result.NotACommand;
 
+        // Process input
         var processedInput = userInput[1..].Split(' ');
+        var args = processedInput.Skip(1).ToArray();
 
-        var command = GetCommand(processedInput[0], commands);
+        // Process help commands
+        var helpCommand = GetHelpCommand(processedInput[0]);
+        if (helpCommand != null)
+        {
+            if (args.Length > 0)
+            {
+                var specifiedCommand = GetActionCommand(args[0], commands);
+                helpCommand.Invoke(commands, specifiedCommand);
+            }
+            else helpCommand.Invoke(commands);
+
+            return Result.Success;
+        }
+
+        // Try to get the appropriate command
+        var command = GetActionCommand(processedInput[0], commands);
         if (command == null) return Result.InvalidCommand;
 
-        command.Invoke(processedInput.Skip(1).ToArray());
-
+        // Invoke the command and return success
+        command.Invoke(args);
         return Result.Success;
     }
 
-    private static ICommand? GetCommand(string submittedCommand, ICommand[] commands)
+    private static IActionCommand? GetActionCommand(string submittedCommand, IActionCommand[] commands)
     {
         foreach (var command in commands)
+        {
             if (Array.Exists(command.Aliases, alias => alias == submittedCommand.ToLower()))
+            {
                 return command;
+            }
+        }
+
+        return null;
+    }
+
+    private static HelpCommand? GetHelpCommand(string submittedCommand)
+    {
+        var helpCommand = new HelpCommand();
+
+        if (Array.Exists(helpCommand.Aliases, alias => alias == submittedCommand.ToLower()))
+        {
+            return helpCommand;
+        }
 
         return null;
     }

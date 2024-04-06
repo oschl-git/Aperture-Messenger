@@ -6,9 +6,11 @@ namespace ApertureMessenger.UserInterface.Messaging.Commands;
 /// <summary>
 /// A command that switches to the conversation list view and shows the user their recent group conversations.
 /// </summary>
-public class ListGroupConversations : ICommand
+public class ListGroupConversations : IActionCommand
 {
-    public string[] Aliases { get; } = ["lg", "lgc", "lgm", "listgroup", "listgrp"];
+    public string[] Aliases { get; } = ["listgroup", "lg", "lgc", "lgm", "listgrp"];
+    public string Description => "Lists all recent group conversations.";
+    public Tuple<string, string>[] Arguments { get; } = [];
 
     public void Invoke(string[] args)
     {

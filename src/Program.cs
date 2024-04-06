@@ -14,6 +14,7 @@ internal static class Program
         MessageRefresher.StartRefresherThread();
 
         while (true)
+        {
             try
             {
                 Shared.View.Process();
@@ -22,6 +23,7 @@ internal static class Program
             {
                 Session.ClearSession();
                 Shared.View = new ErrorView(e);
-            }
+            } 
+        }
     }
 }

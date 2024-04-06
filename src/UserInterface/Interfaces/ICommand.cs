@@ -5,6 +5,7 @@ namespace ApertureMessenger.UserInterface.Interfaces;
 /// </summary>
 public interface ICommand
 {
-    string[] Aliases { get; }
-    public void Invoke(string[] args);
+    public string[] Aliases { get; }
+    public string Description { get; }
+    public Tuple<string, string>[] Arguments { get; }
 }

@@ -15,7 +15,7 @@ namespace ApertureMessenger.UserInterface.Authentication.Views;
 /// </summary>
 public class AuthenticationView : IView
 {
-    private static readonly ICommand[] Commands =
+    private static readonly IActionCommand[] Commands =
     [
         new Login(),
         new Register(),

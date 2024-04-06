@@ -6,9 +6,11 @@ namespace ApertureMessenger.UserInterface.Messaging.Commands;
 /// <summary>
 /// A command that switches to the conversation list view and shows all recent conversations.
 /// </summary>
-public class ListAllConversations : ICommand
+public class ListAllConversations : IActionCommand
 {
-    public string[] Aliases { get; } = ["lr", "lrc", "recent", "listrecent", "listall", "lall"];
+    public string[] Aliases { get; } = ["listrecent", "lrecent", "lr", "lrc", "recent", "listall", "lall"];
+    public string Description => "Lists all recent conversations.";
+    public Tuple<string, string>[] Arguments { get; } = [];
 
     public void Invoke(string[] args)
     {

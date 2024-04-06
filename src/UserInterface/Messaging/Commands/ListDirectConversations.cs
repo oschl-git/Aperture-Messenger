@@ -6,9 +6,11 @@ namespace ApertureMessenger.UserInterface.Messaging.Commands;
 /// <summary>
 /// A command that switches to the conversation list view and shows the user their recent direct conversations.
 /// </summary>
-public class ListDirectConversations : ICommand
+public class ListDirectConversations : IActionCommand
 {
-    public string[] Aliases { get; } = ["ld", "ldc", "ldm", "listdirect"];
+    public string[] Aliases { get; } = ["listdirect", "ld", "ldc", "ldm"];
+    public string Description => "Lists all recent direct conversations.";
+    public Tuple<string, string>[] Arguments { get; } = [];
 
     public void Invoke(string[] args)
     {

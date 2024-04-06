@@ -11,9 +11,15 @@ namespace ApertureMessenger.UserInterface.Messaging.Commands;
 /// <summary>
 /// A command that handles entering a direct conversation with another user.
 /// </summary>
-public class DirectMessage : ICommand
+public class DirectMessage : IActionCommand
 {
     public string[] Aliases { get; } = ["directmessage", "dm"];
+    public string Description => "Enters a direct conversation with another employee.";
+
+    public Tuple<string, string>[] Arguments { get; } =
+    [
+        new Tuple<string, string>("username*", "username of the employee to message")
+    ];
 
     public void Invoke(string[] args)
     {

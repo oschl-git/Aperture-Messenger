@@ -11,7 +11,7 @@ namespace ApertureMessenger.UserInterface.ErrorHandling.Views;
 /// </summary>
 public class ErrorView : IView
 {
-    private static readonly ICommand[] Commands =
+    private static readonly IActionCommand[] Commands =
     [
         new Retry(),
         new Exit()

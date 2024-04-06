@@ -8,7 +8,7 @@ namespace ApertureMessenger.UserInterface.Messaging;
 /// </summary>
 public static class GlobalCommands
 {
-    public static readonly ICommand[] Commands =
+    public static readonly IActionCommand[] Commands =
     [
         new DirectMessage(),
         new CreateGroupConversation(),

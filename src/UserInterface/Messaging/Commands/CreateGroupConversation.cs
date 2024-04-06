@@ -11,9 +11,16 @@ namespace ApertureMessenger.UserInterface.Messaging.Commands;
 /// <summary>
 /// A command that handles creating a new group conversation.
 /// </summary>
-public class CreateGroupConversation : ICommand
+public class CreateGroupConversation : IActionCommand
 {
     public string[] Aliases { get; } = ["creategroup", "cg"];
+    public string Description => "Creates a new group conversation.";
+
+    public Tuple<string, string>[] Arguments { get; } =
+    [
+        new Tuple<string, string>("conversationName*", "the name for the group conversation"),
+        new Tuple<string, string>("employeeUsernames...*", "at least two other participants to include")
+    ];
 
     public void Invoke(string[] args)
     {

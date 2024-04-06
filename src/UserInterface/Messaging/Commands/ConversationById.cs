@@ -10,9 +10,14 @@ namespace ApertureMessenger.UserInterface.Messaging.Commands;
 /// <summary>
 /// A command that handles entering a conversation by ID.
 /// </summary>
-public class ConversationById : ICommand
+public class ConversationById : IActionCommand
 {
     public string[] Aliases { get; } = ["conversationid", "cid"];
+    public string Description => "Enters the conversation of the specified ID.";
+    public Tuple<string, string>[] Arguments { get; } =
+    [
+        new Tuple<string, string>("id*", "the ID of the conversation to enter")
+    ];
 
     public void Invoke(string[] args)
     {
