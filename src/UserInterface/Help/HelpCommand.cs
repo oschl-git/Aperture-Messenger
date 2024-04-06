@@ -1,4 +1,5 @@
 using ApertureMessenger.UserInterface.Interfaces;
+using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Help;
 
@@ -10,8 +11,31 @@ public class HelpCommand : IHelpCommand
         new Tuple<string, string>("command?", "optional name of a specific command to get help for")
     ];
 
-    public void Invoke(IActionCommand[] currentContext, IActionCommand? specifiedCommand = null)
+    public void Invoke(IActionCommand[] currentContext)
     {
+        SetCommandFeedback();
+        Shared.View = new HelpView(currentContext);
+    }
+    
+    public void Invoke(IActionCommand[] currentContext, IActionCommand? specifiedCommand)
+    {
+        if (specifiedCommand == null)
+        {
+            Shared.Feedback = new CommandFeedback(
+                "Can't display help for a command that doesn't exist.", CommandFeedback.FeedbackType.Error
+            );
+            return;
+        }
+        
+        SetCommandFeedback();
         Shared.View = new HelpView(currentContext, specifiedCommand);
+    }
+
+    private static void SetCommandFeedback()
+    {
+        Shared.Feedback = new CommandFeedback(
+            "Use :exit to return back to the previous context.",
+            CommandFeedback.FeedbackType.Info
+        );
     }
 }

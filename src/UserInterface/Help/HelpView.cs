@@ -17,11 +17,6 @@ public class HelpView : IView
 
     public void Process()
     {
-        Shared.Feedback = new CommandFeedback(
-            "Use :exit to return back to the previous context.",
-            CommandFeedback.FeedbackType.Info
-        );
-
         while (true)
         {
             Shared.RefreshView();
