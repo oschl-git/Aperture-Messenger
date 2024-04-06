@@ -187,7 +187,7 @@ public class LoginView : IView
 
     private bool CheckForExitCommand(string userInput)
     {
-        var result = CommandProcessor.InvokeCommand(userInput, [new Exit()]);
+        var result = CommandProcessor.InvokeCommand(userInput, [new Exit()], true);
         if (result != CommandProcessor.Result.Success) return false;
 
         _currentStage = Stage.LoginAborted;

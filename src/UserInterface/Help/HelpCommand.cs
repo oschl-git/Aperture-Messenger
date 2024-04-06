@@ -10,7 +10,9 @@ public class HelpCommand : IHelpCommand
 {
     public string[] Aliases { get; } = ["help", "h", "man", "manual"];
     public string Description => "Displays help for commands in the current context or for the specified command.";
-    public Tuple<string, string>[] Arguments { get; } = [
+
+    public Tuple<string, string>[] Arguments { get; } =
+    [
         new Tuple<string, string>("command?", "optional name of a specific command to get help for")
     ];
 
@@ -19,17 +21,18 @@ public class HelpCommand : IHelpCommand
         SetCommandFeedback();
         Shared.View = new HelpView(currentContext);
     }
-    
+
     public void Invoke(IActionCommand[] currentContext, IActionCommand? specifiedCommand)
     {
         if (specifiedCommand == null)
         {
             Shared.Feedback = new CommandFeedback(
-                "Can't display help for a command that doesn't exist.", CommandFeedback.FeedbackType.Error
+                "Can't display help for a command that doesn't exist in this context.",
+                CommandFeedback.FeedbackType.Error
             );
             return;
         }
-        
+
         SetCommandFeedback();
         Shared.View = new HelpView(currentContext, specifiedCommand);
     }

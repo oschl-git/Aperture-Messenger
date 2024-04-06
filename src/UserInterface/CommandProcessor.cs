@@ -15,7 +15,7 @@ public static class CommandProcessor
         InvalidCommand
     }
 
-    public static Result InvokeCommand(string userInput, IActionCommand[] commands)
+    public static Result InvokeCommand(string userInput, IActionCommand[] commands, bool disableHelp = false)
     {
         // Check if input is a command
         if (!userInput.StartsWith(':')) return Result.NotACommand;
@@ -25,19 +25,22 @@ public static class CommandProcessor
         var args = processedInput.Skip(1).ToArray();
 
         // Process help commands
-        var helpCommand = GetHelpCommand(processedInput[0]);
-        if (helpCommand != null)
+        if (!disableHelp)
         {
-            if (args.Length > 0)
+            var helpCommand = GetHelpCommand(processedInput[0]);
+            if (helpCommand != null)
             {
-                var specifiedCommand = GetActionCommand(args[0], commands);
-                helpCommand.Invoke(commands, specifiedCommand);
+                if (args.Length > 0)
+                {
+                    var specifiedCommand = GetActionCommand(args[0], commands);
+                    helpCommand.Invoke(commands, specifiedCommand);
+                }
+                else helpCommand.Invoke(commands);
+
+                return Result.Success;
             }
-            else helpCommand.Invoke(commands);
-
-            return Result.Success;
         }
-
+        
         // Try to get the appropriate command
         var command = GetActionCommand(processedInput[0], commands);
         if (command == null) return Result.InvalidCommand;
