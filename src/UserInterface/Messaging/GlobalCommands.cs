@@ -11,11 +11,11 @@ public static class GlobalCommands
     public static readonly IActionCommand[] Commands =
     [
         new DirectMessage(),
-        new CreateGroupConversation(),
         new ConversationById(),
         new ListAllConversations(),
         new ListGroupConversations(),
         new ListDirectConversations(),
+        new CreateGroupConversation(),
         new Logout(),
         new Exit()
     ];

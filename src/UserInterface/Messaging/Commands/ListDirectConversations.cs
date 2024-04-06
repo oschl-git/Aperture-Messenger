@@ -8,7 +8,7 @@ namespace ApertureMessenger.UserInterface.Messaging.Commands;
 /// </summary>
 public class ListDirectConversations : IActionCommand
 {
-    public string[] Aliases { get; } = ["listdirect", "ld", "ldc", "ldm"];
+    public string[] Aliases { get; } = ["listdirect", "listd", "ld", "ldc", "ldm"];
     public string Description => "Lists all recent direct conversations.";
     public Tuple<string, string>[] Arguments { get; } = [];
 
