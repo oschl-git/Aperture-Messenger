@@ -4,10 +4,13 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Help;
 
+/// <summary>
+/// A view/UI handler for displaying the help information.
+/// </summary>
 public class HelpView : IView
 {
-    private IActionCommand[] _currentContext;
-    private IActionCommand? _specifiedCommand;
+    private readonly IActionCommand[] _currentContext;
+    private readonly IActionCommand? _specifiedCommand;
 
     public HelpView(IActionCommand[] currentContext, IActionCommand? specifiedCommand = null)
     {

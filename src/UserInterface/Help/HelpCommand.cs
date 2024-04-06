@@ -3,6 +3,9 @@ using ApertureMessenger.UserInterface.Objects;
 
 namespace ApertureMessenger.UserInterface.Help;
 
+/// <summary>
+/// A command that handles displaying help information.
+/// </summary>
 public class HelpCommand : IHelpCommand
 {
     public string[] Aliases { get; } = ["help", "h", "man", "manual"];
