@@ -87,7 +87,8 @@ public class ConversationListView : IView
         ComponentWriter.WriteHeader(GetHeaderContent(), GetHeaderColor());
         ConsoleWriter.WriteLine();
 
-        foreach (var conversation in _conversations) ComponentWriter.WriteConversation(conversation);
+        if (_conversations.Length <= 0) ConsoleWriter.Write("You have no messages of this type.", ConsoleColor.Red);
+        else foreach (var conversation in _conversations) ComponentWriter.WriteConversation(conversation);
 
         ComponentWriter.WriteUserInput($"{Session.Employee?.Username}>");
     }
