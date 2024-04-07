@@ -16,7 +16,8 @@ public class ConversationListView : IView
     {
         All,
         Direct,
-        Group
+        Group,
+        Unread
     }
     
     private Conversation[] _conversations;
@@ -36,6 +37,8 @@ public class ConversationListView : IView
                 return ConversationRepository.GetDirectConversations();
             case ConversationType.Group:
                 return ConversationRepository.GetGroupConversations();
+            case ConversationType.Unread:
+                return ConversationRepository.GetConversationsWithUnreadMessages();
             case ConversationType.All:
             default:
                 return ConversationRepository.GetAllConversations();
@@ -97,6 +100,8 @@ public class ConversationListView : IView
                 return "RECENT DIRECT CONVERSATIONS";
             case ConversationType.Group:
                 return "RECENT GROUP CONVERSATIONS";
+            case ConversationType.Unread:
+                return "CONVERSATIONS WITH UNREAD MESSAGES";
             case ConversationType.All:
             default:
                 return "RECENT CONVERSATIONS";
@@ -111,6 +116,8 @@ public class ConversationListView : IView
                 return ConsoleColor.DarkCyan;
             case ConversationType.Group:
                 return ConsoleColor.DarkMagenta;
+            case ConversationType.Unread:
+                return ConsoleColor.DarkBlue;
             case ConversationType.All:
             default:
                 return ConsoleColor.DarkYellow;

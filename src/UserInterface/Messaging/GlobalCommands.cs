@@ -12,6 +12,7 @@ public static class GlobalCommands
     [
         new DirectMessage(),
         new ConversationById(),
+        new ListUnreadConversations(),
         new ListAllConversations(),
         new ListDirectConversations(),
         new ListGroupConversations(),
