@@ -13,7 +13,7 @@ namespace ApertureMessenger.UserInterface.Messaging.Commands;
 public class ConversationById : IActionCommand
 {
     public string[] Aliases { get; } = ["conversationid", "cid"];
-    public string Description => "Enters the conversation of the specified ID.";
+    public string Description => "Enters a conversation of the specified ID.";
     public Tuple<string, string>[] Arguments { get; } =
     [
         new Tuple<string, string>("id*", "the ID of the conversation to enter")

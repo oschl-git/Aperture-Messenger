@@ -168,6 +168,36 @@ public static class ConversationRepository
 
         throw new UnhandledResponseError();
     }
+    
+    public static Conversation[] GetConversationsWithUnreadMessages()
+    {
+        var response = Connector.Get(
+            "get-unread-conversations"
+        );
+
+        var contentString = ResponseParser.GetResponseContent(response);
+
+        switch (response.StatusCode)
+        {
+            case HttpStatusCode.OK:
+                Conversation[]? conversations;
+                try
+                {
+                    conversations = JsonConvert.DeserializeObject<Conversation[]>(contentString);
+                }
+                catch (Exception)
+                {
+                    throw new JsonException("Failed parsing unread conversations JSON");
+                }
+
+                if (conversations == null) throw new JsonException("Unread conversations JSON was empty");
+
+                return conversations;
+        }
+
+        throw new UnhandledResponseError();
+    }
+
 
     public static Conversation GetConversationById(int id)
     {

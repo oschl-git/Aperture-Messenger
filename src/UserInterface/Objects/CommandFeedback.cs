@@ -25,8 +25,8 @@ public class CommandFeedback
         return Type switch
         {
             FeedbackType.Success => "\u2713",
-            FeedbackType.Error => "\ud83d\uddd9",
-            FeedbackType.Warning => "\u26a0",
+            FeedbackType.Error => "x",
+            FeedbackType.Warning => "!",
             FeedbackType.Info => "i",
             FeedbackType.Loading => "\u27f3",
             _ => "?"

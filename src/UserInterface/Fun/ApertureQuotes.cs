@@ -2,7 +2,7 @@ namespace ApertureMessenger.UserInterface.Fun;
 
 public static class ApertureQuotes
 {
-    public static string[] Quotes { get; } =
+    private static string[] Quotes { get; } =
     {
         "The Enrichment Centre reminds you that the Weighted Companion Cube cannot speak.",
 
@@ -15,8 +15,8 @@ public static class ApertureQuotes
         "because you're a worthless, unloved bird with a fat ugly beak.",
 
         "Please be advised that a noticeable taste of blood an unintended side effect of the Aperture Secure " +
-        "Authentication Protocol, which may, in semi-rare cases, emancipate dental fillings, crowns, tooth enamel," +
-        " and teeth.",
+        "Authentication Protocol, which may, in semi-rare cases, emancipate dental fillings, crowns, tooth enamel, " +
+        "and teeth.",
 
         "Remember: The Aperture Science Bring Your Daughter to Work Day is the perfect time to have her tested.",
 
@@ -33,7 +33,10 @@ public static class ApertureQuotes
         "Thank you for participating in this Aperture Science computer-aided enrichment activity.",
 
         "Please be advised that The Enrichment Centre is not responsible for any dissatisfactory emotions after " +
-        "sending an unfunny meme to a group chat."
+        "sending an unfunny meme to a group chat.",
+
+        "The Enrichment Centre reminds you that having romantic relationships with any Aperture Science artificial " +
+        "intelligence is strictly forbidden."
     };
 
     public static string GetRandomQuote()

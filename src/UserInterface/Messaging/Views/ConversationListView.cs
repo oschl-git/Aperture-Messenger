@@ -84,7 +84,7 @@ public class ConversationListView : IView
         ComponentWriter.WriteHeader(GetHeaderContent(), GetHeaderColor());
         ConsoleWriter.WriteLine();
 
-        foreach (var conversation in _conversations) PrintConversation(conversation);
+        foreach (var conversation in _conversations) ComponentWriter.WriteConversation(conversation);
 
         ComponentWriter.WriteUserInput($"{Session.Employee?.Username}>");
     }
@@ -115,53 +115,5 @@ public class ConversationListView : IView
             default:
                 return ConsoleColor.DarkYellow;
         }
-    }
-
-    private void PrintConversation(Conversation conversation)
-    {
-        if (conversation.IsGroup)
-        {
-            if (conversation.Name == null || conversation.Participants == null)
-                throw new InvalidDataException("Group conversations didn't have required attributes.");
-
-            ConsoleWriter.Write(" - ");
-            ConsoleWriter.Write(conversation.Name, ConsoleColor.Magenta);
-            ConsoleWriter.Write(", ID: ");
-            ConsoleWriter.Write(conversation.Id.ToString(), ConsoleColor.Green);
-            ConsoleWriter.Write(
-                $" ({conversation.Participants.Count} members, " +
-                $"last updated: [{conversation.DateTimeUpdated.ToLocalTime()}])"
-            );
-            ConsoleWriter.WriteLine();
-        }
-        else
-        {
-            if (conversation.Participants == null)
-                throw new InvalidDataException("Direct conversations didn't have required attributes.");
-
-            ConsoleWriter.Write(" - ");
-
-            var otherParticipant = GetOtherParticipant(conversation.Participants.ToArray());
-            ConsoleWriter.Write(
-                $"DM with {otherParticipant.Username} ({otherParticipant.Name} {otherParticipant.Surname})",
-                ConsoleColor.Cyan
-            );
-            ConsoleWriter.Write(", ID: ");
-            ConsoleWriter.Write(conversation.Id.ToString(), ConsoleColor.Green);
-            ConsoleWriter.Write(
-                $" (last updated: [{conversation.DateTimeUpdated.ToLocalTime()}])"
-            );
-            ConsoleWriter.WriteLine();
-        } 
-    }
-
-    private static Employee GetOtherParticipant(Employee[]? participants)
-    {
-        if (participants != null)
-            foreach (var participant in participants)
-                if (participant.Username != Session.Employee?.Username)
-                    return participant;
-
-        throw new InvalidDataException("Direct conversation had an invalid participant list.");
     }
 }

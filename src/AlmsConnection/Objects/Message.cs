@@ -27,7 +27,7 @@ public class Message
         Id = id;
         Employee = new Employee(employeeId, username, name, surname);
         Content = content;
-        DateTimeSent = dateTimeSent;
+        DateTimeSent = dateTimeSent; 
     }
 
 

@@ -17,6 +17,8 @@ public class Conversation
 
     [JsonProperty("participants")] public List<Employee>? Participants;
 
+    [JsonProperty("unreadMessages")] public int? UnreadMessageCount;
+
     [JsonConstructor]
     public Conversation(
         int id,
@@ -24,7 +26,8 @@ public class Conversation
         bool isGroup,
         DateTime dateTimeCreated,
         DateTime dateTimeUpdated,
-        List<Employee>? participants
+        List<Employee>? participants,
+        int? unreadMessageCount
     )
     {
         Id = id;
@@ -33,6 +36,7 @@ public class Conversation
         DateTimeCreated = dateTimeCreated;
         DateTimeUpdated = dateTimeUpdated;
         Participants = participants;
+        UnreadMessageCount = unreadMessageCount;
     }
 
     public override string ToString()
@@ -45,6 +49,7 @@ public class Conversation
                $"Is Group: {IsGroup}\n" +
                $"Date Time Created: {DateTimeCreated}\n" +
                $"Date Time Updated: {DateTimeUpdated}\n" +
-               $"Participants: {participantList}";
+               $"Participants: {participantList}" +
+               $"Unread Messages: {UnreadMessageCount}";
     }
 }

@@ -1,4 +1,6 @@
 using System.Text;
+using ApertureMessenger.AlmsConnection;
+using ApertureMessenger.AlmsConnection.Objects;
 
 namespace ApertureMessenger.UserInterface.Console;
 
@@ -93,5 +95,58 @@ public static class ComponentWriter
         for (var i = 0; i < value.Length; i++) output.Append(obfuscator);
 
         return output.ToString();
+    }
+    
+    public static void WriteConversation(Conversation conversation)
+    {
+        if (conversation.IsGroup)
+        {
+            if (conversation.Name == null || conversation.Participants == null)
+                throw new InvalidDataException("Group conversations didn't have required attributes.");
+
+            ConsoleWriter.Write(" - ");
+            ConsoleWriter.Write(conversation.Name, ConsoleColor.Magenta);
+            ConsoleWriter.Write(", ID: ");
+            ConsoleWriter.Write(conversation.Id.ToString(), ConsoleColor.Green);
+            ConsoleWriter.Write(
+                $" ({conversation.Participants.Count} members, " +
+                $"last updated: {conversation.DateTimeUpdated.ToLocalTime()})"
+            );
+        }
+        else
+        {
+            if (conversation.Participants == null)
+                throw new InvalidDataException("Direct conversations didn't have required attributes.");
+
+            ConsoleWriter.Write(" - ");
+
+            var otherParticipant = GetOtherConversationParticipant(conversation.Participants.ToArray());
+            ConsoleWriter.Write(
+                $"DM with {otherParticipant.Username} ({otherParticipant.Name} {otherParticipant.Surname})",
+                ConsoleColor.Cyan
+            );
+            ConsoleWriter.Write(", ID: ");
+            ConsoleWriter.Write(conversation.Id.ToString(), ConsoleColor.Green);
+            ConsoleWriter.Write(
+                $" (last updated: {conversation.DateTimeUpdated.ToLocalTime()})"
+            );
+        }
+
+        if (conversation.UnreadMessageCount != null)
+        {
+            ConsoleWriter.Write($" [{conversation.UnreadMessageCount} new]", ConsoleColor.Red);
+        }
+        
+        ConsoleWriter.WriteLine();
+    }
+
+    private static Employee GetOtherConversationParticipant(Employee[]? participants)
+    {
+        if (participants != null)
+            foreach (var participant in participants)
+                if (participant.Username != Session.Employee?.Username)
+                    return participant;
+
+        throw new InvalidDataException("Direct conversation had an invalid participant list.");
     }
 }
