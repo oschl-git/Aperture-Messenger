@@ -53,9 +53,9 @@ public class CreateGroupConversation : IActionCommand
                     CommandFeedback.FeedbackType.Error
                 );
                 return;
-            case > 9:
+            case > 100:
                 Shared.Feedback = new CommandFeedback(
-                    "Group conversations cannot have more than 10 participants.",
+                    "Group conversations cannot have more than a 100 participants.",
                     CommandFeedback.FeedbackType.Error
                 );
                 return;
