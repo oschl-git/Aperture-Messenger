@@ -41,6 +41,51 @@ public static class ConversationRepository
         throw new UnhandledResponseError();
     }
 
+    public static void AddEmployeeToGroup(AddEmployeeToGroupRequest request)
+    {
+        var response = Connector.Post(
+            "add-employee-to-group",
+            request.GetRequestJson()
+        );
+
+        switch (response.StatusCode)
+        {
+            case HttpStatusCode.OK:
+                return;
+
+            case HttpStatusCode.BadRequest:
+                var badRequestResponse = ResponseParser.GetErrorResponse(response);
+                switch (badRequestResponse.Message)
+                {
+                    case "CONVERSATION NOT GROUP":
+                        throw new ConversationNotGroup();
+                    
+                    case "EMPLOYEE ALREADY IN CONVERSATION":
+                        throw new EmployeeAlreadyInConversation();
+                }
+
+                break;
+            
+            case HttpStatusCode.NotFound:
+                var notFoundResponse = ResponseParser.GetErrorResponse(response);
+                switch (notFoundResponse.Message)
+                {
+                    case "CONVERSATION NOT FOUND":
+                        throw new ConversationNotFound();
+                    
+                    case "EMPLOYEE NOT FOUND":
+                        throw new EmployeeDoesNotExist();
+                }
+
+                break;
+
+            case HttpStatusCode.InternalServerError:
+                throw new InternalAlmsError();
+        }
+
+        throw new UnhandledResponseError();
+    }
+
     public static Conversation GetDirectConversation(string username)
     {
         var response = Connector.Get(
@@ -197,8 +242,7 @@ public static class ConversationRepository
 
         throw new UnhandledResponseError();
     }
-
-
+    
     public static Conversation GetConversationById(int id)
     {
         var response = Connector.Get(
