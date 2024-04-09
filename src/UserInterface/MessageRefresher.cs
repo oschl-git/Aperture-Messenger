@@ -1,3 +1,5 @@
+using ApertureMessenger.UserInterface.Messaging.Views;
+
 namespace ApertureMessenger.UserInterface;
 
 /// <summary>
@@ -21,6 +23,16 @@ public static class MessageRefresher
 
             try
             {
+                switch (Shared.View)
+                {
+                    case MessagingView messagingView:
+                        messagingView.RefreshUnreadConversations();
+                        break;
+                    case ConversationListView conversationListView:
+                        conversationListView.RefreshUnreadConversations();
+                        break;
+                }
+
                 Shared.GetNewMessages();
             }
             catch (Exception)

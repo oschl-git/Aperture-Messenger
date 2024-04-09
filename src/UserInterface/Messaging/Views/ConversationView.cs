@@ -28,11 +28,6 @@ public class ConversationView : IView
 
     public void Process()
     {
-        Shared.Feedback = new CommandFeedback(
-            "Input is sent as a message unless you prefix it with a colon (:).",
-            CommandFeedback.FeedbackType.Info
-        );
-
         while (true)
         {
             Shared.RefreshView();

@@ -124,4 +124,9 @@ public class ConversationListView : IView
                 return ConsoleColor.DarkYellow;
         }
     }
+
+    public void RefreshUnreadConversations()
+    {
+        _conversations = GetConversations(_type);
+    }
 }

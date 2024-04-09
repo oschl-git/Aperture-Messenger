@@ -17,7 +17,7 @@ public class MessagingView : IView
 {
     private readonly StatusResponse _status = Status.GetAlmsStatus();
     private readonly string _apertureQuote = ApertureQuotes.GetRandomQuote();
-    private readonly Conversation[] _unreadConversations = ConversationRepository.GetConversationsWithUnreadMessages();
+    private Conversation[] _unreadConversations = ConversationRepository.GetConversationsWithUnreadMessages();
 
     public void Process()
     {
@@ -116,5 +116,10 @@ public class MessagingView : IView
         }
 
         return count;
+    }
+
+    public void RefreshUnreadConversations()
+    {
+        _unreadConversations = ConversationRepository.GetConversationsWithUnreadMessages();
     }
 }
