@@ -1,4 +1,3 @@
-using ApertureMessenger.AlmsConnection;
 using ApertureMessenger.AlmsConnection.Exceptions;
 using ApertureMessenger.AlmsConnection.Repositories;
 using ApertureMessenger.AlmsConnection.Requests;
@@ -41,7 +40,7 @@ public class AddEmployeeToGroup : IActionCommand
         catch (FormatException)
         {
             Shared.Feedback = new CommandFeedback(
-                "Conversation ID must be int.", CommandFeedback.FeedbackType.Error
+                "Conversation ID must be an integer.", CommandFeedback.FeedbackType.Error
             );
             return;
         }

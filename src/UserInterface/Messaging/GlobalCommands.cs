@@ -20,6 +20,8 @@ public static class GlobalCommands
         new AddEmployeeToGroup(),
         new ListAllEmployees(),
         new ListOnlineEmployees(),
+        new ListPossibleColors(),
+        new ChangeColor(),
         new Logout(),
         new Exit()
     ];

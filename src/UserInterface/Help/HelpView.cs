@@ -1,3 +1,4 @@
+using ApertureMessenger.AlmsConnection;
 using ApertureMessenger.UserInterface.Console;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Objects;
@@ -71,7 +72,7 @@ public class HelpView : IView
 
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();
-        ComponentWriter.WriteUserInput();
+        ComponentWriter.WriteUserInput($"{Session.Employee?.Username}>");
     }
 
     private string GetTitle()
