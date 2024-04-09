@@ -20,12 +20,13 @@ public class Message
         string username,
         string name,
         string surname,
+        int? color,
         string content,
         DateTime dateTimeSent
     )
     {
         Id = id;
-        Employee = new Employee(employeeId, username, name, surname);
+        Employee = new Employee(employeeId, username, name, surname, color);
         Content = content;
         DateTimeSent = dateTimeSent; 
     }

@@ -88,9 +88,7 @@ public class ConversationView : IView
         foreach (var message in _messages)
         {
             var employeeString = $"{message.Employee.Username} [{message.DateTimeSent.ToLocalTime()}]: ";
-            var employeeColor = message.Employee.Username == Session.Employee?.Username
-                ? ConsoleColor.Magenta
-                : ConsoleColor.Cyan;
+            var employeeColor = (ConsoleColor)(message.Employee.Color ?? (int)ConsoleColor.Gray);
 
             ConsoleWriter.Write(employeeString, employeeColor);
             ConsoleWriter.WriteWithWordWrap(

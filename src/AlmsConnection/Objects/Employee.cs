@@ -13,13 +13,16 @@ public class Employee
 
     [JsonProperty("surname")] public string Surname;
 
+    [JsonProperty("color")] public int? Color;
+
     [JsonConstructor]
-    public Employee(int id, string username, string name, string surname)
+    public Employee(int id, string username, string name, string surname, int? color)
     {
         Id = id;
         Username = username;
         Name = name;
         Surname = surname;
+        Color = color;
     }
 
     public override string ToString()
@@ -27,6 +30,7 @@ public class Employee
         return $"Employee ID: {Id}\n" +
                $"Username: {Username}\n" +
                $"Name: {Name}\n" +
-               $"Surname: {Surname}";
+               $"Surname: {Surname}" +
+               $"Color: {Color}";
     }
 }

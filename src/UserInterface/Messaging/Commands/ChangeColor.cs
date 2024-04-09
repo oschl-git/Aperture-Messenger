@@ -42,7 +42,15 @@ public class ChangeColor : IActionCommand
             return;
         }
 
-        EmployeeRepository.ChangeEmployeeColor(new SetEmployeeColorRequest(colorNumber));
+        if (colorNumber is < 0 or > 15)
+        {
+            Shared.Feedback = new CommandFeedback(
+                "Invalid color number.", CommandFeedback.FeedbackType.Error
+            );
+            return;
+        }
+
+        EmployeeRepository.ChangeEmployeeColor(new SetEmployeeColorRequest(colorNumber - 1));
 
         Shared.Feedback = new CommandFeedback(
             "Successfully changed colour!",
