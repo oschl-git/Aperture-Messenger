@@ -17,6 +17,8 @@ public static class GlobalCommands
         new ListDirectConversations(),
         new ListGroupConversations(),
         new CreateGroupConversation(),
+        new ListAllEmployees(),
+        new ListOnlineEmployees(),
         new Logout(),
         new Exit()
     ];

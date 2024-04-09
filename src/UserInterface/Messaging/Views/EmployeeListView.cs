@@ -8,40 +8,33 @@ using ApertureMessenger.UserInterface.Objects;
 namespace ApertureMessenger.UserInterface.Messaging.Views;
 
 /// <summary>
-/// A view/UI handler for displaying a list of conversations.
+/// A view/UI handler for displaying a list of employees.
 /// </summary>
-public class ConversationListView : IView
+public class EmployeeListView : IView
 {
-    public enum ConversationType
+    public enum EmployeeType
     {
         All,
-        Direct,
-        Group,
-        Unread
+        Online
     }
     
-    private Conversation[] _conversations;
-    private ConversationType _type;
+    private Employee[] _employees;
+    private EmployeeType _type;
 
-    public ConversationListView(ConversationType type)
+    public EmployeeListView(EmployeeType type)
     {
-        _conversations = GetConversations(type);
+        _employees = GetEmployees(type);
         _type = type;
     }
 
-    private static Conversation[] GetConversations(ConversationType type)
+    private static Employee[] GetEmployees(EmployeeType type)
     {
         switch (type)
         {
-            case ConversationType.Direct:
-                return ConversationRepository.GetDirectConversations();
-            case ConversationType.Group:
-                return ConversationRepository.GetGroupConversations();
-            case ConversationType.Unread:
-                return ConversationRepository.GetConversationsWithUnreadMessages();
-            case ConversationType.All:
+            case EmployeeType.Online:
+                return EmployeeRepository.GetOnlineEmployees();
             default:
-                return ConversationRepository.GetAllConversations();
+                return EmployeeRepository.GetAllEmployees();
         }
     }
 
@@ -81,8 +74,8 @@ public class ConversationListView : IView
         ComponentWriter.WriteHeader(GetHeaderContent(), GetHeaderColor());
         ConsoleWriter.WriteLine();
 
-        if (_conversations.Length <= 0) ConsoleWriter.Write("You have no messages of this type.", ConsoleColor.Red);
-        else foreach (var conversation in _conversations) ComponentWriter.WriteConversation(conversation);
+        if (_employees.Length <= 0) ConsoleWriter.Write("No employees to display.", ConsoleColor.Red);
+        else foreach (var employee in _employees) ComponentWriter.WriteEmployee(employee);
 
         ComponentWriter.WriteUserInput($"{Session.Employee?.Username}>");
     }
@@ -91,15 +84,10 @@ public class ConversationListView : IView
     {
         switch (_type)
         {
-            case ConversationType.Direct:
-                return "RECENT DIRECT CONVERSATIONS";
-            case ConversationType.Group:
-                return "RECENT GROUP CONVERSATIONS";
-            case ConversationType.Unread:
-                return "CONVERSATIONS WITH UNREAD MESSAGES";
-            case ConversationType.All:
+            case EmployeeType.Online:
+                return "ONLINE EMPLOYEES";
             default:
-                return "RECENT CONVERSATIONS";
+                return "ALL EMPLOYEES";
         }
     }
 
@@ -107,20 +95,15 @@ public class ConversationListView : IView
     {
         switch (_type)
         {
-            case ConversationType.Direct:
-                return ConsoleColor.DarkCyan;
-            case ConversationType.Group:
-                return ConsoleColor.DarkMagenta;
-            case ConversationType.Unread:
-                return ConsoleColor.DarkBlue;
-            case ConversationType.All:
+            case EmployeeType.Online:
+                return ConsoleColor.DarkGreen;
             default:
-                return ConsoleColor.DarkYellow;
+                return ConsoleColor.DarkCyan;
         }
     }
 
-    public void RefreshConversations()
+    public void RefreshUnreadConversations()
     {
-        _conversations = GetConversations(_type);
+        _employees = GetEmployees(_type);
     }
 }

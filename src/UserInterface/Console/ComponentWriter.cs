@@ -96,7 +96,7 @@ public static class ComponentWriter
 
         return output.ToString();
     }
-    
+
     public static void WriteConversation(Conversation conversation)
     {
         if (conversation.IsGroup)
@@ -136,7 +136,7 @@ public static class ComponentWriter
         {
             ConsoleWriter.Write($" [{conversation.UnreadMessageCount} new]", ConsoleColor.Red);
         }
-        
+
         ConsoleWriter.WriteLine();
     }
 
@@ -148,5 +148,15 @@ public static class ComponentWriter
                     return participant;
 
         throw new InvalidDataException("Direct conversation had an invalid participant list.");
+    }
+
+    public static void WriteEmployee(Employee employee)
+    {
+        ConsoleWriter.Write(" - ");
+        ConsoleWriter.Write(employee.Username, ConsoleColor.Cyan);
+        ConsoleWriter.WriteWithWordWrap(
+            $": {employee.Name} {employee.Surname}", ConsoleColor.Magenta, employee.Username.Length + 3
+        );
+        ConsoleWriter.WriteLine();
     }
 }

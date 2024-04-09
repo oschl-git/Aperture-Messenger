@@ -29,7 +29,7 @@ public static class MessageRefresher
                         messagingView.RefreshUnreadConversations();
                         break;
                     case ConversationListView conversationListView:
-                        conversationListView.RefreshUnreadConversations();
+                        conversationListView.RefreshConversations();
                         break;
                 }
 
