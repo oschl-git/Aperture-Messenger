@@ -23,7 +23,7 @@ public class HelpView : IView
     {
         while (true)
         {
-            Shared.RefreshView();
+            DrawUserInterface();
 
             var userInput = ConsoleReader.ReadCommandFromUser();
             var commandResult = CommandProcessor.InvokeCommand(userInput, _currentContext);

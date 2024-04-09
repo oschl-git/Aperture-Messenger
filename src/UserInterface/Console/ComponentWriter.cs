@@ -154,8 +154,9 @@ public static class ComponentWriter
     {
         ConsoleWriter.Write(" - ");
         ConsoleWriter.Write(employee.Username, ConsoleColor.Cyan);
+        ConsoleWriter.Write(" / ", ConsoleColor.Gray);
         ConsoleWriter.WriteWithWordWrap(
-            $": {employee.Name} {employee.Surname}", ConsoleColor.Magenta, employee.Username.Length + 3
+            $"{employee.Name} {employee.Surname}", ConsoleColor.Magenta, employee.Username.Length + 6
         );
         ConsoleWriter.WriteLine();
     }

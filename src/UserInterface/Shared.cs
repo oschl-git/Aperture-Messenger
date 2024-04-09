@@ -1,4 +1,5 @@
 using ApertureMessenger.UserInterface.Authentication.Views;
+using ApertureMessenger.UserInterface.Help;
 using ApertureMessenger.UserInterface.Interfaces;
 using ApertureMessenger.UserInterface.Messaging.Views;
 using ApertureMessenger.UserInterface.Objects;
@@ -29,6 +30,7 @@ public static class Shared
         lock (ViewLocker)
         {
             if (View is ConversationView conversationView) conversationView.GetNewMessages();
+            if (View is HelpView) return;
             View.DrawUserInterface();
         }
     }
