@@ -36,7 +36,10 @@ public static class ApertureQuotes
         "sending an unfunny meme to a group chat.",
 
         "The Enrichment Centre reminds you that having romantic relationships with any Aperture Science artificial " +
-        "intelligence is strictly forbidden."
+        "intelligence is strictly forbidden.",
+
+        "The Enrichment Centre reminds you that you can choose your own display colour. See the possibilities with " +
+        "the :lc command."
     };
 
     public static string GetRandomQuote()
