@@ -32,7 +32,7 @@ Once you've obtained an executable file, simply run it from your favourite termi
 ## Requirements
 Note: **Built releases include all dependencies and can be ran as standalone applications without any extra requirements.**
 
-- **.NET 8.1** or compatible
+- **.NET 8.0** or compatible
 
 ### NuGet packages:
 - **Netwonsoft.Json** 13.0.3 or compatible

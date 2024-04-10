@@ -66,7 +66,7 @@ public class ErrorView : IView
         ConsoleWriter.WriteLine();
 
         ConsoleWriter.WriteWithWordWrap(
-            $"\u26a0 {GetMessage()}", ConsoleColor.Red
+            $" ! {GetMessage()}", ConsoleColor.Red
         );
         ConsoleWriter.WriteLine();
         ConsoleWriter.WriteLine();
