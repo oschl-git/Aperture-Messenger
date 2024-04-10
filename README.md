@@ -40,7 +40,7 @@ Note: **Built releases include all dependencies and can be ran as standalone app
 ## Building
 Before staring, ensure you have **.NET 8.0** or compatible installed and that you have the **Newtonsoft.Json 13.0.3** or compatible NuGet package installed.
 
-Aperture Messenger can be built as any C# application by using the `dotnet publish` command. The provided self-contained releases are built using the following commands:
+After cloning the repository, Aperture Messenger can be built as any C# application by using the `dotnet publish` command in the project directory. The provided self-contained releases are built using the following commands:
 
 - **Linux x64:** `dotnet publish -c Release -r linux-x64 --self-contained true /p:PublishSingleFile=true`
 - **Linux ARM:** `dotnet publish -c Release -r linux-arm64 --self-contained true /p:PublishSingleFile=true`

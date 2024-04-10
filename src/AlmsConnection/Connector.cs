@@ -22,11 +22,6 @@ public sealed class Connector
         };
     }
 
-    public static Connector GetInstance()
-    {
-        return Instance;
-    }
-
     /// <summary>
     /// Sends a GET HTTP request to ALMS.
     /// </summary>
@@ -85,7 +80,7 @@ public sealed class Connector
         HttpResponseMessage response;
         try
         {
-            response = GetInstance()._almsClient.Send(request);
+            response = Instance._almsClient.Send(request);
         }
         catch (HttpRequestException)
         {
