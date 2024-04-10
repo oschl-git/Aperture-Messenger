@@ -19,6 +19,13 @@ Aperture Messenger connects to [**ALMS**](https://github.com/oschl-git/alms), a 
 - robust error handling 💪
 - HTTPS 🔒
 
+## Running
+If you don't want to build Aperture Messenger yourself, you can download the [latest release for your operating system](https://github.com/oschl-git/aperture-messenger/releases/tag/3).
+
+On Linux, it might be necessary to change the permissions of the downloaded file to make it executable. You can do so by running the following command: `sudo chmod +x <path to executable>`.
+
+Once you've obtained an executable file, simply run it from your favourite terminal emulator.
+
 ## Detailed documentation
 - for detailed information about how Aperture Messenger works, refer to the [documentation](docs/DOCUMENTATION.md). 
 
