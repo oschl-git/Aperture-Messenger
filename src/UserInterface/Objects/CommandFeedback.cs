@@ -1,5 +1,8 @@
 namespace ApertureMessenger.UserInterface.Objects;
 
+/// <summary>
+/// Stores command feedback that gets displayed to the user.
+/// </summary>
 public class CommandFeedback
 {
     public enum FeedbackType

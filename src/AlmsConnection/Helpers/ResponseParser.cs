@@ -19,6 +19,11 @@ public static class ResponseParser
         return reader.ReadToEnd();
     }
 
+    /// <summary>
+    /// Returns the content of an error response.
+    /// </summary>
+    /// <param name="response">The response to parse</param>
+    /// <returns>Error response content</returns>
     public static ErrorResponse GetErrorResponse(HttpResponseMessage response)
     {
         var contentString = GetResponseContent(response);

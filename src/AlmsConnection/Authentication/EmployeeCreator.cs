@@ -10,8 +10,6 @@ namespace ApertureMessenger.AlmsConnection.Authentication;
 /// </summary>
 public static class EmployeeCreator
 {
-    public static List<string>? LastRegisterAttemptIssues;
-
     public enum RegisterResult
     {
         Success,
@@ -26,8 +24,6 @@ public static class EmployeeCreator
     /// <returns>Registration attempt result</returns>
     public static RegisterResult Register(RegisterRequest request)
     {
-        LastRegisterAttemptIssues = null;
-
         var response = Connector.Post(
             "register",
             request.GetRequestJson(),
@@ -44,7 +40,6 @@ public static class EmployeeCreator
                 switch (errorContent.Message)
                 {
                     case "REQUIREMENTS NOT SATISFIED":
-                        LastRegisterAttemptIssues = errorContent.Errors;
                         return RegisterResult.RequirementsNotSatisfied;
 
                     case "USERNAME TAKEN":
