@@ -14,7 +14,7 @@ public static class ApertureQuotes
         "The Enrichment Centre reminds you that if you don't have regular Aperture Messenger conversations, it's " +
         "because you're a worthless, unloved bird with a fat ugly beak.",
 
-        "Please be advised that a noticeable taste of blood an unintended side effect of the Aperture Secure " +
+        "Please be advised that a noticeable taste of blood is an unintended side effect of the Aperture Secure " +
         "Authentication Protocol, which may, in semi-rare cases, emancipate dental fillings, crowns, tooth enamel, " +
         "and teeth.",
 
