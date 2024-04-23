@@ -16,6 +16,9 @@ public static class Shared
 
     public static string UserInput { get; set; } = "";
     public static CommandFeedback Feedback { get; set; } = new("", CommandFeedback.FeedbackType.Info);
+    
+    public static List<string> InputHistory { get; set; } = [];
+    public static int HistoryDepth = 0;
 
     public static void RefreshView()
     {

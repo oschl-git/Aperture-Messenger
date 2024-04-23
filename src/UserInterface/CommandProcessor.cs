@@ -19,6 +19,9 @@ public static class CommandProcessor
     {
         // Check if input is a command
         if (!userInput.StartsWith(':')) return Result.NotACommand;
+        
+        // Add input to input history
+        Shared.InputHistory.Add(userInput);
 
         // Process input
         var processedInput = userInput[1..].Split(' ');
