@@ -23,7 +23,7 @@ public class DirectMessage : IActionCommand
 
     public void Invoke(string[] args)
     {
-        if (args.Length == 0)
+        if (args.Length == 0 || args[0].Length <= 0)
         {
             Shared.Feedback = new CommandFeedback(
                 "Missing argument: You must provide a username of the user to message.",

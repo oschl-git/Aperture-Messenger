@@ -23,7 +23,7 @@ internal static class Program
             {
                 Session.ClearSession();
                 Shared.View = new ErrorView(e);
-            } 
+            }
         }
     }
 }
